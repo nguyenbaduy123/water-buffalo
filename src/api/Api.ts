@@ -1,6 +1,6 @@
-import axios, { AxiosInstance } from 'axios'
+import axios, { AxiosError, AxiosInstance } from 'axios'
 
-export type RequestParams = Record<string, string | number | boolean | string[]>
+export type RequestParams = Record<string, any>
 
 class Api {
   protected readonly instance: AxiosInstance
@@ -8,15 +8,46 @@ class Api {
     this.instance = axios.create({ baseURL })
   }
 
-  public get = (endpoint: string, params?: RequestParams) =>
-    this.instance.get(endpoint, {
-      params: { ...params },
-    })
+  private handleError = (error: unknown) => {
+    if (error instanceof AxiosError) {
+      const responseData = error?.response?.data
+      if (typeof responseData == 'string') {
+        return { success: false, message: responseData }
+      } else {
+        return { success: false, ...responseData }
+      }
+    } else return { success: false, message: JSON.stringify(error) }
+  }
 
-  public post = (endpoint: string, params: RequestParams) =>
-    this.instance.post(endpoint, params)
+  public async get<ResponseType>(endpoint: string, params: RequestParams = {}) {
+    let resp: ResponseType
+    try {
+      const call = await this.instance.get<ResponseType>(endpoint, {
+        params,
+      })
+      resp = call.data
+    } catch (error) {
+      resp = this.handleError(error)
+    }
+
+    return resp
+  }
+
+  public async post<ResponseType>(
+    endpoint: string,
+    params: RequestParams = {}
+  ) {
+    let resp: ResponseType
+
+    try {
+      const call = await this.instance.post<ResponseType>(endpoint, params)
+      resp = call.data
+    } catch (error) {
+      resp = this.handleError(error)
+    }
+
+    return resp
+  }
 }
 
-const api = new Api('http://localhost:1408')
-
-export default api
+export default Api

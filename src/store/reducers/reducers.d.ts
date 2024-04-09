@@ -5,11 +5,9 @@ export interface AuthState {
   userName: null | string
   accessToken: null | string
   locale: null | string
-  group: null | string
 }
 
 export interface ClaimsFromToken extends JwtPayload {
-  user_id: string
-  user_name: string
+  id: string
+  username: string
 }
-

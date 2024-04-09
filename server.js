@@ -1,5 +1,6 @@
 const express = require('express')
 const next = require('next')
+const cookieParser = require('cookie-parser')
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
@@ -9,6 +10,9 @@ const port = 2002
 
 app.prepare().then(() => {
   const server = express()
+  server.use(cookieParser())
+
+  server.get('/login', (req, res) => app.render(req, res, '/auth/login'))
 
   server.get('*', (req, res) => {
     return handle(req, res)

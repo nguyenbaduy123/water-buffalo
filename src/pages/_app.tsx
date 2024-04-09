@@ -1,6 +1,7 @@
 import { Provider } from 'react-redux'
 import type { AppProps } from 'next/app'
 import 'normalize.css/normalize.css'
+import 'css/app.scss'
 
 import { store } from 'store'
 import { useEffect } from 'react'
