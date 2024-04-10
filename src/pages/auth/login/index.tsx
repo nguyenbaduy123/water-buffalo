@@ -2,10 +2,11 @@ import { Flex, Button, Form, type FormProps, Input } from 'antd'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 
-import { loginSuccess } from 'actions/auth'
+import { getUserAuth, loginSuccess } from 'actions/auth'
 import { AppDispatch } from 'store'
 import LifeApi from 'api/LifeApi'
 import './index.scss'
+import Router from 'next/router'
 
 type FieldType = {
   username: string
@@ -20,7 +21,8 @@ const Login: React.FC = () => {
 
     if (resp.success) {
       dispatch(loginSuccess(resp))
-      window.location.href = '/dashboard'
+      await dispatch(getUserAuth())
+      Router.push('/dashboard')
     }
   }
 

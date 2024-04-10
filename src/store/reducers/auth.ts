@@ -1,35 +1,52 @@
-import { LOGIN_REQUEST, LOGIN_SUCCESS } from '../../constants'
-import { createReducer } from '@reduxjs/toolkit'
 import { jwtDecode } from 'jwt-decode'
 import Cookies from 'js-cookie'
 
-import { AuthState, ClaimsFromToken } from './reducers.d'
+import { LOGIN_SUCCESS, USER_AUTH_SUCCESS } from 'constants/action'
+import { AuthState, ClaimsFromToken, AuthPayloadTypes } from './reducers.d'
+import { assignState, createReducer } from 'utils/redux'
 
 const initialState: AuthState = {
-  userId: null,
-  userName: null,
-  accessToken: null,
-  locale: null,
+  userId: '',
+  username: '',
+  accessToken: '',
+  locale: 'en',
+  country: null,
 }
 
-export default createReducer(initialState, {
-  [LOGIN_REQUEST]: (state) => {
-    return Object.assign({}, state, {
-      fetching: true,
-    })
-  },
-  [LOGIN_SUCCESS]: (state, { payload }) => {
+type ReducerMap = {
+  [K in keyof AuthPayloadTypes]: (
+    state: AuthState,
+    payload: AuthPayloadTypes[K]
+  ) => AuthState
+}
+
+const reducerMap: ReducerMap = {
+  [LOGIN_SUCCESS]: (state, payload) => {
     const accessToken = payload.access_token
     Cookies.set('life_jwt', accessToken, { expires: 7776000 })
     try {
       const claims: ClaimsFromToken = jwtDecode(accessToken)
-      return Object.assign({}, state, {
+      return assignState(state, {
         accessToken: accessToken,
-        useId: claims.id,
-        userName: claims.username,
+        userId: claims.id,
+        username: claims.username,
       })
     } catch (e) {
       return state
     }
   },
-})
+  [USER_AUTH_SUCCESS]: (state, payload) => {
+    const user = payload.user
+
+    return assignState(state, {
+      userId: user.id,
+      locale: user.locale,
+      username: user.username,
+      country: user.country,
+    })
+  },
+}
+
+const authReducer = createReducer(initialState, reducerMap)
+
+export default authReducer

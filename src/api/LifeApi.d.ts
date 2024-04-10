@@ -14,3 +14,11 @@ export interface LoginParams {
 export interface LoginResponse extends BaseResponse {
   access_token: string
 }
+
+export interface GetAuthParams {
+  access_token: string
+}
+
+export interface GetAuthResponse extends BaseResponse {
+  user: User
+}

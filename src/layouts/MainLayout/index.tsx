@@ -1,8 +1,15 @@
 import React from 'react'
 
-const MainLayout = () => {
+interface LayoutProps {
+  children: React.ReactNode
+}
+
+const MainLayout = ({ children }: LayoutProps) => {
   return (
-    <div>MainLayout</div>
+    <div>
+      MainLayout
+      {children}
+    </div>
   )
 }
 
