@@ -1,10 +1,21 @@
 import axios, { AxiosError, AxiosInstance } from 'axios'
 import { RequestParams, WithBaseResponse } from './Api.d'
+import Cookies from 'js-cookie'
 
 class Api {
   protected readonly instance: AxiosInstance
   constructor(baseURL: string) {
     this.instance = axios.create({ baseURL })
+  }
+
+  private getAccessToken = () => {
+    return Cookies.get('life_jwt')
+  }
+
+  private makeUrl = (endpoint: string) => {
+    const accessToken = this.getAccessToken()
+    if (accessToken) return `${endpoint}?access_token=${this.getAccessToken()}`
+    return endpoint
   }
 
   private handleError = (error: unknown) => {
@@ -20,9 +31,12 @@ class Api {
 
   public get = async <RT>(endpoint: string, params: RequestParams = {}) => {
     try {
-      const call = await this.instance.get<WithBaseResponse<RT>>(endpoint, {
-        params,
-      })
+      const call = await this.instance.get<WithBaseResponse<RT>>(
+        this.makeUrl(endpoint),
+        {
+          params,
+        }
+      )
       return call.data
     } catch (error) {
       return this.handleError(error)
@@ -32,7 +46,7 @@ class Api {
   public post = async <RT>(endpoint: string, params: RequestParams = {}) => {
     try {
       const call = await this.instance.post<WithBaseResponse<RT>>(
-        endpoint,
+        this.makeUrl(endpoint),
         params
       )
       return call.data

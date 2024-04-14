@@ -1,20 +1,27 @@
-import WithAuth from 'hocs/WithAuth'
-import { useAppDispatch } from 'hooks'
+import withAuth from 'hocs/withAuth'
 import { NextPage } from 'next'
 import React from 'react'
-import { store } from 'store'
+import { connect } from 'react-redux'
+
 import { AuthState } from 'reducers/types'
+import { AppDispatch, RootState } from 'store'
+import MainLayout from 'layouts/MainLayout'
 
 interface Props {
   auth: AuthState
+  dispatch: AppDispatch
 }
 
-const Dashboard: NextPage = () => {
+const Dashboard: NextPage<Props> = (props: Props) => {
   return (
-    <div>
-      <h1>Dashboard</h1>
-    </div>
+    <MainLayout>
+      <div>
+        <h1>Dashboard</h1>
+      </div>
+    </MainLayout>
   )
 }
 
-export default WithAuth(store)(Dashboard)
+const mapStateToProps = (state: RootState) => ({ auth: state.auth })
+
+export default connect(mapStateToProps)(withAuth(Dashboard))

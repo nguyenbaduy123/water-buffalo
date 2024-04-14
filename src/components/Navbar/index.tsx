@@ -1,9 +1,14 @@
 import React from 'react'
 import './index.scss'
+import Logo from 'components/common/Logo'
 
 const Navbar = () => {
   return (
-    <div>Navbar</div>
+    <div className="navbar-container">
+      <div className="navbar-head">
+        <Logo />
+      </div>
+    </div>
   )
 }
 

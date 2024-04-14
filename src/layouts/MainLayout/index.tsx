@@ -1,14 +1,15 @@
 import React from 'react'
 
+import Navbar from 'components/Navbar'
+
 interface LayoutProps {
   children: React.ReactNode
-  currentPath: string
 }
 
 const MainLayout = ({ children }: LayoutProps) => {
   return (
     <div>
-      MainLayout
+      <Navbar />
       {children}
     </div>
   )

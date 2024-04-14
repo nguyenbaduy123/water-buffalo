@@ -17,6 +17,7 @@ export interface ClaimsFromToken extends JwtPayload {
 export interface AuthPayloadTypes {
   LOGIN_SUCCESS: { access_token: string }
   USER_AUTH_SUCCESS: { user: User }
+  __NEXT_REDUX_WRAPPER_HYDRATE__: { auth: AuthState }
 }
 
 export interface AuthActions<T extends keyof AuthPayloadTypes> {

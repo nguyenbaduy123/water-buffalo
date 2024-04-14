@@ -1,4 +1,5 @@
 import { jwtDecode } from 'jwt-decode'
+import { HYDRATE } from 'next-redux-wrapper'
 import Cookies from 'js-cookie'
 import { createReducer } from '@reduxjs/toolkit'
 
@@ -27,6 +28,9 @@ type ReducerMap = {
 }
 
 const reducerMap: ReducerMap = {
+  [HYDRATE]: (state, { payload }) => {
+    return { ...state, ...payload.auth }
+  },
   [LOGIN_SUCCESS]: (state, { payload }) => {
     const accessToken = payload.access_token
     Cookies.set('life_jwt', accessToken, { expires: 7776000 })
