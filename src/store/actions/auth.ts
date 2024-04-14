@@ -1,5 +1,5 @@
 import { AppDispatch, GetStateFunc } from 'store'
-import { LoginSuccessPayload } from './actions'
+import { LoginSuccessPayload } from './types'
 
 import {
   LOGIN_REQUEST,

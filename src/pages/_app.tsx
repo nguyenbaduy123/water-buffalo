@@ -1,11 +1,12 @@
 import { Provider } from 'react-redux'
-import { store } from 'store'
 import { useEffect } from 'react'
 import type { AppProps } from 'next/app'
 
 import MainLayout from 'layouts/MainLayout'
 import 'normalize.css/normalize.css'
 import 'css/app.scss'
+import { usePathname } from 'next/navigation'
+import { store } from 'store'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
@@ -13,9 +14,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     window.__reduxStore__ = store
   }, [])
 
+  const currentPath = usePathname()
+
   return (
     <Provider store={store}>
-      <MainLayout>
+      <MainLayout currentPath={currentPath}>
         <Component {...pageProps} />
       </MainLayout>
     </Provider>

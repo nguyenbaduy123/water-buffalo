@@ -1,15 +1,28 @@
-import { AnyAction } from 'redux'
-import reducers from './reducers'
-import { configureStore } from '@reduxjs/toolkit'
 import thunkMiddleware, { ThunkDispatch } from 'redux-thunk'
+import reducers from './reducers'
+import { AnyAction, configureStore } from '@reduxjs/toolkit'
 
-export const store = configureStore({
+// export const store = configureStore({
+//   reducer: reducers,
+//   middleware: [thunkMiddleware],
+//   devTools: true,
+// })
+
+export const makeStore = () => {
+  const store = configureStore({
+    reducer: reducers,
+    middleware: [thunkMiddleware],
+    devTools: true,
+  })
+
   // @ts-ignore
-  reducer: reducers,
-  middleware: [thunkMiddleware],
-})
+  if (typeof window != 'undefined') window.__reduxStore__ = store
 
+  return store
+}
+
+export const store = makeStore()
+export type Store = typeof store
+export type RootState = ReturnType<Store['getState']>
 export type AppDispatch = ThunkDispatch<RootState, undefined, AnyAction>
-
-export type RootState = ReturnType<typeof store.getState>
-export type GetStateFunc = typeof store.getState
+export type GetStateFunc = Store['getState']

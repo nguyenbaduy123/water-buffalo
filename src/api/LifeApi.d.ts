@@ -1,17 +1,11 @@
 import { User } from 'types/global'
 
-export interface BaseResponse {
-  success: boolean
-  message?: string
-  code?: number
-}
-
 export interface LoginParams {
   username: string
   password: string
 }
 
-export interface LoginResponse extends BaseResponse {
+export interface LoginResponse {
   access_token: string
 }
 
@@ -19,6 +13,6 @@ export interface GetAuthParams {
   access_token: string
 }
 
-export interface GetAuthResponse extends BaseResponse {
+export interface GetAuthResponse {
   user: User
 }

@@ -1,6 +1,5 @@
 import Api from './Api'
 import {
-  BaseResponse,
   GetAuthParams,
   GetAuthResponse,
   LoginParams,

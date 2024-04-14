@@ -1,7 +1,20 @@
+import WithAuth from 'hocs/WithAuth'
+import { useAppDispatch } from 'hooks'
+import { NextPage } from 'next'
 import React from 'react'
+import { store } from 'store'
+import { AuthState } from 'reducers/types'
 
-const Dashboard = () => {
-  return <div>Dashboard</div>
+interface Props {
+  auth: AuthState
 }
 
-export default Dashboard
+const Dashboard: NextPage = () => {
+  return (
+    <div>
+      <h1>Dashboard</h1>
+    </div>
+  )
+}
+
+export default WithAuth(store)(Dashboard)

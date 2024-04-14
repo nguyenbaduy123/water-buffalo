@@ -1,9 +1,15 @@
 import { jwtDecode } from 'jwt-decode'
 import Cookies from 'js-cookie'
+import { createReducer } from '@reduxjs/toolkit'
 
 import { LOGIN_SUCCESS, USER_AUTH_SUCCESS } from 'constants/action'
-import { AuthState, ClaimsFromToken, AuthPayloadTypes } from './reducers.d'
-import { assignState, createReducer } from 'utils/redux'
+import {
+  AuthState,
+  ClaimsFromToken,
+  AuthPayloadTypes,
+  AuthActions,
+} from './types'
+import { assignState } from 'utils/redux'
 
 const initialState: AuthState = {
   userId: '',
@@ -16,12 +22,12 @@ const initialState: AuthState = {
 type ReducerMap = {
   [K in keyof AuthPayloadTypes]: (
     state: AuthState,
-    payload: AuthPayloadTypes[K]
+    payload: AuthActions<K>
   ) => AuthState
 }
 
 const reducerMap: ReducerMap = {
-  [LOGIN_SUCCESS]: (state, payload) => {
+  [LOGIN_SUCCESS]: (state, { payload }) => {
     const accessToken = payload.access_token
     Cookies.set('life_jwt', accessToken, { expires: 7776000 })
     try {
@@ -35,7 +41,7 @@ const reducerMap: ReducerMap = {
       return state
     }
   },
-  [USER_AUTH_SUCCESS]: (state, payload) => {
+  [USER_AUTH_SUCCESS]: (state, { payload }) => {
     const user = payload.user
 
     return assignState(state, {

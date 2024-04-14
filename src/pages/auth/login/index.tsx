@@ -1,20 +1,20 @@
 import { Flex, Button, Form, type FormProps, Input } from 'antd'
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import Router from 'next/router'
+import { NextPage } from 'next'
+import { useAppDispatch } from 'hooks'
 
 import { getUserAuth, loginSuccess } from 'actions/auth'
-import { AppDispatch } from 'store'
 import LifeApi from 'api/LifeApi'
 import './index.scss'
-import Router from 'next/router'
 
 type FieldType = {
   username: string
   password: string
 }
 
-const Login: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch()
+const Login: NextPage = () => {
+  const dispatch = useAppDispatch()
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     const resp = await LifeApi.login(values)
