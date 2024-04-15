@@ -1,5 +1,6 @@
 import { JwtPayload } from 'jwt-decode'
 import { Locale, User } from 'types/global'
+import { HYDRATE } from 'next-redux-wrapper'
 
 export interface AuthState {
   userId: string
@@ -15,9 +16,9 @@ export interface ClaimsFromToken extends JwtPayload {
 }
 
 export interface AuthPayloadTypes {
+  [HYDRATE]: { auth: AuthState }
   LOGIN_SUCCESS: { access_token: string }
   USER_AUTH_SUCCESS: { user: User }
-  __NEXT_REDUX_WRAPPER_HYDRATE__: { auth: AuthState }
 }
 
 export interface AuthActions<T extends keyof AuthPayloadTypes> {

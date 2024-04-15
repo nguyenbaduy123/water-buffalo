@@ -7,3 +7,18 @@ export interface User {
 }
 
 export type Locale = 'vi' | 'en'
+
+export interface Workspace {
+  id: number
+  name: string
+  owner_id: string
+}
+
+export interface Project {
+  id: number
+  name: string
+  description: string
+  status: string
+  priority: number | null
+  owner_id: string
+}

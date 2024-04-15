@@ -31,6 +31,7 @@ const reducerMap: ReducerMap = {
   [HYDRATE]: (state, { payload }) => {
     return { ...state, ...payload.auth }
   },
+
   [LOGIN_SUCCESS]: (state, { payload }) => {
     const accessToken = payload.access_token
     Cookies.set('life_jwt', accessToken, { expires: 7776000 })
@@ -45,6 +46,7 @@ const reducerMap: ReducerMap = {
       return state
     }
   },
+
   [USER_AUTH_SUCCESS]: (state, { payload }) => {
     const user = payload.user
 

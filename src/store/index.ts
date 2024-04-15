@@ -12,7 +12,7 @@ export const makeStore = () => {
   })
 
   // @ts-ignore
-  if (typeof window != 'undefined') window.__reduxStore__ = store
+  if (typeof window != 'undefined') window.__lifeReduxStore__ = store
 
   return store
 }
