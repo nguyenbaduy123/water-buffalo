@@ -14,10 +14,13 @@ import { assignState } from 'utils/redux'
 
 const initialState: AuthState = {
   userId: '',
-  username: '',
+  username: null,
+  name: null,
   accessToken: '',
   locale: 'en',
   country: null,
+  avatar: null,
+  email: '',
 }
 
 type ReducerMap = {
@@ -49,12 +52,16 @@ const reducerMap: ReducerMap = {
 
   [USER_AUTH_SUCCESS]: (state, { payload }) => {
     const user = payload.user
+    console.log('cxx', payload)
 
     return assignState(state, {
       userId: user.id,
       locale: user.locale,
       username: user.username,
       country: user.country,
+      avatar: user.avatar_url,
+      name: user.name,
+      email: user.email,
     })
   },
 }

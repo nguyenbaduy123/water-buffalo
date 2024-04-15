@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { AuthState } from 'reducers/types'
 import { AppDispatch, RootState } from 'store'
 import MainLayout from 'layouts/MainLayout'
+import Sidebar from 'feature/dashboard/Sidebar'
 
 interface Props {
   auth: AuthState
@@ -15,9 +16,8 @@ interface Props {
 const Dashboard: NextPage<Props> = (props: Props) => {
   return (
     <MainLayout>
-      <div>
-        <h1>Dashboard</h1>
-      </div>
+      <Sidebar />
+      <div className="dashboard-page">123ss123</div>
     </MainLayout>
   )
 }

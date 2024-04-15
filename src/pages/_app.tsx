@@ -1,7 +1,8 @@
-import 'normalize.css/normalize.css'
 import App from 'next/app'
+import 'normalize.css/normalize.css'
 
 import RootLayout from 'layouts/RootLayout'
+import ThemeProvider from 'themes'
 import { wrapper } from 'store'
 import 'css/app.scss'
 
@@ -23,9 +24,11 @@ class MyApp extends App {
     const { Component, pageProps } = this.props
 
     return (
-      <RootLayout>
-        <Component {...pageProps} />
-      </RootLayout>
+      <ThemeProvider>
+        <RootLayout>
+          <Component {...pageProps} />
+        </RootLayout>
+      </ThemeProvider>
     )
   }
 }

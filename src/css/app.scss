@@ -365,3 +365,7 @@
   --box-shadow-tabs-overflow-top: inset 0 10px 8px -8px rgba(0, 0, 0, 0.08);
   --box-shadow-tabs-overflow-bottom: inset 0 -10px 8px -8px rgba(0, 0, 0, 0.08);
 }
+
+body {
+  color: var(--color-white);
+}

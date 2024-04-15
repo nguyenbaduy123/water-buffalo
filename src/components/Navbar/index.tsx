@@ -1,15 +1,32 @@
 import React from 'react'
-import './index.scss'
-import Logo from 'components/common/Logo'
+import { connect } from 'react-redux'
+import { Flex } from 'antd'
 
-const Navbar = () => {
+import Logo from 'components/common/Logo'
+import { AuthState } from 'reducers/types'
+import './index.scss'
+import { RootState } from 'store'
+import CurrentUserAvatar from 'common/CurrentUserAvatar'
+
+interface Props {
+  auth: AuthState
+}
+
+const Navbar = ({ auth }: Props) => {
   return (
     <div className="navbar-container">
-      <div className="navbar-head">
-        <Logo />
-      </div>
+      <Flex justify="space-between">
+        <div className="navbar-head">
+          <Logo />
+        </div>
+        <div className="navbar-tail">
+          <CurrentUserAvatar />
+        </div>
+      </Flex>
     </div>
   )
 }
 
-export default Navbar
+const mapStateToProps = (state: RootState) => ({ auth: state.auth })
+
+export default connect(mapStateToProps)(Navbar)

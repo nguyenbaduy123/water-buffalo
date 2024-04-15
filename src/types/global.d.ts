@@ -1,9 +1,13 @@
+import { ReactNode } from 'react'
+
 export interface User {
   id: string
   email: string
   username: string | null
   locale: Locale
   country: string | null
+  avatar_url: string | null
+  name: string
 }
 
 export type Locale = 'vi' | 'en'
@@ -21,4 +25,8 @@ export interface Project {
   status: string
   priority: number | null
   owner_id: string
+}
+
+export interface ProviderProps {
+  children: ReactNode
 }

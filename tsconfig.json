@@ -21,6 +21,7 @@
     "paths": {
       "actions/*": ["./src/store/actions/*"],
       "reducers/*": ["./src/store/reducers/*"],
+      "common/*": ["./src/components/common/*"],
       "*": ["./src/*"]
     }
   },

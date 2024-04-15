@@ -5,9 +5,12 @@ import { HYDRATE } from 'next-redux-wrapper'
 export interface AuthState {
   userId: string
   username: string | null
+  name: string | null
   accessToken: string
   locale: Locale
   country: string | null
+  avatar: string | null
+  email: string
 }
 
 export interface ClaimsFromToken extends JwtPayload {
