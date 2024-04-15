@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import React from 'react'
 
 export interface User {
   id: string
@@ -28,5 +28,7 @@ export interface Project {
 }
 
 export interface ProviderProps {
-  children: ReactNode
+  children: React.ReactNode
 }
+
+export type ProviderFC = React.FC<ProviderProps>

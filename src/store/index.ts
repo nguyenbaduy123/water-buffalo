@@ -20,6 +20,7 @@ export const makeStore = () => {
 // export const store = makeStore()
 export type Store = ReturnType<typeof makeStore>
 export type RootState = ReturnType<Store['getState']>
+export type StateKey = keyof RootState
 export type AppDispatch = ThunkDispatch<RootState, undefined, AnyAction>
 export type GetStateFunc = Store['getState']
 export type AppThunk<ReturnType = void> = ThunkAction<

@@ -1,4 +1,8 @@
+import { pick } from 'lodash'
+import { connect } from 'react-redux'
 import { AnyAction } from 'redux'
+
+import { RootState, StateKey } from 'store'
 
 type ReducerMap<S> = {
   [key: string]: (state: S, payload: any) => S
@@ -24,3 +28,11 @@ export const assignState = <S extends {}>(
   ...state,
   ...payload,
 })
+
+export const mapStateToPropsFunc = (keys: StateKey[]) => (state: RootState) =>
+  pick(state, keys)
+
+export const connectAndMapStateToProps =
+  (keys: StateKey[]) =>
+  <T extends React.ComponentType<any>>(Component: T) =>
+    connect(mapStateToPropsFunc(keys))(Component)

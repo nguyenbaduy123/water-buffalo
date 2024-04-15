@@ -41,6 +41,10 @@ app.prepare().then(() => {
 
   server.get('/dashboard', authenticate, handle)
 
+  server.get('/new', authenticate, (req, res) =>
+    app.render(req, res, '/project/new')
+  )
+
   server.get('*', (req, res) => {
     return handle(req, res)
   })

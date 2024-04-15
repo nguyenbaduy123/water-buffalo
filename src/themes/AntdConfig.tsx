@@ -1,5 +1,6 @@
 import { ConfigProvider } from 'antd'
 import React from 'react'
+import { COLORS } from 'utils/css'
 
 interface Props {
   children: React.ReactNode
@@ -9,10 +10,14 @@ const AntdConfig: React.FC<Props> = ({ children }) => (
   <ConfigProvider
     theme={{
       hashed: false,
-      token: {
-        colorPrimary: '#237804',
-        borderRadius: 4,
-        colorBgContainer: '#f6ffed',
+      components: {
+        Button: {
+          colorPrimary: COLORS.green[8],
+          colorPrimaryHover: COLORS.green[7],
+          colorPrimaryActive: COLORS.green[9],
+          lineWidth: 0,
+          paddingInline: 10,
+        },
       },
     }}
   >

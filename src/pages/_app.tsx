@@ -5,6 +5,7 @@ import RootLayout from 'layouts/RootLayout'
 import ThemeProvider from 'themes'
 import { wrapper } from 'store'
 import 'css/app.scss'
+import 'css/modules/_common.scss'
 
 class MyApp extends App {
   static getInitialProps = wrapper.getInitialAppProps(

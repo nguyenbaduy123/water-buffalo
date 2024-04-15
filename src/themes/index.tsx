@@ -1,10 +1,8 @@
-import React from 'react'
-
 import AntdConfig from './AntdConfig'
 import PhosphorIconConfig from './PhosphorIconConfig'
-import { ProviderProps } from 'types/global'
+import { ProviderFC } from 'types/global'
 
-const ThemeProvider: React.FC<ProviderProps> = ({ children }) => {
+const ThemeProvider: ProviderFC = ({ children }) => {
   return (
     <AntdConfig>
       <PhosphorIconConfig>{children}</PhosphorIconConfig>

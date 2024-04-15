@@ -1,8 +1,8 @@
 import { IconContext } from '@phosphor-icons/react'
 import React from 'react'
-import { ProviderProps } from 'types/global'
+import { ProviderFC } from 'types/global'
 
-const PhosphorIconConfig: React.FC<ProviderProps> = ({ children }) => {
+const PhosphorIconConfig: ProviderFC = ({ children }) => {
   return (
     <IconContext.Provider
       value={{

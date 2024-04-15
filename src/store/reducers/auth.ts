@@ -52,7 +52,6 @@ const reducerMap: ReducerMap = {
 
   [USER_AUTH_SUCCESS]: (state, { payload }) => {
     const user = payload.user
-    console.log('cxx', payload)
 
     return assignState(state, {
       userId: user.id,

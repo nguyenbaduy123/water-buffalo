@@ -2,6 +2,7 @@ import UserAvatar from 'common/UserAvatar'
 import { UserAvatarProps } from 'common/UserAvatar/UserAvatar'
 import { connect } from 'react-redux'
 import { RootState } from 'store'
+import { mapStateToPropsFunc } from 'utils/redux'
 
 interface Props extends UserAvatarProps {
   auth: RootState['auth']
@@ -23,6 +24,4 @@ const CurrentUserAvatar = ({
   )
 }
 
-const mapStateToProps = (state: RootState) => ({ auth: state.auth })
-
-export default connect(mapStateToProps)(CurrentUserAvatar)
+export default connect(mapStateToPropsFunc(['auth']))(CurrentUserAvatar)
