@@ -1,6 +1,10 @@
 .new-project-page {
   max-width: 768px;
   margin: auto;
+  height: 100%;
+  background-color: var(--dark-9);
+  padding: 12px;
+  border-radius: var(--border-radius-lg);
 
   .new-pj-header {
     font-size: 24px;

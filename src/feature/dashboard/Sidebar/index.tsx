@@ -1,10 +1,11 @@
 import { RootState } from 'store'
 import { connect } from 'react-redux'
 import { Button, Flex } from 'antd'
-
-import CurrentUserAvatar from 'common/CurrentUserAvatar'
-import { FolderPlus } from '@phosphor-icons/react'
 import Router from 'next/router'
+import { FolderPlus } from '@phosphor-icons/react'
+
+import './index.scss'
+import CurrentUserAvatar from 'common/CurrentUserAvatar'
 
 interface Props {
   auth: RootState['auth']

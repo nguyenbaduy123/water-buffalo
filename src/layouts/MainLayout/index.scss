@@ -1,8 +1,11 @@
 .main-layout {
   height: 100%;
   background-color: var(--dark-8);
+  display: flex;
+  flex-direction: column;
 }
 
 .main-content {
-  padding: 16px;
+  height: 100%;
+  padding: 16px 0;
 }
