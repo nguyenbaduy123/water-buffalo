@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance } from 'axios'
-import { RequestParams, WithBaseResponse } from './Api.d'
+import { ErrorResponse, RequestParams, WithBaseResponse } from './Api.d'
 import Cookies from 'js-cookie'
 
 class Api {
@@ -18,7 +18,8 @@ class Api {
     return endpoint
   }
 
-  private handleError = (error: unknown) => {
+  private handleError = (error: unknown): ErrorResponse => {
+    console.error('ApiError:', error)
     if (error instanceof AxiosError) {
       const responseData = error?.response?.data
       if (typeof responseData == 'string') {
@@ -29,7 +30,10 @@ class Api {
     } else return { success: false, message: JSON.stringify(error) }
   }
 
-  public get = async <RT>(endpoint: string, params: RequestParams = {}) => {
+  get = async <RT>(
+    endpoint: string,
+    params: RequestParams = {}
+  ): Promise<WithBaseResponse<RT>> => {
     try {
       const call = await this.instance.get<WithBaseResponse<RT>>(
         this.makeUrl(endpoint),
@@ -43,7 +47,10 @@ class Api {
     }
   }
 
-  public post = async <RT>(endpoint: string, params: RequestParams = {}) => {
+  post = async <RT>(
+    endpoint: string,
+    params: RequestParams = {}
+  ): Promise<WithBaseResponse<RT>> => {
     try {
       const call = await this.instance.post<WithBaseResponse<RT>>(
         this.makeUrl(endpoint),
@@ -55,7 +62,10 @@ class Api {
     }
   }
 
-  public put = async <RT>(endpoint: string, params: RequestParams = {}) => {
+  put = async <RT>(
+    endpoint: string,
+    params: RequestParams = {}
+  ): Promise<WithBaseResponse<RT>> => {
     try {
       const call = await this.instance.put<WithBaseResponse<RT>>(
         endpoint,

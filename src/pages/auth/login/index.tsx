@@ -7,6 +7,7 @@ import { useAppDispatch } from 'hooks'
 import { getUserAuth, loginSuccess } from 'actions/auth'
 import LifeApi from 'api/LifeApi'
 import './index.scss'
+import AuthLayout from 'layouts/AuthLayout'
 
 type FieldType = {
   username: string
@@ -27,44 +28,50 @@ const Login: NextPage = () => {
   }
 
   return (
-    <div className="login-page">
-      <Flex className="login-page-container" justify="center" align="center">
-        <div className="login-content">
-          <div className="login-web">
-            <img src="/elixir.svg" width={180} height={180} />
-            <h2>Sign in to BWork</h2>
-          </div>
-          <Form name="basic" onFinish={onFinish} autoComplete="off">
-            <Form.Item<FieldType>
-              name="username"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your username or email address!',
-                },
-              ]}
-            >
-              <Input placeholder="Username or email address" />
-            </Form.Item>
+    <AuthLayout>
+      <div className="login-web">
+        <img src="/elixir.svg" width={180} height={180} />
+        <h2>Sign in to BWork</h2>
+      </div>
+      <Form name="basic" onFinish={onFinish} autoComplete="off">
+        <Form.Item<FieldType>
+          name="username"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your username or email address!',
+            },
+          ]}
+        >
+          <Input placeholder="Username or email address" />
+        </Form.Item>
 
-            <Form.Item<FieldType>
-              name="password"
-              rules={[
-                { required: true, message: 'Please input your password!' },
-              ]}
-            >
-              <Input.Password placeholder="Password" />
-            </Form.Item>
+        <Form.Item<FieldType>
+          name="password"
+          rules={[{ required: true, message: 'Please input your password!' }]}
+        >
+          <Input.Password placeholder="Password" />
+        </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button className="login-button" type="primary" htmlType="submit">
-                Login
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
-      </Flex>
-    </div>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button className="login-button" type="primary" htmlType="submit">
+            Login
+          </Button>
+        </Form.Item>
+      </Form>
+
+      <div className="create-new-account">
+        <span>Don't have an account?</span>
+        <Button
+          type="link"
+          onClick={() => {
+            Router.push('/auth/signup', '/signup')
+          }}
+        >
+          Create an account
+        </Button>
+      </div>
+    </AuthLayout>
   )
 }
 

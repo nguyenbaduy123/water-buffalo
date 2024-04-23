@@ -8,7 +8,7 @@ import {
   AuthState,
   ClaimsFromToken,
   AuthPayloadTypes,
-  AuthActions,
+  ReducerMap,
 } from './types'
 import { assignState } from 'utils/redux'
 
@@ -23,14 +23,7 @@ const initialState: AuthState = {
   email: '',
 }
 
-type ReducerMap = {
-  [K in keyof AuthPayloadTypes]: (
-    state: AuthState,
-    payload: AuthActions<K>
-  ) => AuthState
-}
-
-const reducerMap: ReducerMap = {
+const reducerMap: ReducerMap<AuthState, AuthPayloadTypes> = {
   [HYDRATE]: (state, { payload }) => {
     return { ...state, ...payload.auth }
   },
