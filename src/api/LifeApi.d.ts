@@ -46,3 +46,11 @@ export interface CreateProjectParams {
 export interface CreateProjectResponse {
   project: Project
 }
+
+export interface ValidateProjectNameParams {
+  name: string
+}
+
+export interface ValidateProjectNameResponse {
+  is_valid: boolean
+}

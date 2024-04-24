@@ -10,6 +10,8 @@ import {
   SignupParams,
   CreateProjectParams,
   CreateProjectResponse,
+  ValidateProjectNameParams,
+  ValidateProjectNameResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -36,6 +38,9 @@ class LifeApi extends Api {
 
   public createProject = (params: CreateProjectParams) =>
     this.post<CreateProjectResponse>('/project', params)
+
+  public validateProjectName = (params: ValidateProjectNameParams) =>
+    this.get<ValidateProjectNameResponse>('/project/validate_name', params)
 }
 
 export default new LifeApi() as LifeApi
