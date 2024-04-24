@@ -2,4 +2,11 @@
   background-color: var(--dark-9);
   padding: 16px 24px;
   height: 100%;
+  width: 360px;
+
+  .sidebar-header {
+    padding: 12px 0;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
 }

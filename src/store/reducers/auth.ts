@@ -4,12 +4,7 @@ import Cookies from 'js-cookie'
 import { createReducer } from '@reduxjs/toolkit'
 
 import { LOGIN_SUCCESS, USER_AUTH_SUCCESS } from 'constants/action'
-import {
-  AuthState,
-  ClaimsFromToken,
-  AuthPayloadTypes,
-  ReducerMap,
-} from './types'
+import { AuthState, ClaimsFromToken, ReducerMap } from './types'
 import { assignState } from 'utils/redux'
 
 const initialState: AuthState = {
@@ -23,7 +18,7 @@ const initialState: AuthState = {
   email: '',
 }
 
-const reducerMap: ReducerMap<AuthState, AuthPayloadTypes> = {
+const reducerMap: ReducerMap<AuthState> = {
   [HYDRATE]: (state, { payload }) => {
     return { ...state, ...payload.auth }
   },

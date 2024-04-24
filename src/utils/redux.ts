@@ -1,5 +1,7 @@
+import { PlainActionFunc } from 'actions/types'
 import { pick } from 'lodash'
 import { connect } from 'react-redux'
+import { PayloadTypes } from 'reducers/types'
 import { AnyAction } from 'redux'
 
 import { RootState, StateKey } from 'store'
@@ -36,3 +38,10 @@ export const connectAndMapStateToProps =
   (keys: StateKey[]) =>
   <T extends React.ComponentType<any>>(Component: T) =>
     connect(mapStateToPropsFunc(keys))(Component)
+
+export const createPlainAction: <T extends keyof PayloadTypes>(
+  type: T
+) => PlainActionFunc<T> = (type) => (payload) => ({
+  type,
+  payload,
+})

@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { ProjectPayloadTypes, ProjectState, ReducerMap } from './types'
+import { ProjectState, ReducerMap } from './types'
 import { LOAD_PROJECTS_REQUEST, LOAD_PROJECTS_SUCCESS } from 'constants/action'
 
 const initialState: ProjectState = {
@@ -7,7 +7,7 @@ const initialState: ProjectState = {
   data: [],
 }
 
-const reducerMap: ReducerMap<ProjectState, ProjectPayloadTypes> = {
+const reducerMap: ReducerMap<ProjectState> = {
   [LOAD_PROJECTS_REQUEST]: (state) => {
     return { ...state, fetching: true }
   },

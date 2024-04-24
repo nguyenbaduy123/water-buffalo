@@ -13,3 +13,10 @@ export const errorNotification = (message: string, description: string) => {
     description,
   })
 }
+
+export const convertToValidName = (input: string) => {
+  return input
+    .replace(/[^\w.-]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}

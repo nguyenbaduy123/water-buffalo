@@ -19,10 +19,10 @@ const Dashboard: NextPage<Props> = (props: Props) => {
   return (
     <MainLayout>
       <Row className="dashboard-container">
-        <Col span={6}>
+        <Col>
           <Sidebar />
         </Col>
-        <Col span={18}>
+        <Col>
           <div className="dashboard-page">123ss123</div>
         </Col>
       </Row>

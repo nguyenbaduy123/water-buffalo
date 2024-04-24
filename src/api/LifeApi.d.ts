@@ -37,3 +37,12 @@ export interface GetProjectsParams {
 export interface GetProjectsResponse {
   projects: Project[]
 }
+
+export interface CreateProjectParams {
+  name: string
+  description: string
+}
+
+export interface CreateProjectResponse {
+  project: Project
+}

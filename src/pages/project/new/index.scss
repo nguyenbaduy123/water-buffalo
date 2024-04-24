@@ -2,11 +2,30 @@
   max-width: 768px;
   margin: auto;
   height: 100%;
-  background-color: var(--dark-9);
   padding: 12px;
   border-radius: var(--border-radius-lg);
 
   .new-pj-header {
     font-size: 24px;
+    padding-bottom: 24px;
+  }
+
+  .new-project-container {
+    .label-info {
+      margin-bottom: 8px;
+    }
+
+    .real-project-name {
+      font-size: 12px;
+
+      .real-name-will-create {
+        color: var(--green-6);
+        margin-bottom: 4px;
+      }
+
+      .guild-name-project {
+        color: var(--gray-4);
+      }
+    }
   }
 }

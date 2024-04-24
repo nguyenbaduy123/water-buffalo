@@ -1,5 +1,5 @@
 import { AppDispatch, GetStateFunc } from 'store'
-import { LoginSuccessPayload } from './types'
+import { ActionFunc, LoginSuccessPayload } from './types'
 
 import {
   LOGIN_REQUEST,
@@ -9,7 +9,7 @@ import {
 import LifeApi from 'api/LifeApi'
 import { GetAuthResponse } from 'api/LifeApi.d'
 
-export function loginRequest() {
+export const loginRequest = () => {
   return {
     type: LOGIN_REQUEST,
   }
@@ -27,7 +27,7 @@ export const userAuthSuccess = (payload: GetAuthResponse) => {
   }
 }
 
-export const getUserAuth = () => {
+export const getUserAuth: ActionFunc<undefined> = () => {
   return async (dispatch: AppDispatch, getState: GetStateFunc) => {
     const {
       auth: { accessToken },

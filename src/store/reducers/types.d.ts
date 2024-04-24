@@ -2,14 +2,16 @@ import { JwtPayload } from 'jwt-decode'
 import { Locale, Project, User } from 'types/global'
 import { HYDRATE } from 'next-redux-wrapper'
 
-export interface Actions<T extends keyof A, A> {
+export interface Actions<T extends keyof PayloadTypes> {
   type: T
-  payload: A[T]
+  payload: PayloadTypes[T]
 }
 
-export type ReducerMap<S, P> = {
-  [K in keyof P]: (state: S, payload: Actions<K, P>) => S
-}
+export type SingleAction = Actions<keyof PayloadTypes>
+
+export type ReducerMap<S> = Partial<{
+  [K in keyof PayloadTypes]: (state: S, action: Actions<K>) => S
+}>
 
 export interface AuthState {
   userId: string
@@ -27,18 +29,18 @@ export interface ProjectState {
   data: Project[]
 }
 
+export type Payload = PayloadTypes[keyof PayloadTypes]
+
 export interface ClaimsFromToken extends JwtPayload {
   id: string
   username: string
 }
 
-export interface AuthPayloadTypes {
+export interface PayloadTypes {
   [HYDRATE]: { auth: AuthState }
   LOGIN_SUCCESS: { access_token: string }
   USER_AUTH_SUCCESS: { user: User }
-}
 
-export interface ProjectPayloadTypes {
-  LOAD_PROJECTS_REQUEST: {}
+  LOAD_PROJECTS_REQUEST: undefined
   LOAD_PROJECTS_SUCCESS: { projects: Project[] }
 }
