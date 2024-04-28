@@ -1,6 +1,7 @@
 import { JwtPayload } from 'jwt-decode'
 import { Locale, Project, User } from 'types/global'
 import { HYDRATE } from 'next-redux-wrapper'
+import { Socket } from 'phoenix'
 
 export interface Actions<T extends keyof PayloadTypes> {
   type: T
@@ -14,6 +15,7 @@ export type ReducerMap<S> = Partial<{
 }>
 
 export interface AuthState {
+  fetching: boolean
   userId: string
   username: string | null
   name: string | null
@@ -22,6 +24,7 @@ export interface AuthState {
   country: string | null
   avatar: string | null
   email: string
+  socket: Socket | null
 }
 
 export interface ProjectState {
@@ -43,4 +46,8 @@ export interface PayloadTypes {
 
   LOAD_PROJECTS_REQUEST: undefined
   LOAD_PROJECTS_SUCCESS: { projects: Project[] }
+
+  SOCKET_CONNECTING: undefined
+  SOCKET_CONNECTED: { socket: Socket }
+  CONNECT_SOCKET_FAILURE: { error: string }
 }

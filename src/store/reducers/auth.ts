@@ -3,11 +3,17 @@ import { HYDRATE } from 'next-redux-wrapper'
 import Cookies from 'js-cookie'
 import { createReducer } from '@reduxjs/toolkit'
 
-import { LOGIN_SUCCESS, USER_AUTH_SUCCESS } from 'constants/action'
+import {
+  LOGIN_SUCCESS,
+  SOCKET_CONNECTED,
+  SOCKET_CONNECTING,
+  USER_AUTH_SUCCESS,
+} from 'constants/action'
 import { AuthState, ClaimsFromToken, ReducerMap } from './types'
 import { assignState } from 'utils/redux'
 
 const initialState: AuthState = {
+  fetching: false,
   userId: '',
   username: null,
   name: null,
@@ -16,6 +22,7 @@ const initialState: AuthState = {
   country: null,
   avatar: null,
   email: '',
+  socket: null,
 }
 
 const reducerMap: ReducerMap<AuthState> = {
@@ -50,6 +57,14 @@ const reducerMap: ReducerMap<AuthState> = {
       name: user.name,
       email: user.email,
     })
+  },
+
+  [SOCKET_CONNECTING]: (state) => {
+    return assignState(state, { fetching: true })
+  },
+
+  [SOCKET_CONNECTED]: (state, { payload }) => {
+    return assignState(state, { socket: payload.socket, fetching: false })
   },
 }
 

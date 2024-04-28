@@ -6,6 +6,8 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const requestHandler = app.getRequestHandler()
 
+const { WEB_URL } = require('./env-config')
+
 const handle = (req, res) => requestHandler(req, res)
 
 const port = 2002

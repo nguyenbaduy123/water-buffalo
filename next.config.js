@@ -1,4 +1,5 @@
 const path = require('path')
+const env = require('./env-config')
 
 module.exports = {
   webpack: (config, { dev }) => {

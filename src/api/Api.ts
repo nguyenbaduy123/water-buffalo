@@ -19,7 +19,6 @@ class Api {
   }
 
   private handleError = (error: unknown): ErrorResponse => {
-    console.error('ApiError:', error)
     if (error instanceof AxiosError) {
       const responseData = error?.response?.data
       if (typeof responseData == 'string') {
@@ -73,6 +72,7 @@ class Api {
       )
       return call.data
     } catch (error) {
+      console.error('ApiError:', endpoint, params, error)
       return this.handleError(error)
     }
   }
