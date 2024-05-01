@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Checkbox, Divider, Flex, Input } from 'antd'
 import Router from 'next/router'
 
@@ -17,6 +17,10 @@ const Signup = () => {
   const [username, setUsername] = useState('')
 
   const [invalidText, setInvalidText] = useState('')
+
+  useEffect(() => {
+    setInvalidText('')
+  }, [email, password, username])
 
   const renderContinueButton = (onClick?: () => void) => {
     let disabled
@@ -112,6 +116,7 @@ const Signup = () => {
           setEmail,
           validateEmail
         )}
+        {invalidText && <div className="invalid-text">{invalidText}</div>}
 
         {renderInfoField(
           'password',

@@ -1,4 +1,5 @@
 import { notification } from 'antd'
+import { Project } from 'types/global'
 
 export const successNotification = (message: string, description: string) => {
   notification.success({
@@ -14,9 +15,19 @@ export const errorNotification = (message: string, description: string) => {
   })
 }
 
+export const infoNotification = (message: string, description: string) => {
+  notification.info({
+    message,
+    description,
+  })
+}
+
 export const convertToValidName = (input: string) => {
   return input
     .replace(/[^\w.-]/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-+|-+$/g, '')
 }
+
+export const getProjectUniqueName = (project: Project | null) =>
+  project ? `${project.owner.username}/${project.name}` : ''

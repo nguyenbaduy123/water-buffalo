@@ -1,29 +1,31 @@
-import { RootState } from 'store'
-import { connect } from 'react-redux'
-import { Button, Flex } from 'antd'
+import { AppDispatch, RootState } from 'store'
+import { Button, Divider, Flex } from 'antd'
 import Router from 'next/router'
 import { FolderPlus } from '@phosphor-icons/react'
 
 import './index.scss'
 import CurrentUserAvatar from 'common/CurrentUserAvatar'
-import { useAppDispatch } from 'hooks'
-import { useEffect } from 'react'
-import { loadProjects } from 'actions/project'
+import { connectAndMapStateToProps } from 'utils/redux'
+import { Project } from 'types/global'
+import UserAvatar from 'common/UserAvatar'
+import { getProjectUniqueName } from 'utils'
+import { selectProject } from 'actions/project'
 
 interface Props {
   auth: RootState['auth']
+  project: RootState['project']
+  dispatch: AppDispatch
 }
 
-const Sidebar = ({ auth }: Props) => {
+const Sidebar = ({ auth, project, dispatch }: Props) => {
   const handleClickNew = () => {
     Router.push('project/new', '/new')
   }
 
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    dispatch(loadProjects())
-  })
+  const redirectToProject = (project: Project) => {
+    dispatch(selectProject({ currentProject: project }))
+    Router.push('/project', getProjectUniqueName(project))
+  }
 
   return (
     <aside className="dashboard-sidebar">
@@ -40,11 +42,33 @@ const Sidebar = ({ auth }: Props) => {
             New
           </Button>
         </Flex>
+        <Divider />
+
+        <Flex className="list-projects" vertical>
+          {project.data.map((project) => (
+            <div
+              key={project.id}
+              className="project-item"
+              onClick={() => redirectToProject(project)}
+            >
+              <Flex className="project-name" gap={6}>
+                <UserAvatar
+                  name={project.owner.username}
+                  src={project.owner.avatar_url}
+                  size={16}
+                  textSizeRatio={1.5}
+                  round
+                />
+                <div className="project-unique-name">
+                  {getProjectUniqueName(project)}
+                </div>
+              </Flex>
+            </div>
+          ))}
+        </Flex>
       </div>
     </aside>
   )
 }
 
-const mapStateToProps = (state: RootState) => ({ auth: state.auth })
-
-export default connect(mapStateToProps)(Sidebar)
+export default connectAndMapStateToProps(['auth', 'project'])(Sidebar)

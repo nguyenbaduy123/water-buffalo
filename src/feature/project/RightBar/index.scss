@@ -1,0 +1,11 @@
+.list-search-users {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 6px;
+
+  .user-result-item {
+    padding: 2px 4px;
+    cursor: pointer;
+  }
+}

@@ -2,6 +2,7 @@ import { JwtPayload } from 'jwt-decode'
 import { Locale, Project, User } from 'types/global'
 import { HYDRATE } from 'next-redux-wrapper'
 import { Socket } from 'phoenix'
+import { Issue } from 'types/project'
 
 export interface Actions<T extends keyof PayloadTypes> {
   type: T
@@ -27,9 +28,15 @@ export interface AuthState {
   socket: Socket | null
 }
 
+interface ProjectDetail extends Project {
+  users: User[]
+  issues: Issue[]
+}
+
 export interface ProjectState {
   fetching: boolean
   data: Project[]
+  currentProject: Project | null
 }
 
 export type Payload = PayloadTypes[keyof PayloadTypes]
@@ -46,6 +53,7 @@ export interface PayloadTypes {
 
   LOAD_PROJECTS_REQUEST: undefined
   LOAD_PROJECTS_SUCCESS: { projects: Project[] }
+  SELECT_PROJECT: { currentProject: Project }
 
   SOCKET_CONNECTING: undefined
   SOCKET_CONNECTED: { socket: Socket }

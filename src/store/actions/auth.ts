@@ -12,6 +12,9 @@ import {
 import LifeApi from 'api/LifeApi'
 import { GetAuthResponse } from 'api/LifeApi.d'
 import { Socket } from 'phoenix'
+import { User } from 'types/global'
+import { infoNotification } from 'utils'
+import { title } from 'process'
 
 export const loginRequest = () => {
   return {
@@ -50,7 +53,7 @@ export const connectSocketRequest = () => ({
 
 export const connectSocketSuccess = (socket: Socket) => ({
   type: SOCKET_CONNECTED,
-  payload: socket,
+  payload: { socket },
 })
 
 export const connectSocketFailure = (error: string) => ({
@@ -78,10 +81,11 @@ export const connectSocket: ActionFunc = () => {
 
     socket.onError((error: any) => {
       dispatch(connectSocketFailure(error))
+      console.log('Socket error:', error)
     })
 
     socket.onClose(() => {
-      console.log('Socket closed.')
+      console.log('Socket closed!')
     })
 
     return socket
@@ -95,6 +99,17 @@ export const connectToChannel = (
 ) => {
   const channel = socket.channel(channelName, { token: accessToken })
   channel.join()
+
+  channel.on(
+    'new_invitation',
+    (payload: { from: User; project_id: number }) => {
+      infoNotification(
+        'New Invitation',
+        `${payload.from.username} invited you to a project.`
+      )
+    }
+  )
+
   return {
     type: 'CHANNEL_CONNECTED',
     payload: channel,

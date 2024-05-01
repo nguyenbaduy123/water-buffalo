@@ -4,7 +4,6 @@ import { Flex } from 'antd'
 
 import Logo from 'components/common/Logo'
 import { AuthState } from 'reducers/types'
-import './index.scss'
 import { RootState } from 'store'
 import CurrentUserAvatar from 'common/CurrentUserAvatar'
 

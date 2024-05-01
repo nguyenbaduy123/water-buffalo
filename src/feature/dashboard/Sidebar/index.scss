@@ -9,4 +9,15 @@
     margin-bottom: 16px;
     font-weight: 500;
   }
+
+  .project-item {
+    padding: 8px;
+    cursor: pointer;
+
+    &:hover {
+      .project-unique-name {
+        text-decoration: underline;
+      }
+    }
+  }
 }

@@ -54,3 +54,11 @@ export interface ValidateProjectNameParams {
 export interface ValidateProjectNameResponse {
   is_valid: boolean
 }
+
+export interface GetProjectResponse {
+  project: Project
+}
+
+export interface SearchUserResponse {
+  users: User[]
+}

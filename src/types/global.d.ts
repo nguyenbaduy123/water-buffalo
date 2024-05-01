@@ -18,6 +18,10 @@ export interface Workspace {
   owner_id: string
 }
 
+export interface UserProject extends User {
+  permission: 'OWNER' | 'ADMIN' | 'MODERATOR' | 'MEMBER'
+}
+
 export interface Project {
   id: number
   name: string
@@ -25,6 +29,8 @@ export interface Project {
   status: string
   priority: number | null
   owner_id: string
+  owner: User
+  users: UserProject[]
 }
 
 export interface ProviderProps {

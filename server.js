@@ -34,6 +34,8 @@ app.prepare().then(() => {
   const server = express()
   server.use(cookieParser())
 
+  server.get('/', isAuthenticated, (req, res) => res.redirect('/login'))
+
   server.get('/login', isAuthenticated, (req, res) =>
     app.render(req, res, '/auth/login')
   )
@@ -45,6 +47,28 @@ app.prepare().then(() => {
 
   server.get('/new', authenticate, (req, res) =>
     app.render(req, res, '/project/new')
+  )
+
+  server.get('/:owner_name/:project_name', authenticate, (req, res) => {
+    const { owner_name, project_name } = req.params
+    return app.render(req, res, '/project', { owner_name, project_name })
+  })
+
+  server.get('/:owner_name/:project_name/issues', authenticate, (req, res) => {
+    const { owner_name, project_name } = req.params
+    return app.render(req, res, '/project/issues', { owner_name, project_name })
+  })
+
+  server.get(
+    '/:owner_name/:project_name/settings',
+    authenticate,
+    (req, res) => {
+      const { owner_name, project_name } = req.params
+      return app.render(req, res, '/project/settings', {
+        owner_name,
+        project_name,
+      })
+    }
   )
 
   server.get('*', (req, res) => {

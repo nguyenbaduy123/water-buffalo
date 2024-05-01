@@ -40,7 +40,8 @@ export const connectAndMapStateToProps =
     connect(mapStateToPropsFunc(keys))(Component)
 
 export const createPlainAction: <T extends keyof PayloadTypes>(
-  type: T
+  type: T,
+  payload?: PayloadTypes[T]
 ) => PlainActionFunc<T> = (type) => (payload) => ({
   type,
   payload,

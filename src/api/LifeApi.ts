@@ -12,6 +12,8 @@ import {
   CreateProjectResponse,
   ValidateProjectNameParams,
   ValidateProjectNameResponse,
+  GetProjectResponse,
+  SearchUserResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -41,6 +43,15 @@ class LifeApi extends Api {
 
   public validateProjectName = (params: ValidateProjectNameParams) =>
     this.get<ValidateProjectNameResponse>('/project/validate_name', params)
+
+  public getProject = (id: string) =>
+    this.get<GetProjectResponse>(`/project/${id}`)
+
+  public searchUser = (query: string) =>
+    this.get<SearchUserResponse>('/user/search', { q: query })
+
+  public inviteUserToProject = (projectId: string | number, userId: string) =>
+    this.post(`/project/${projectId}/invite`, { user_id: userId })
 }
 
 export default new LifeApi() as LifeApi

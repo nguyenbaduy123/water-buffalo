@@ -2,8 +2,6 @@ import { Flex } from 'antd'
 import React from 'react'
 import { ProviderFC } from 'types/global'
 
-import './index.scss'
-
 const AuthLayout: ProviderFC = ({ children }) => {
   return (
     <div className="auth-page">

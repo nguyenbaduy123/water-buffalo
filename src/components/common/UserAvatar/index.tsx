@@ -2,18 +2,17 @@ import Avatar from 'react-avatar'
 
 import { UserAvatarProps } from './UserAvatar'
 
-const UserAvatar = ({
-  size,
-  src,
-  textSizeRatio = 1.5,
-  ...props
-}: UserAvatarProps) => {
+interface Props extends Omit<UserAvatarProps, 'name'> {
+  name?: string | null
+}
+
+const UserAvatar = ({ size, src, name, ...props }: Props) => {
   return (
     <Avatar
-      {...props}
       size={size?.toString()}
       src={src || undefined}
-      textSizeRatio={textSizeRatio}
+      name={name || undefined}
+      {...props}
     />
   )
 }
