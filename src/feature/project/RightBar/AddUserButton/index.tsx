@@ -37,7 +37,8 @@ const AddUserButton = ({ currentProject }: Props) => {
     if (resp.success) {
       successNotification(
         'Invitation sent',
-        'User invited successfully. Please wait for the user to accept the invitation.'
+        resp.message ||
+          'User invited successfully. Please wait for the user to accept the invitation.'
       )
     }
   }

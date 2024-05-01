@@ -1,5 +1,5 @@
 import { JwtPayload } from 'jwt-decode'
-import { Locale, Project, User } from 'types/global'
+import { Locale, Notification, Project, User } from 'types/global'
 import { HYDRATE } from 'next-redux-wrapper'
 import { Socket } from 'phoenix'
 import { Issue } from 'types/project'
@@ -58,4 +58,11 @@ export interface PayloadTypes {
   SOCKET_CONNECTING: undefined
   SOCKET_CONNECTED: { socket: Socket }
   CONNECT_SOCKET_FAILURE: { error: string }
+
+  LOAD_USER_NOTIFICATIONS: { notifications: Notification[] }
+}
+
+export interface NotificationState {
+  data: Notification[]
+  fetching: boolean
 }

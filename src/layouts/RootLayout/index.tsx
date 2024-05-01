@@ -1,4 +1,5 @@
 import { connectSocket } from 'actions/auth'
+import { getNotifications } from 'actions/notification'
 import { loadProjects } from 'actions/project'
 import { useAppDispatch } from 'hooks'
 import { useEffect } from 'react'
@@ -17,6 +18,7 @@ const RootLayout = ({ children, auth, project }: LayoutProps) => {
   useEffect(() => {
     dispatch(connectSocket())
     dispatch(loadProjects())
+    dispatch(getNotifications())
   }, [])
   return <main>{children}</main>
 }

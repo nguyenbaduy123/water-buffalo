@@ -33,6 +33,24 @@ export interface Project {
   users: UserProject[]
 }
 
+export interface NotificationMap {
+  PROJECT_INVITATION: {
+    project_id: number
+    from: User
+    invitation_id: string
+  }
+}
+
+export type NotificationType = keyof NotificationMap
+export interface Notification<T extends NotificationType = NotificationType> {
+  id: number
+  message: string
+  type: T
+  seen: boolean
+  inserted_at: string
+  detail: NotificationMap[T]
+}
+
 export interface ProviderProps {
   children: React.ReactNode
 }

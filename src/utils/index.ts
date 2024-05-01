@@ -1,5 +1,6 @@
 import { notification } from 'antd'
 import { Project } from 'types/global'
+import moment from 'moment'
 
 export const successNotification = (message: string, description: string) => {
   notification.success({
@@ -31,3 +32,7 @@ export const convertToValidName = (input: string) => {
 
 export const getProjectUniqueName = (project: Project | null) =>
   project ? `${project.owner.username}/${project.name}` : ''
+
+export const naiveToUtc = (date: string) => {
+  return moment.utc(date).format()
+}

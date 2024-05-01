@@ -1,0 +1,9 @@
+.notifications {
+  cursor: pointer;
+}
+.notification-item {
+  .time-ago {
+    font-size: 12px;
+    color: var(--gray-6);
+  }
+}

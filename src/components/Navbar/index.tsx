@@ -6,6 +6,7 @@ import Logo from 'components/common/Logo'
 import { AuthState } from 'reducers/types'
 import { RootState } from 'store'
 import CurrentUserAvatar from 'common/CurrentUserAvatar'
+import Notifications from 'components/Notifications'
 
 interface Props {
   auth: AuthState
@@ -18,9 +19,10 @@ const Navbar = ({ auth }: Props) => {
         <div className="navbar-head">
           <Logo />
         </div>
-        <div className="navbar-tail">
+        <Flex className="navbar-tail" align="center" gap={16}>
+          <Notifications />
           <CurrentUserAvatar />
-        </div>
+        </Flex>
       </Flex>
     </div>
   )

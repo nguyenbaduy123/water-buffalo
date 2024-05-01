@@ -14,6 +14,7 @@ import {
   ValidateProjectNameResponse,
   GetProjectResponse,
   SearchUserResponse,
+  LoadNotificationsResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -52,6 +53,18 @@ class LifeApi extends Api {
 
   public inviteUserToProject = (projectId: string | number, userId: string) =>
     this.post(`/project/${projectId}/invite`, { user_id: userId })
+
+  public loadNotifications = () =>
+    this.get<LoadNotificationsResponse>('/user/notifications')
+
+  public acceptOrDeclineInvitation = (
+    projectId: string | number,
+    invitationId: string,
+    isAccept: boolean
+  ) =>
+    this.post(`/project/${projectId}/invite/${invitationId}`, {
+      is_accept: isAccept,
+    })
 }
 
 export default new LifeApi() as LifeApi

@@ -1,5 +1,5 @@
 import { string } from 'prop-types'
-import { Project, User } from 'types/global'
+import { Project, User, Notification } from 'types/global'
 
 export interface LoginParams {
   username: string
@@ -61,4 +61,8 @@ export interface GetProjectResponse {
 
 export interface SearchUserResponse {
   users: User[]
+}
+
+export interface LoadNotificationsResponse {
+  notifications: Notification[]
 }
