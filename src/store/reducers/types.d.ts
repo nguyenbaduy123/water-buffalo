@@ -60,9 +60,18 @@ export interface PayloadTypes {
   CONNECT_SOCKET_FAILURE: { error: string }
 
   LOAD_USER_NOTIFICATIONS: { notifications: Notification[] }
+
+  LOAD_ISSUES_REQUEST: undefined
+  LOAD_ISSUES_SUCCESS: { issues: Issue[] }
 }
 
 export interface NotificationState {
   data: Notification[]
   fetching: boolean
+}
+
+export interface IssueState {
+  data: Issue[]
+  fetching: boolean
+  currentIssue: Issue | null
 }

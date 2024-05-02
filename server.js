@@ -58,6 +58,17 @@ app.prepare().then(() => {
     const { owner_name, project_name } = req.params
     return app.render(req, res, '/project/issues', { owner_name, project_name })
   })
+  server.get(
+    '/:owner_name/:project_name/issues/new',
+    authenticate,
+    (req, res) => {
+      const { owner_name, project_name } = req.params
+      return app.render(req, res, '/project/issues/new', {
+        owner_name,
+        project_name,
+      })
+    }
+  )
 
   server.get(
     '/:owner_name/:project_name/settings',

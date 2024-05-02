@@ -5,37 +5,36 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { AuthState, ProjectState } from 'reducers/types'
 import { connectAndMapStateToProps } from 'utils/redux'
+import { ProjectTabs } from 'feature/project/ProjectNavbar/ProjectNavbar'
 
 import 'css/modules/_project.scss'
+import { selectProject } from 'actions/project'
 interface Props {
   auth: AuthState
   project: ProjectState
   children: React.ReactNode
+  currentTabId: ProjectTabs
 }
-const ProjectLayout = ({ children, auth, project }: Props) => {
+const ProjectLayout = ({ children, auth, project, currentTabId }: Props) => {
   const router = useRouter()
 
   const { owner_name, project_name } = router.query
   const dispatch = useAppDispatch()
-
-  console.log(router)
-
   useEffect(() => {
     const currentProject = project.data.find(
       (project) =>
-        project.owner.name === owner_name && project.name === project_name
+        project.owner.username === owner_name && project.name === project_name
     )
-
-    dispatch({ type: 'SET_CURRENT_PROJECT', payload: currentProject })
-  }, [])
-
-  console.log(project.currentProject)
+    if (currentProject) {
+      dispatch(selectProject({ currentProject: currentProject }))
+    }
+  }, [project.fetching])
 
   return (
     <div className="project-layout main-layout">
       <Navbar />
       <ProjectNavbar
-        currentTabId="project"
+        currentTabId={currentTabId}
         currentProject={project.currentProject}
       />
       <div className="main-content project-content">{children}</div>

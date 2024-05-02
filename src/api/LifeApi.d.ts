@@ -1,5 +1,6 @@
 import { string } from 'prop-types'
 import { Project, User, Notification } from 'types/global'
+import { Issue } from 'types/project'
 
 export interface LoginParams {
   username: string
@@ -65,4 +66,8 @@ export interface SearchUserResponse {
 
 export interface LoadNotificationsResponse {
   notifications: Notification[]
+}
+
+export interface LoadIssuesResponse {
+  issues: Issue[]
 }

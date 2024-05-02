@@ -15,6 +15,7 @@ import {
   GetProjectResponse,
   SearchUserResponse,
   LoadNotificationsResponse,
+  LoadIssuesResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -65,6 +66,9 @@ class LifeApi extends Api {
     this.post(`/project/${projectId}/invite/${invitationId}`, {
       is_accept: isAccept,
     })
+
+  public loadIssues = (projectId: string | number) =>
+    this.get<LoadIssuesResponse>(`/project/${projectId}/issue`)
 }
 
 export default new LifeApi() as LifeApi

@@ -23,7 +23,7 @@ export interface UserProject extends User {
 }
 
 export interface Project {
-  id: number
+  id: number | string
   name: string
   description: string
   status: string
@@ -31,6 +31,7 @@ export interface Project {
   owner_id: string
   owner: User
   users: UserProject[]
+  issue_count: number
 }
 
 export interface NotificationMap {
