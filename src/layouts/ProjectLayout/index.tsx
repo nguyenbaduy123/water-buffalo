@@ -25,6 +25,7 @@ const ProjectLayout = ({ children, auth, project, currentTabId }: Props) => {
       (project) =>
         project.owner.username === owner_name && project.name === project_name
     )
+
     if (currentProject) {
       dispatch(selectProject({ currentProject: currentProject }))
     }

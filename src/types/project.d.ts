@@ -1,11 +1,3 @@
-export interface Issue {
-  id: number
-  title: string
-  description: string
-  status: string
-  priority: number | null
-}
-
 export interface UserProject {
   id: number
   name: string
@@ -15,10 +7,12 @@ export interface UserProject {
   role: string
 }
 
+export type IssueStatus = 'open' | 'closed' | 'completed'
+
 export interface Issue {
   id: number
   title: string
   description: string
-  status: string
+  status: IssueStatus
   priority: number | null
 }

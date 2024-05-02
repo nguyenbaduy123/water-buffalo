@@ -32,6 +32,9 @@ interface Props {
 }
 
 const ProjectNavbar = ({ currentTabId, currentProject }: Props) => {
+  if (!currentProject) {
+    return null
+  }
   const handleClickNavbarItem = (item: (typeof NAVBAR_ITEMS)[number]) => {
     if (item.id === currentTabId) return
 
@@ -58,7 +61,11 @@ const ProjectNavbar = ({ currentTabId, currentProject }: Props) => {
                 <div>
                   <Badge
                     color="yellow"
-                    count={currentProject?.issue_count}
+                    count={
+                      currentProject.issue_open_count +
+                      currentProject.issue_closed_count +
+                      currentProject.issue_completed_count
+                    }
                     showZero
                   />
                 </div>

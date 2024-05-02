@@ -16,6 +16,9 @@ import {
   SearchUserResponse,
   LoadNotificationsResponse,
   LoadIssuesResponse,
+  SubmitIssueParams,
+  SubmitIssueResponse,
+  LoadIssuesParams,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -67,8 +70,13 @@ class LifeApi extends Api {
       is_accept: isAccept,
     })
 
-  public loadIssues = (projectId: string | number) =>
-    this.get<LoadIssuesResponse>(`/project/${projectId}/issue`)
+  public loadIssues = (projectId: string | number, params?: LoadIssuesParams) =>
+    this.get<LoadIssuesResponse>(`/project/${projectId}/issue`, params)
+
+  public submitIssue = (
+    projectId: string | number,
+    params: SubmitIssueParams
+  ) => this.post<SubmitIssueResponse>(`/project/${projectId}/issue`, params)
 }
 
 export default new LifeApi() as LifeApi

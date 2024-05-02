@@ -21,7 +21,7 @@ interface Props {
 const Issues = ({ auth, issues, dispatch, currentProject }: Props) => {
   useEffect(() => {
     dispatch(loadIssues())
-  }, [])
+  }, [currentProject])
 
   const redirectToNewIssuePage = () => {
     Router.push(
@@ -45,7 +45,7 @@ const Issues = ({ auth, issues, dispatch, currentProject }: Props) => {
         </Flex>
 
         <div className="issue-table-container">
-          <IssueTable issues={issues.data} />
+          <IssueTable />
         </div>
       </div>
     </ProjectLayout>

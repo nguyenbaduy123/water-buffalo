@@ -68,6 +68,19 @@ export interface LoadNotificationsResponse {
   notifications: Notification[]
 }
 
+export interface LoadIssuesParams {
+  current_count?: number
+}
+
 export interface LoadIssuesResponse {
   issues: Issue[]
+}
+
+export interface SubmitIssueParams {
+  title: string
+  description: string
+}
+
+export interface SubmitIssueResponse {
+  issue: Issue
 }

@@ -14,6 +14,13 @@ const reducerMap: ReducerMap<IssueState> = {
   LOAD_ISSUES_SUCCESS: (state, { payload }) => {
     return { ...state, data: payload.issues, fetching: false }
   },
+  LOAD_MORE_ISSUES_SUCCESS: (state, { payload }) => {
+    return {
+      ...state,
+      data: [...state.data, ...payload.issues],
+      fetching: false,
+    }
+  },
 }
 
 const issueReducer = createReducer(initialState, reducerMap)

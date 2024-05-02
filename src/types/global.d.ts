@@ -31,7 +31,9 @@ export interface Project {
   owner_id: string
   owner: User
   users: UserProject[]
-  issue_count: number
+  issue_open_count: number
+  issue_closed_count: number
+  issue_completed_count: number
 }
 
 export interface NotificationMap {

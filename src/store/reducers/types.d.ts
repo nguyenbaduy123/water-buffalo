@@ -63,6 +63,7 @@ export interface PayloadTypes {
 
   LOAD_ISSUES_REQUEST: undefined
   LOAD_ISSUES_SUCCESS: { issues: Issue[] }
+  LOAD_MORE_ISSUES_SUCCESS: { issues: Issue[] }
 }
 
 export interface NotificationState {
