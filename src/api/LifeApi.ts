@@ -1,3 +1,4 @@
+import { GetTasksResponse } from 'reducers/types'
 import Api from './Api'
 import {
   GetAuthParams,
@@ -20,6 +21,7 @@ import {
   SubmitIssueResponse,
   LoadIssuesParams,
   loadProjectSettingsResponse,
+  GetIssueDetailResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -56,17 +58,17 @@ class LifeApi extends Api {
   public searchUser = (query: string) =>
     this.get<SearchUserResponse>('/user/search', { q: query })
 
-  public inviteUserToProject = (projectId: string | number, userId: string) =>
+  public inviteUserToProject = (projectId: number, userId: string) =>
     this.post(`/project/${projectId}/invite`, { user_id: userId })
 
   public loadNotifications = () =>
     this.get<LoadNotificationsResponse>('/user/notifications')
 
-  public loadProjectSettings = (projectId: string | number) =>
+  public loadProjectSettings = (projectId: number) =>
     this.get<loadProjectSettingsResponse>(`/project/${projectId}/settings`)
 
   public acceptOrDeclineInvitation = (
-    projectId: string | number,
+    projectId: number,
     invitationId: string,
     isAccept: boolean
   ) =>
@@ -74,13 +76,17 @@ class LifeApi extends Api {
       is_accept: isAccept,
     })
 
-  public loadIssues = (projectId: string | number, params?: LoadIssuesParams) =>
+  public loadIssues = (projectId: number, params?: LoadIssuesParams) =>
     this.get<LoadIssuesResponse>(`/project/${projectId}/issue`, params)
 
-  public submitIssue = (
-    projectId: string | number,
-    params: SubmitIssueParams
-  ) => this.post<SubmitIssueResponse>(`/project/${projectId}/issue`, params)
+  public submitIssue = (projectId: number, params: SubmitIssueParams) =>
+    this.post<SubmitIssueResponse>(`/project/${projectId}/issue`, params)
+
+  public getIssueDetail = (projectId: number, issueId: number) =>
+    this.get<GetIssueDetailResponse>(`/project/${projectId}/issue/${issueId}`)
+
+  public getTasks = (projectId: number, issueId: number) =>
+    this.get<GetTasksResponse>(`/project/${projectId}/issue/${issueId}/task`)
 }
 
 export default new LifeApi() as LifeApi

@@ -5,10 +5,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { AppDispatch, RootState } from 'store'
 import { Issue } from 'types/project'
-import { fromNow } from 'utils'
+import { fromNow, getProjectUniqueName } from 'utils'
 import { COLORS } from 'utils/css'
 
 import './index.scss'
+import Router from 'next/router'
 
 const statusToIcon = {
   open: <DotsThreeCircle size={24} color={COLORS.green[6]} />,
@@ -53,7 +54,10 @@ const IssueTable = ({
   }
 
   const handleClickIssue = (issueId: number) => {
-    console.log('Issue clicked', issueId)
+    Router.push(
+      `/project/issues/issue?issue_id=${issueId}`,
+      `/${getProjectUniqueName(currentProject)}/issues/${issueId}`
+    )
   }
 
   const columns = [

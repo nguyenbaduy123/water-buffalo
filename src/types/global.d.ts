@@ -23,7 +23,7 @@ export interface UserProject extends User {
 }
 
 export interface Project {
-  id: number | string
+  id: number
   name: string
   description: string
   status: string

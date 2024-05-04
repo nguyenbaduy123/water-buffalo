@@ -68,6 +68,12 @@ app.prepare().then(() => {
   )
 
   server.get(
+    '/:owner_name/:project_name/issues/new',
+    authenticate,
+    handleProjectRoute('issues/new')
+  )
+
+  server.get(
     '/:owner_name/:project_name/issues/:issue_id',
     authenticate,
     (req, res) => {
@@ -78,12 +84,6 @@ app.prepare().then(() => {
         issue_id,
       })
     }
-  )
-
-  server.get(
-    '/:owner_name/:project_name/issues/new',
-    authenticate,
-    handleProjectRoute('issues/new')
   )
 
   server.get(

@@ -1,0 +1,13 @@
+.issue-container {
+  .issue-header {
+    .issue-title {
+      font-size: 32px;
+      font-weight: 500;
+    }
+    .user-created-issue {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--dark-2);
+    }
+  }
+}

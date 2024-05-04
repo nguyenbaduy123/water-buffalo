@@ -17,6 +17,9 @@ export interface Issue {
   priority: number | null
   inserted_at: string
   assignee_ids: string[]
+  created_by_id: string
+  inserted_at: string
+  updated_at: string
 }
 
 export interface Tag {
@@ -26,4 +29,14 @@ export interface Tag {
 }
 export interface ProjectSettings {
   tags: Tag[]
+}
+
+export interface Task {
+  id: number
+  title: string
+  description: string
+  inserted_at: string
+  updated_at: string
+  status: string
+  priority: number
 }

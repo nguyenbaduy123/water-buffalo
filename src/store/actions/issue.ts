@@ -1,6 +1,10 @@
 import { createPlainAction } from 'utils/redux'
 import { ActionFunc } from './types'
-import { LOAD_ISSUES_REQUEST, LOAD_ISSUES_SUCCESS } from 'constants/action'
+import {
+  LOAD_ISSUES_REQUEST,
+  LOAD_ISSUES_SUCCESS,
+  SELECT_ISSUE,
+} from 'constants/action'
 import LifeApi from 'api/LifeApi'
 import { Issue } from 'types/project'
 
@@ -9,6 +13,8 @@ export const loadIssuesRequest = createPlainAction(LOAD_ISSUES_REQUEST)
 export const loadIssuesSuccess = createPlainAction(LOAD_ISSUES_SUCCESS)
 
 export const loadMoreIssuesSuccess = createPlainAction(LOAD_ISSUES_SUCCESS)
+
+export const selectIssue = createPlainAction(SELECT_ISSUE)
 
 interface LoadIssueArgs {
   status: Issue['status']

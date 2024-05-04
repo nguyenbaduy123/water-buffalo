@@ -1,5 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { IssueState, ReducerMap } from './types'
+import { SELECT_ISSUE } from 'constants/action'
 
 const initialState: IssueState = {
   fetching: false,
@@ -20,6 +21,9 @@ const reducerMap: ReducerMap<IssueState> = {
       data: [...state.data, ...payload.issues],
       fetching: false,
     }
+  },
+  [SELECT_ISSUE]: (state, { payload }) => {
+    return { ...state, currentIssue: payload.currentIssue }
   },
 }
 

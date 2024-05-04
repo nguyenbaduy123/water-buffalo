@@ -10,12 +10,11 @@ import { ProjectTabs } from 'feature/project/ProjectNavbar/ProjectNavbar'
 import 'css/modules/_project.scss'
 import { selectProject } from 'actions/project'
 interface Props {
-  auth: AuthState
   project: ProjectState
   children: React.ReactNode
   currentTabId: ProjectTabs
 }
-const ProjectLayout = ({ children, auth, project, currentTabId }: Props) => {
+const ProjectLayout = ({ children, project, currentTabId }: Props) => {
   const router = useRouter()
 
   const { owner_name, project_name } = router.query
@@ -43,4 +42,4 @@ const ProjectLayout = ({ children, auth, project, currentTabId }: Props) => {
   )
 }
 
-export default connectAndMapStateToProps(['auth', 'project'])(ProjectLayout)
+export default connectAndMapStateToProps(['project'])(ProjectLayout)

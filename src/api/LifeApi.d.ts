@@ -89,3 +89,7 @@ export interface SubmitIssueResponse {
 export interface loadProjectSettingsResponse {
   settings: ProjectSettings
 }
+
+export interface GetIssueDetailResponse {
+  issue: Issue
+}

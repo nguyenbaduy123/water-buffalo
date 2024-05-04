@@ -60,12 +60,9 @@ const ProjectNavbar = ({ currentTabId, currentProject }: Props) => {
               {item.id == 'issues' && (
                 <div>
                   <Badge
+                    size="small"
                     color="yellow"
-                    count={
-                      currentProject.issue_open_count +
-                      currentProject.issue_closed_count +
-                      currentProject.issue_completed_count
-                    }
+                    count={currentProject.issue_open_count}
                     showZero
                   />
                 </div>
