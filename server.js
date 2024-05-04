@@ -30,6 +30,16 @@ const isAuthenticated = (req, res, next) => {
   return next()
 }
 
+const handleProjectRoute =
+  (page = '') =>
+  (req, res) => {
+    const { owner_name, project_name } = req.params
+    return app.render(req, res, `/project/${page}`, {
+      owner_name,
+      project_name,
+    })
+  }
+
 app.prepare().then(() => {
   const server = express()
   server.use(cookieParser())
@@ -49,37 +59,37 @@ app.prepare().then(() => {
     app.render(req, res, '/project/new')
   )
 
-  server.get('/:owner_name/:project_name', authenticate, (req, res) => {
-    const { owner_name, project_name } = req.params
-    return app.render(req, res, '/project', { owner_name, project_name })
-  })
+  server.get('/:owner_name/:project_name', authenticate, handleProjectRoute())
 
-  server.get('/:owner_name/:project_name/issues', authenticate, (req, res) => {
-    const { owner_name, project_name } = req.params
-    return app.render(req, res, '/project/issues', { owner_name, project_name })
-  })
   server.get(
-    '/:owner_name/:project_name/issues/new',
+    '/:owner_name/:project_name/issues',
+    authenticate,
+    handleProjectRoute('issues')
+  )
+
+  server.get(
+    '/:owner_name/:project_name/issues/:issue_id',
     authenticate,
     (req, res) => {
-      const { owner_name, project_name } = req.params
-      return app.render(req, res, '/project/issues/new', {
+      const { owner_name, project_name, issue_id } = req.params
+      return app.render(req, res, '/project/issues/issue', {
         owner_name,
         project_name,
+        issue_id,
       })
     }
   )
 
   server.get(
+    '/:owner_name/:project_name/issues/new',
+    authenticate,
+    handleProjectRoute('issues/new')
+  )
+
+  server.get(
     '/:owner_name/:project_name/settings',
     authenticate,
-    (req, res) => {
-      const { owner_name, project_name } = req.params
-      return app.render(req, res, '/project/settings', {
-        owner_name,
-        project_name,
-      })
-    }
+    handleProjectRoute('settings')
   )
 
   server.get('*', (req, res) => {

@@ -36,3 +36,7 @@ export const getProjectUniqueName = (project: Project | null) =>
 export const naiveToUtc = (date: string) => {
   return moment.utc(date).format()
 }
+
+export const fromNow = (naiveString: string) => {
+  return moment(naiveToUtc(naiveString)).fromNow()
+}

@@ -5,7 +5,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { AppDispatch, RootState } from 'store'
 import { Issue } from 'types/project'
+import { fromNow } from 'utils'
 import { COLORS } from 'utils/css'
+
+import './index.scss'
 
 const statusToIcon = {
   open: <DotsThreeCircle size={24} color={COLORS.green[6]} />,
@@ -13,26 +16,61 @@ const statusToIcon = {
   completed: <CheckCircle size={24} color={COLORS.green[6]} />,
 }
 
+const STATUSES_FILTER: { label: string; value: Issue['status'] }[] = [
+  {
+    label: 'Open',
+    value: 'open',
+  },
+  {
+    label: 'Closed',
+    value: 'closed',
+  },
+  {
+    label: 'Completed',
+    value: 'completed',
+  },
+]
+
 interface Props {
   issue: RootState['issue']
   currentProject: RootState['project']['currentProject']
   dispatch: AppDispatch
+  status: Issue['status']
+  onChangeStatus: (status: Issue['status']) => void
 }
 
-const IssueTable = ({ issue, currentProject, dispatch }: Props) => {
+const IssueTable = ({
+  issue,
+  currentProject,
+  dispatch,
+  status,
+  onChangeStatus,
+}: Props) => {
   if (!currentProject) return null
 
   const loadMore = () => {
-    dispatch(loadMoreIssues())
+    dispatch(loadMoreIssues({ status }))
+  }
+
+  const handleClickIssue = (issueId: number) => {
+    console.log('Issue clicked', issueId)
   }
 
   const columns = [
     {
       title: (
-        <Flex gap={8}>
-          <Flex>{currentProject.issue_open_count} Open</Flex>
-          <Flex>{currentProject.issue_closed_count} Closed</Flex>
-          <Flex>{currentProject.issue_completed_count} Completed</Flex>
+        <Flex gap={12}>
+          {STATUSES_FILTER.map((filter) => (
+            <Flex
+              key={filter.value}
+              className={`status-filter ${
+                status == filter.value ? 'current-status' : ''
+              }`}
+              onClick={() => onChangeStatus(filter.value)}
+            >
+              {filter.label}
+            </Flex>
+          ))}
         </Flex>
       ),
       dataIndex: 'title',
@@ -40,7 +78,17 @@ const IssueTable = ({ issue, currentProject, dispatch }: Props) => {
       render: (title: string, record: Issue) => (
         <Flex gap={8}>
           <Flex>{statusToIcon[record.status]}</Flex>
-          <Flex>{title}</Flex>
+          <Flex vertical>
+            <div
+              className="issue-title"
+              onClick={() => handleClickIssue(record.id)}
+            >
+              {title}
+            </div>
+            <div className="issue-inserted-from-now">{`Opened ${fromNow(
+              record.inserted_at
+            )}`}</div>
+          </Flex>
         </Flex>
       ),
     },
@@ -49,7 +97,9 @@ const IssueTable = ({ issue, currentProject, dispatch }: Props) => {
   const rowSelection = {}
   return (
     <Table
+      className="issue-table"
       dataSource={issue.data}
+      rowKey={(record) => record.id}
       rowSelection={rowSelection}
       columns={columns}
       loading={issue.fetching}

@@ -1,0 +1,27 @@
+.issue-table {
+  .status-filter {
+    cursor: default;
+    &:not(.current-status) {
+      cursor: pointer;
+      color: var(--dark-3);
+      &:hover {
+        color: var(--dark-1);
+      }
+    }
+  }
+  .issue-inserted-from-now {
+    color: var(--dark-3);
+    font-size: 12px;
+  }
+
+  .issue-title {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    &:hover {
+      color: var(--blue-6);
+    }
+  }
+}

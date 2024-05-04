@@ -15,4 +15,15 @@ export interface Issue {
   description: string
   status: IssueStatus
   priority: number | null
+  inserted_at: string
+  assignee_ids: string[]
+}
+
+export interface Tag {
+  id: number
+  name: string
+  color: string
+}
+export interface ProjectSettings {
+  tags: Tag[]
 }

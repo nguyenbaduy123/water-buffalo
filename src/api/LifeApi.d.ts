@@ -1,6 +1,6 @@
 import { string } from 'prop-types'
 import { Project, User, Notification } from 'types/global'
-import { Issue } from 'types/project'
+import { Issue, ProjectSettings } from 'types/project'
 
 export interface LoginParams {
   username: string
@@ -70,6 +70,7 @@ export interface LoadNotificationsResponse {
 
 export interface LoadIssuesParams {
   current_count?: number
+  status?: Issue['status']
 }
 
 export interface LoadIssuesResponse {
@@ -83,4 +84,8 @@ export interface SubmitIssueParams {
 
 export interface SubmitIssueResponse {
   issue: Issue
+}
+
+export interface loadProjectSettingsResponse {
+  settings: ProjectSettings
 }

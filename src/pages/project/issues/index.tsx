@@ -1,14 +1,14 @@
 import { MagnifyingGlass } from '@phosphor-icons/react'
-import { current } from '@reduxjs/toolkit'
 import { loadIssues } from 'actions/issue'
 import { Button, Flex, Input, Space } from 'antd'
 import IssueTable from 'feature/issues/IssuesTable'
 import withAuth from 'hocs/withAuth'
 import ProjectLayout from 'layouts/ProjectLayout'
 import Router from 'next/router'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { AppDispatch, RootState } from 'store'
+import { IssueStatus } from 'types/project'
 import { getProjectUniqueName } from 'utils'
 
 interface Props {
@@ -19,9 +19,15 @@ interface Props {
 }
 
 const Issues = ({ auth, issues, dispatch, currentProject }: Props) => {
+  const [status, setStatus] = useState<IssueStatus>('open')
+
+  const onChangeStatus = (status: IssueStatus) => {
+    setStatus(status)
+  }
+
   useEffect(() => {
-    dispatch(loadIssues())
-  }, [currentProject])
+    dispatch(loadIssues({ status }))
+  }, [currentProject, status])
 
   const redirectToNewIssuePage = () => {
     Router.push(
@@ -45,7 +51,7 @@ const Issues = ({ auth, issues, dispatch, currentProject }: Props) => {
         </Flex>
 
         <div className="issue-table-container">
-          <IssueTable />
+          <IssueTable status={status} onChangeStatus={onChangeStatus} />
         </div>
       </div>
     </ProjectLayout>

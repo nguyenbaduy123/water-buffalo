@@ -19,6 +19,7 @@ import {
   SubmitIssueParams,
   SubmitIssueResponse,
   LoadIssuesParams,
+  loadProjectSettingsResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -60,6 +61,9 @@ class LifeApi extends Api {
 
   public loadNotifications = () =>
     this.get<LoadNotificationsResponse>('/user/notifications')
+
+  public loadProjectSettings = (projectId: string | number) =>
+    this.get<loadProjectSettingsResponse>(`/project/${projectId}/settings`)
 
   public acceptOrDeclineInvitation = (
     projectId: string | number,

@@ -1,7 +1,7 @@
 import { Payload, PayloadTypes, SingleAction } from 'reducers/types'
 import { AppDispatch, GetStateFunc } from 'store'
 
-export type ActionFunc<A = undefined> = (
+export type ActionFunc<A = {}> = (
   payload?: A
 ) => SingleAction | ((dispatch: AppDispatch, getState: GetStateFunc) => any)
 

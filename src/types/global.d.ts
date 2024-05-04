@@ -34,6 +34,7 @@ export interface Project {
   issue_open_count: number
   issue_closed_count: number
   issue_completed_count: number
+  settings?: ProjectSettings
 }
 
 export interface NotificationMap {
