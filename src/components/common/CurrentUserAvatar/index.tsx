@@ -16,7 +16,7 @@ const CurrentUserAvatar = ({
 }: Props) => {
   return (
     <UserAvatar
-      name={auth.name || auth.username || auth.email}
+      name={auth.username || auth.email}
       {...props}
       round={round}
       size={size}

@@ -40,3 +40,7 @@ export const naiveToUtc = (date: string) => {
 export const fromNow = (naiveString: string) => {
   return moment(naiveToUtc(naiveString)).fromNow()
 }
+
+export const redirectGoogleLogin = () => {
+  window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/google/auth`
+}

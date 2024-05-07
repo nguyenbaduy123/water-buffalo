@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Flex } from 'antd'
+import { Flex, Menu, Popover } from 'antd'
 
 import Logo from 'components/common/Logo'
 import { AuthState } from 'reducers/types'
@@ -12,6 +12,10 @@ interface Props {
   auth: AuthState
 }
 
+const logout = () => {
+  window.location.href = '/logout'
+}
+
 const Navbar = ({ auth }: Props) => {
   return (
     <div className="navbar-container">
@@ -21,7 +25,19 @@ const Navbar = ({ auth }: Props) => {
         </div>
         <Flex className="navbar-tail" align="center" gap={16}>
           <Notifications />
-          <CurrentUserAvatar />
+          <Popover
+            trigger={['click']}
+            placement="bottomRight"
+            content={
+              <Menu>
+                <Menu.Item key="3" onClick={logout}>
+                  Logout
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <CurrentUserAvatar />
+          </Popover>
         </Flex>
       </Flex>
     </div>

@@ -81,3 +81,76 @@
     }
   }
 }
+
+.login-page {
+  height: 100vh;
+
+  .login-page-container {
+    height: 100%;
+  }
+
+  .login-content {
+    min-width: 300px;
+  }
+
+  .login-web {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 12px;
+    img {
+      margin-bottom: 8px;
+    }
+  }
+}
+.third-party-login {
+  .login-with-google {
+    background-color: var(--dark-9);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    img {
+      margin-right: 8px;
+    }
+  }
+}
+
+.signup-page-container {
+  max-width: 800px;
+  min-width: 400px;
+  margin: auto auto;
+
+  .container-box {
+    padding: 20px;
+    background-color: var(--dark-9);
+    border-radius: 8px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .box-info-header {
+    margin-bottom: 16px;
+    font-size: 20px;
+  }
+
+  .box-info {
+    .label {
+      padding: 10px 0;
+      display: block;
+      color: var(--pink-8);
+      font-weight: 500;
+    }
+  }
+
+  .invalid-text {
+    color: var(--red-8);
+    font-size: 14px;
+    margin-top: 4px;
+  }
+}

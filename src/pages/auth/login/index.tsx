@@ -6,8 +6,8 @@ import { useAppDispatch } from 'hooks'
 
 import { getUserAuth, loginSuccess } from 'actions/auth'
 import LifeApi from 'api/LifeApi'
-import './index.scss'
 import AuthLayout from 'layouts/AuthLayout'
+import { redirectGoogleLogin } from 'utils'
 
 type FieldType = {
   username: string
@@ -70,6 +70,13 @@ const Login: NextPage = () => {
         >
           Create an account
         </Button>
+      </div>
+
+      <div className="third-party-login">
+        <div className="login-with-google" onClick={redirectGoogleLogin}>
+          <img src="/google.svg" width={20} height={20} />
+          <span>Login with Google</span>
+        </div>
       </div>
     </AuthLayout>
   )

@@ -6,8 +6,6 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const requestHandler = app.getRequestHandler()
 
-const { WEB_URL } = require('./env-config')
-
 const handle = (req, res) => requestHandler(req, res)
 
 const port = 2002
@@ -52,6 +50,11 @@ app.prepare().then(() => {
   server.get('/signup', isAuthenticated, (req, res) =>
     app.render(req, res, '/auth/signup')
   )
+
+  server.get('/logout', (req, res) => {
+    res.clearCookie('life_jwt')
+    res.redirect('/login')
+  })
 
   server.get('/dashboard', authenticate, handle)
 

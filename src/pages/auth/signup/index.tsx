@@ -3,7 +3,6 @@ import { Button, Checkbox, Divider, Flex, Input } from 'antd'
 import Router from 'next/router'
 
 import { ProviderFC } from 'types/global'
-import './index.scss'
 import AuthLayout from 'layouts/AuthLayout'
 import LifeApi from 'api/LifeApi'
 import { errorNotification, successNotification } from 'utils'
