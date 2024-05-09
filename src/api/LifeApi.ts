@@ -1,4 +1,3 @@
-import { GetTasksResponse } from 'reducers/types'
 import Api from './Api'
 import {
   GetAuthParams,
@@ -22,6 +21,11 @@ import {
   LoadIssuesParams,
   loadProjectSettingsResponse,
   GetIssueDetailResponse,
+  UploadFileResponse,
+  CreateTaskParams,
+  CreateTaskResponse,
+  GetTasksResponse,
+  UpdateTaskResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -87,6 +91,32 @@ class LifeApi extends Api {
 
   public getTasks = (projectId: number, issueId: number) =>
     this.get<GetTasksResponse>(`/project/${projectId}/issue/${issueId}/task`)
+
+  public uploadFile = (file: File) =>
+    this.upload<UploadFileResponse>('/content/upload', file)
+
+  public createTask = (
+    projectId: number,
+    issueId: number,
+    params: CreateTaskParams
+  ) =>
+    this.post<CreateTaskResponse>(
+      `/project/${projectId}/issue/${issueId}/task`,
+      params
+    )
+
+  public updateTagStatus = (
+    projectId: number,
+    issueId: number,
+    taskId: number,
+    status: string
+  ) =>
+    this.post<UpdateTaskResponse>(
+      `/project/${projectId}/issue/${issueId}/task/${taskId}/status`,
+      {
+        status,
+      }
+    )
 }
 
 export default new LifeApi() as LifeApi

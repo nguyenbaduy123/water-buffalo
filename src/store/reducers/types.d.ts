@@ -65,6 +65,11 @@ export interface PayloadTypes {
   LOAD_ISSUES_SUCCESS: { issues: Issue[] }
   LOAD_MORE_ISSUES_SUCCESS: { issues: Issue[] }
   SELECT_ISSUE: { currentIssue: Issue }
+
+  LOAD_TASK_REQUEST: undefined
+  LOAD_TASK_SUCCESS: { tasks: Task[] }
+  UPDATE_TASK_SUCCESS: { task: Task }
+  CREATE_TASK_SUCCESS: { task: Task }
 }
 
 export interface NotificationState {
@@ -78,6 +83,7 @@ export interface IssueState {
   currentIssue: Issue | null
 }
 
-export interface GetTasksResponse {
-  tasks: Task[]
+export interface TaskState {
+  data: Task[]
+  fetching: boolean
 }

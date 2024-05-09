@@ -18,8 +18,13 @@ export interface Issue {
   inserted_at: string
   assignee_ids: string[]
   created_by_id: string
+  project_id: number
   inserted_at: string
   updated_at: string
+  task: {
+    fetching: boolean
+    data: Task[]
+  }
 }
 
 export interface Tag {
@@ -39,4 +44,7 @@ export interface Task {
   updated_at: string
   status: string
   priority: number
+  issue_id: number
+  project_id: number
+  attachments: Record<string, any>[]
 }

@@ -93,3 +93,24 @@ export interface loadProjectSettingsResponse {
 export interface GetIssueDetailResponse {
   issue: Issue
 }
+
+export interface UploadFileResponse {
+  url: string
+}
+
+export interface CreateTaskParams {
+  title: string
+  description: string
+}
+
+export interface CreateTaskResponse {
+  task: Task
+}
+
+export interface GetTasksResponse {
+  tasks: Task[]
+}
+
+export interface UpdateTaskResponse {
+  task: Task
+}

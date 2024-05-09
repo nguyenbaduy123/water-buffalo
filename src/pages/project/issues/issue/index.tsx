@@ -1,5 +1,5 @@
 import { selectIssue } from 'actions/issue'
-import { Divider, Flex } from 'antd'
+import { Button, Card, Divider, Flex } from 'antd'
 import LifeApi from 'api/LifeApi'
 import withAuth from 'hocs/withAuth'
 import ProjectLayout from 'layouts/ProjectLayout'
@@ -11,17 +11,29 @@ import { AppDispatch, RootState } from 'store'
 import './index.scss'
 import { fromNow } from 'utils'
 import CommentIssueItem from 'components/CommentIssueItem'
+import { PlusCircle } from '@phosphor-icons/react'
+import ModalCreateTask from 'feature/issues/ModalCreateTask'
+import TaskItem from 'components/TaskItem'
+import { loadTasks } from 'actions/task'
 
 interface Props {
   issues: RootState['issue']['data']
   currentProject: RootState['project']['currentProject']
   fetching: RootState['issue']['fetching']
   currentIssue: RootState['issue']['currentIssue']
+  task: RootState['task']
   dispatch: AppDispatch
 }
 
-const Issue: NextPage<Props> = ({ currentProject, dispatch, currentIssue }) => {
+const Issue: NextPage<Props> = ({
+  currentProject,
+  dispatch,
+  currentIssue,
+  task,
+}) => {
   const router = useRouter()
+
+  const [openModalCreateTask, setOpenModalCreateTask] = React.useState(false)
 
   const { issue_id } = router.query
 
@@ -41,9 +53,17 @@ const Issue: NextPage<Props> = ({ currentProject, dispatch, currentIssue }) => {
     getIssue()
   }, [currentProject])
 
+  useEffect(() => {
+    dispatch(loadTasks())
+  }, [currentIssue])
+
   const userCreated = currentProject?.users.find(
     (user) => user.id === currentIssue?.created_by_id
   )
+
+  const creatingNewTask = () => {
+    setOpenModalCreateTask(true)
+  }
 
   return (
     <ProjectLayout currentTabId="issues">
@@ -58,6 +78,17 @@ const Issue: NextPage<Props> = ({ currentProject, dispatch, currentIssue }) => {
                 )}`}
               </div>
             )}
+            <div>
+              <Flex justify="end">
+                <Button
+                  type="primary"
+                  icon={<PlusCircle />}
+                  onClick={creatingNewTask}
+                >
+                  New task
+                </Button>
+              </Flex>
+            </div>
           </div>
           <Divider />
           <div>
@@ -75,6 +106,21 @@ const Issue: NextPage<Props> = ({ currentProject, dispatch, currentIssue }) => {
               />
             )}
           </div>
+          <Card className="tasks-card" loading={task.fetching}>
+            <div className="list-task">
+              <Flex vertical gap={12}>
+                {task.data.map((task) => (
+                  <TaskItem task={task} dispatch={dispatch} />
+                ))}
+              </Flex>
+            </div>
+          </Card>
+          <ModalCreateTask
+            open={openModalCreateTask}
+            onCancel={() => setOpenModalCreateTask(false)}
+            issue={currentIssue}
+            dispatch={dispatch}
+          />
         </div>
       )}
     </ProjectLayout>
@@ -83,6 +129,7 @@ const Issue: NextPage<Props> = ({ currentProject, dispatch, currentIssue }) => {
 
 const mapStateToProps = (state: RootState) => ({
   issues: state.issue.data,
+  task: state.task,
   currentIssue: state.issue.currentIssue,
   currentProject: state.project.currentProject,
 })

@@ -67,12 +67,34 @@ class Api {
   ): Promise<WithBaseResponse<RT>> => {
     try {
       const call = await this.instance.put<WithBaseResponse<RT>>(
-        endpoint,
+        this.makeUrl(endpoint),
         params
       )
       return call.data
     } catch (error) {
       console.error('ApiError:', endpoint, params, error)
+      return this.handleError(error)
+    }
+  }
+
+  upload = async <RT>(
+    endpoint: string,
+    file: File
+  ): Promise<WithBaseResponse<RT>> => {
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      const call = await this.instance.post<WithBaseResponse<RT>>(
+        this.makeUrl(endpoint),
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
+      return call.data
+    } catch (error) {
       return this.handleError(error)
     }
   }

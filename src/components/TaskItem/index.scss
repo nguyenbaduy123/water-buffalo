@@ -1,0 +1,35 @@
+.task-item {
+  .ant-checkbox-wrapper {
+    margin-top: 2px;
+  }
+  .ant-checkbox-inner {
+    width: 20px;
+    height: 20px;
+
+    &::after {
+      width: 8px;
+      height: 12px;
+    }
+  }
+  .ant-checkbox {
+    font-size: 20px;
+  }
+
+  .task-item-content {
+    .task-item-title {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .task-item-actions {
+      display: flex;
+      align-items: center;
+
+      .task-item-action {
+        margin-left: 8px;
+        font-size: 20px;
+        color: var(--dark-2);
+      }
+    }
+  }
+}
