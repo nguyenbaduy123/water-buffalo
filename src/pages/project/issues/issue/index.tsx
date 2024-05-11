@@ -1,5 +1,5 @@
 import { selectIssue } from 'actions/issue'
-import { Button, Card, Divider, Flex } from 'antd'
+import { Button, Card, Col, Divider, Flex, Row } from 'antd'
 import LifeApi from 'api/LifeApi'
 import withAuth from 'hocs/withAuth'
 import ProjectLayout from 'layouts/ProjectLayout'
@@ -15,6 +15,7 @@ import { PlusCircle } from '@phosphor-icons/react'
 import ModalCreateTask from 'feature/issues/ModalCreateTask'
 import TaskItem from 'components/TaskItem'
 import { loadTasks } from 'actions/task'
+import IssueRightBar from 'feature/issues/IssueRightBar'
 
 interface Props {
   issues: RootState['issue']['data']
@@ -91,30 +92,37 @@ const Issue: NextPage<Props> = ({
             </div>
           </div>
           <Divider />
-          <div>
-            {userCreated && (
-              <CommentIssueItem
-                user={userCreated}
-                content={
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: currentIssue.description,
-                    }}
+          <Flex className="issue-body">
+            <div style={{ width: '100%', marginRight: 16 }}>
+              <div>
+                {userCreated && (
+                  <CommentIssueItem
+                    user={userCreated}
+                    content={
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: currentIssue.description,
+                        }}
+                      />
+                    }
+                    time={fromNow(currentIssue.inserted_at)}
                   />
-                }
-                time={fromNow(currentIssue.inserted_at)}
-              />
-            )}
-          </div>
-          <Card className="tasks-card" loading={task.fetching}>
-            <div className="list-task">
-              <Flex vertical gap={12}>
-                {task.data.map((task) => (
-                  <TaskItem task={task} dispatch={dispatch} />
-                ))}
-              </Flex>
+                )}
+              </div>
+              <Card className="tasks-card" loading={task.fetching}>
+                <div className="list-task">
+                  <Flex vertical gap={12}>
+                    {task.data.map((task) => (
+                      <TaskItem key={task.id} task={task} dispatch={dispatch} />
+                    ))}
+                  </Flex>
+                </div>
+              </Card>
             </div>
-          </Card>
+            <Col span={8} style={{ maxWidth: 300 }}>
+              <IssueRightBar />
+            </Col>
+          </Flex>
           <ModalCreateTask
             open={openModalCreateTask}
             onCancel={() => setOpenModalCreateTask(false)}

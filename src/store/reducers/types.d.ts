@@ -1,8 +1,8 @@
 import { JwtPayload } from 'jwt-decode'
 import { Locale, Notification, Project, User } from 'types/global'
 import { HYDRATE } from 'next-redux-wrapper'
-import { Socket } from 'phoenix'
 import { Issue, Task } from 'types/project'
+import { Socket } from 'phoenix'
 
 export interface Actions<T extends keyof PayloadTypes> {
   type: T
@@ -65,6 +65,7 @@ export interface PayloadTypes {
   LOAD_ISSUES_SUCCESS: { issues: Issue[] }
   LOAD_MORE_ISSUES_SUCCESS: { issues: Issue[] }
   SELECT_ISSUE: { currentIssue: Issue }
+  UPDATE_ISSUE_SUCCESS: { issue: Partial<Issue> }
 
   LOAD_TASK_REQUEST: undefined
   LOAD_TASK_SUCCESS: { tasks: Task[] }

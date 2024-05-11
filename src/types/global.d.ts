@@ -1,4 +1,5 @@
 import React from 'react'
+import { ProjectSettings } from './project'
 
 export interface User {
   id: string

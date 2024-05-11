@@ -32,7 +32,7 @@ const handleProjectRoute =
   (page = '') =>
   (req, res) => {
     const { owner_name, project_name } = req.params
-    return app.render(req, res, `/project/${page}`, {
+    return app.render(req, res, `/project${page}`, {
       owner_name,
       project_name,
     })
@@ -67,13 +67,13 @@ app.prepare().then(() => {
   server.get(
     '/:owner_name/:project_name/issues',
     authenticate,
-    handleProjectRoute('issues')
+    handleProjectRoute('/issues')
   )
 
   server.get(
     '/:owner_name/:project_name/issues/new',
     authenticate,
-    handleProjectRoute('issues/new')
+    handleProjectRoute('/issues/new')
   )
 
   server.get(
@@ -92,7 +92,25 @@ app.prepare().then(() => {
   server.get(
     '/:owner_name/:project_name/settings',
     authenticate,
-    handleProjectRoute('settings')
+    handleProjectRoute('/settings')
+  )
+
+  server.get(
+    '/:owner_name/:project_name/settings/general',
+    authenticate,
+    handleProjectRoute('/settings/general')
+  )
+
+  server.get(
+    '/:owner_name/:project_name/settings/members',
+    authenticate,
+    handleProjectRoute('/settings/members')
+  )
+
+  server.get(
+    '/:owner_name/:project_name/settings/tags',
+    authenticate,
+    handleProjectRoute('/settings/tags')
   )
 
   server.get('*', (req, res) => {

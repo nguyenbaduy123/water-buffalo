@@ -114,3 +114,11 @@ export interface GetTasksResponse {
 export interface UpdateTaskResponse {
   task: Task
 }
+
+export interface UpdateIssueResponse {
+  issue: Issue
+}
+
+export interface ToggleAssigneeResponse {
+  issue: Issue
+}

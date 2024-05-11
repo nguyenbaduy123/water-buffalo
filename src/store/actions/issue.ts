@@ -4,6 +4,7 @@ import {
   LOAD_ISSUES_REQUEST,
   LOAD_ISSUES_SUCCESS,
   SELECT_ISSUE,
+  UPDATE_ISSUE_SUCCESS,
 } from 'constants/action'
 import LifeApi from 'api/LifeApi'
 import { Issue } from 'types/project'
@@ -15,6 +16,8 @@ export const loadIssuesSuccess = createPlainAction(LOAD_ISSUES_SUCCESS)
 export const loadMoreIssuesSuccess = createPlainAction(LOAD_ISSUES_SUCCESS)
 
 export const selectIssue = createPlainAction(SELECT_ISSUE)
+
+export const updateIssueSuccess = createPlainAction(UPDATE_ISSUE_SUCCESS)
 
 interface LoadIssueArgs {
   status: Issue['status']

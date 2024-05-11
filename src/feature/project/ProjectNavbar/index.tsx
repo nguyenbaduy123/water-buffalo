@@ -1,7 +1,7 @@
 import { Checks, Gear, LightbulbFilament } from '@phosphor-icons/react'
 import { Badge, Flex } from 'antd'
 import Router from 'next/router'
-import { getProjectUniqueName } from 'utils'
+import { getProjectRoute } from 'utils'
 import { Project } from 'types/global'
 import { ProjectTabs } from './ProjectNavbar'
 
@@ -21,7 +21,7 @@ const NAVBAR_ITEMS = [
   {
     id: 'settings',
     title: 'Settings',
-    href: '/settings',
+    href: '/settings/general',
     icon: <Gear size={16} />,
   },
 ]
@@ -32,15 +32,12 @@ interface Props {
 }
 
 const ProjectNavbar = ({ currentTabId, currentProject }: Props) => {
-  if (!currentProject) {
-    return null
-  }
   const handleClickNavbarItem = (item: (typeof NAVBAR_ITEMS)[number]) => {
     if (item.id === currentTabId) return
 
     Router.push(
       `/project${item.href}`,
-      `/${getProjectUniqueName(currentProject)}${item.href}`
+      getProjectRoute(currentProject, item.href)
     )
   }
   return (
@@ -62,7 +59,7 @@ const ProjectNavbar = ({ currentTabId, currentProject }: Props) => {
                   <Badge
                     size="small"
                     color="yellow"
-                    count={currentProject.issue_open_count}
+                    count={currentProject?.issue_open_count}
                     showZero
                   />
                 </div>

@@ -16,3 +16,9 @@
     min-height: 200px;
   }
 }
+
+.issue-assignee-dropdown {
+  .ant-dropdown-menu-item:has(.assigned) {
+    background-color: var(--dark-9);
+  }
+}

@@ -26,6 +26,7 @@ import {
   CreateTaskResponse,
   GetTasksResponse,
   UpdateTaskResponse,
+  ToggleAssigneeResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -115,6 +116,18 @@ class LifeApi extends Api {
       `/project/${projectId}/issue/${issueId}/task/${taskId}/status`,
       {
         status,
+      }
+    )
+
+  public toggleAssignee = (
+    projectId: number,
+    issueId: number,
+    userId: string
+  ) =>
+    this.post<ToggleAssigneeResponse>(
+      `/project/${projectId}/issue/${issueId}/assignee/toggle`,
+      {
+        user_id: userId,
       }
     )
 }

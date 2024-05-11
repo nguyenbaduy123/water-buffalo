@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { IssueState, ReducerMap } from './types'
-import { SELECT_ISSUE } from 'constants/action'
+import { SELECT_ISSUE, UPDATE_ISSUE_SUCCESS } from 'constants/action'
 
 const initialState: IssueState = {
   fetching: false,
@@ -24,6 +24,24 @@ const reducerMap: ReducerMap<IssueState> = {
   },
   [SELECT_ISSUE]: (state, { payload }) => {
     return { ...state, currentIssue: payload.currentIssue }
+  },
+
+  [UPDATE_ISSUE_SUCCESS]: (state, { payload }) => {
+    let currentIssue = state.currentIssue
+
+    if (currentIssue && currentIssue.id === payload.issue.id) {
+      currentIssue = { ...currentIssue, ...payload.issue }
+    }
+    return {
+      ...state,
+      currentIssue,
+      data: state.data.map((issue) => {
+        if (issue.id === payload.issue.id) {
+          return { ...issue, ...payload.issue }
+        }
+        return issue
+      }),
+    }
   },
 }
 

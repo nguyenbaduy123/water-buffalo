@@ -13,7 +13,7 @@ import LifeApi from 'api/LifeApi'
 import { GetAuthResponse } from 'api/LifeApi.d'
 import { Socket } from 'phoenix'
 import { User } from 'types/global'
-import { infoNotification } from 'utils'
+import { channelConnect, infoNotification } from 'utils'
 import { title } from 'process'
 
 export const loginRequest = () => {
@@ -76,7 +76,7 @@ export const connectSocket: ActionFunc = () => {
 
     socket.onOpen(() => {
       dispatch(connectSocketSuccess(socket))
-      dispatch(connectToChannel(socket, `users:${userId}`, accessToken))
+      dispatch(connectToChannel(`users:${userId}`))
     })
 
     socket.onError((error: any) => {
@@ -92,26 +92,28 @@ export const connectSocket: ActionFunc = () => {
   }
 }
 
-export const connectToChannel = (
-  socket: Socket,
-  channelName: string,
-  accessToken: string
-) => {
-  const channel = socket.channel(channelName, { token: accessToken })
-  channel.join()
+export const connectToChannel = (channelName: string) => {
+  return async (dispatch: AppDispatch, getState: GetStateFunc) => {
+    const {
+      auth: { socket, accessToken },
+    } = getState()
+    if (!socket) return
 
-  channel.on(
-    'new_invitation',
-    (payload: { from: User; project_id: number }) => {
-      infoNotification(
-        'New Invitation',
-        `${payload.from.username} invited you to a project.`
-      )
+    const channel = channelConnect(socket, channelName, accessToken)
+
+    channel.on(
+      'new_invitation',
+      (payload: { from: User; project_id: number }) => {
+        infoNotification(
+          'New Invitation',
+          `${payload.from.username} invited you to a project.`
+        )
+      }
+    )
+
+    return {
+      type: 'CHANNEL_CONNECTED',
+      payload: channel,
     }
-  )
-
-  return {
-    type: 'CHANNEL_CONNECTED',
-    payload: channel,
   }
 }

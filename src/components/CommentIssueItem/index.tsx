@@ -13,10 +13,10 @@ interface Props {
 
 const CommentIssueItem = ({ user, content, time, leftSide = true }: Props) => {
   const x = [
-    <div className="user-avatar">
+    <div className="user-avatar" key="avatar">
       <UserAvatar name={user.username} src={user.avatar_url} size={32} round />
     </div>,
-    <div className="comment-content">
+    <div className="comment-content" key="comment">
       <Flex className="comment-content-head" gap={12} align="center">
         <div className="user-name">{user.username}</div>
         <div className="comment-time">{time}</div>

@@ -21,10 +21,8 @@ export interface Issue {
   project_id: number
   inserted_at: string
   updated_at: string
-  task: {
-    fetching: boolean
-    data: Task[]
-  }
+  assignee_ids: string[]
+  tag_ids: number[]
 }
 
 export interface Tag {
