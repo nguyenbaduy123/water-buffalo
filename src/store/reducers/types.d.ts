@@ -54,6 +54,8 @@ export interface PayloadTypes {
   LOAD_PROJECTS_REQUEST: undefined
   LOAD_PROJECTS_SUCCESS: { projects: Project[] }
   SELECT_PROJECT: { currentProject: Project }
+  UPDATE_PROJECT_SUCCESS: { project: Project }
+  CREATE_PROJECT_SUCCESS: { project: Project }
 
   SOCKET_CONNECTING: undefined
   SOCKET_CONNECTED: { socket: Socket }

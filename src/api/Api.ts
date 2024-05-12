@@ -5,17 +5,11 @@ import Cookies from 'js-cookie'
 class Api {
   protected readonly instance: AxiosInstance
   constructor(baseURL: string) {
-    this.instance = axios.create({ baseURL })
+    this.instance = axios.create({ baseURL, withCredentials: true })
   }
 
   private getAccessToken = () => {
     return Cookies.get('life_jwt')
-  }
-
-  private makeUrl = (endpoint: string) => {
-    const accessToken = this.getAccessToken()
-    if (accessToken) return `${endpoint}?access_token=${this.getAccessToken()}`
-    return endpoint
   }
 
   private handleError = (error: unknown): ErrorResponse => {
@@ -34,12 +28,9 @@ class Api {
     params: RequestParams = {}
   ): Promise<WithBaseResponse<RT>> => {
     try {
-      const call = await this.instance.get<WithBaseResponse<RT>>(
-        this.makeUrl(endpoint),
-        {
-          params,
-        }
-      )
+      const call = await this.instance.get<WithBaseResponse<RT>>(endpoint, {
+        params,
+      })
       return call.data
     } catch (error) {
       return this.handleError(error)
@@ -52,7 +43,7 @@ class Api {
   ): Promise<WithBaseResponse<RT>> => {
     try {
       const call = await this.instance.post<WithBaseResponse<RT>>(
-        this.makeUrl(endpoint),
+        endpoint,
         params
       )
       return call.data
@@ -67,7 +58,7 @@ class Api {
   ): Promise<WithBaseResponse<RT>> => {
     try {
       const call = await this.instance.put<WithBaseResponse<RT>>(
-        this.makeUrl(endpoint),
+        endpoint,
         params
       )
       return call.data
@@ -85,7 +76,7 @@ class Api {
       const formData = new FormData()
       formData.append('file', file)
       const call = await this.instance.post<WithBaseResponse<RT>>(
-        this.makeUrl(endpoint),
+        endpoint,
         formData,
         {
           headers: {

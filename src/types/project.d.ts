@@ -44,5 +44,6 @@ export interface Task {
   priority: number
   issue_id: number
   project_id: number
+  result: string
   attachments: Record<string, any>[]
 }

@@ -1,3 +1,4 @@
+import withAuth from 'hocs/withAuth'
 import SettingLayout from 'layouts/SettingLayout'
 import { NextPage } from 'next'
 import React from 'react'
@@ -18,4 +19,4 @@ const mapStateToProps = (state: RootState) => {
   }
 }
 
-export default connect(mapStateToProps)(SettingGeneral)
+export default connect(mapStateToProps)(withAuth(SettingGeneral))

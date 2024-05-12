@@ -27,6 +27,9 @@ import {
   GetTasksResponse,
   UpdateTaskResponse,
   ToggleAssigneeResponse,
+  ToggleTagResponse,
+  AddTagParams,
+  AddTagResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -130,6 +133,20 @@ class LifeApi extends Api {
         user_id: userId,
       }
     )
+
+  public toggleTag = (projectId: number, issueId: number, tagId: number) =>
+    this.post<ToggleTagResponse>(
+      `/project/${projectId}/issue/${issueId}/tag/toggle`,
+      {
+        tag_id: tagId,
+      }
+    )
+
+  public addTag = (projectId: number, params: AddTagParams) =>
+    this.post<AddTagResponse>(`/project/${projectId}/tag`, params)
+
+  public deleteTags = (projectId: number, tagIds: number[]) =>
+    this.post(`/project/${projectId}/tag/delete`, { tag_ids: tagIds })
 }
 
 export default new LifeApi() as LifeApi

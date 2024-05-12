@@ -1,9 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { ProjectState, ReducerMap } from './types'
 import {
+  CREATE_PROJECT_SUCCESS,
   LOAD_PROJECTS_REQUEST,
   LOAD_PROJECTS_SUCCESS,
   SELECT_PROJECT,
+  UPDATE_PROJECT_SUCCESS,
 } from 'constants/action'
 
 const initialState: ProjectState = {
@@ -21,6 +23,24 @@ const reducerMap: ReducerMap<ProjectState> = {
   },
   [SELECT_PROJECT]: (state, { payload }) => {
     return { ...state, currentProject: payload.currentProject }
+  },
+  [UPDATE_PROJECT_SUCCESS]: (state, { payload }) => {
+    const currentProject = state.currentProject
+    return {
+      ...state,
+      data: state.data.map((project) =>
+        project.id === payload.project.id
+          ? { ...project, ...payload.project }
+          : project
+      ),
+      currentProject:
+        currentProject && currentProject.id === payload.project.id
+          ? { ...currentProject, ...payload.project }
+          : currentProject,
+    }
+  },
+  [CREATE_PROJECT_SUCCESS]: (state, { payload }) => {
+    return { ...state, data: [payload.project, ...state.data] }
   },
 }
 

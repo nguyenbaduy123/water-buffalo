@@ -373,3 +373,10 @@
 body {
   color: var(--color-white);
 }
+
+.ant-dropdown-menu-item {
+  padding: 6px !important;
+  &:not(:last-child) {
+    margin-bottom: 2px !important;
+  }
+}

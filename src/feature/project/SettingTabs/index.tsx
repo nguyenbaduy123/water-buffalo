@@ -8,17 +8,17 @@ const TABS = [
   {
     id: 'general',
     label: 'General',
-    href: '/general',
+    href: '/settings/general',
   },
   {
     id: 'members',
     label: 'Members',
-    href: '/members',
+    href: '/settings/members',
   },
   {
     id: 'tags',
     label: 'Tags',
-    href: '/tags',
+    href: '/settings/tags',
   },
 ]
 

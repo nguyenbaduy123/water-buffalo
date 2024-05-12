@@ -1,4 +1,7 @@
 .task-item {
+  padding: 12px;
+  background-color: #040a13;
+  border-radius: 6px;
   .ant-checkbox-wrapper {
     margin-top: 2px;
   }
@@ -19,6 +22,7 @@
     .task-item-title {
       font-size: 16px;
       font-weight: 500;
+      width: 100%;
     }
 
     .task-item-actions {
@@ -31,5 +35,11 @@
         color: var(--dark-2);
       }
     }
+  }
+}
+
+.tasks-card {
+  .ant-card-body {
+    padding: 12px;
   }
 }

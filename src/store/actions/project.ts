@@ -6,14 +6,15 @@ import {
   SELECT_PROJECT,
 } from 'constants/action'
 import { createPlainAction } from 'utils/redux'
-import { Project } from 'types/global'
-import { connectToChannel } from './auth'
-import { channelConnect } from 'utils'
+import { Project, SocketPayload } from 'types/global'
+import { channelConnect, infoNotification } from 'utils'
 
 export const loadProjectsRequest = createPlainAction(LOAD_PROJECTS_REQUEST)
 export const loadProjectsSuccess = createPlainAction(LOAD_PROJECTS_SUCCESS)
 
 export const selectedProject = createPlainAction(SELECT_PROJECT)
+
+export const updateProjectSuccess = createPlainAction('UPDATE_PROJECT_SUCCESS')
 
 interface SelectProjectPayload {
   currentProject: Project
@@ -70,6 +71,10 @@ const connectToProjectChannel: ActionFunc = () => {
       `projects:${currentProject.id}`,
       accessToken
     )
+
+    channel.on('issue:toggle_tag', (payload: SocketPayload) => {
+      infoNotification('Issue updated', payload.message)
+    })
 
     return {
       type: 'CHANNEL_CONNECTED',

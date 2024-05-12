@@ -1,6 +1,6 @@
 import { string } from 'prop-types'
-import { Project, User, Notification } from 'types/global'
-import { Issue, ProjectSettings } from 'types/project'
+import { Project, User, Notification, FileUploaded } from 'types/global'
+import { Issue, ProjectSettings, Tag } from 'types/project'
 
 export interface LoginParams {
   username: string
@@ -95,7 +95,7 @@ export interface GetIssueDetailResponse {
 }
 
 export interface UploadFileResponse {
-  url: string
+  file: FileUploaded
 }
 
 export interface CreateTaskParams {
@@ -121,4 +121,16 @@ export interface UpdateIssueResponse {
 
 export interface ToggleAssigneeResponse {
   issue: Issue
+}
+
+export interface ToggleTagResponse {}
+
+export interface AddTagParams {
+  name: string
+  color: string
+  description: string
+}
+
+export interface AddTagResponse {
+  tag: Tag
 }

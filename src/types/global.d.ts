@@ -35,7 +35,7 @@ export interface Project {
   issue_open_count: number
   issue_closed_count: number
   issue_completed_count: number
-  settings?: ProjectSettings
+  settings: ProjectSettings
 }
 
 export interface NotificationMap {
@@ -61,3 +61,14 @@ export interface ProviderProps {
 }
 
 export type ProviderFC = React.FC<ProviderProps>
+
+export interface FileUploaded {
+  url: string
+  content_type: string
+}
+
+export interface SocketPayload {
+  type: string
+  message: string
+  detail: Record<string, any>
+}

@@ -4,6 +4,7 @@ import { Divider, Dropdown, Flex, Menu } from 'antd'
 import LifeApi from 'api/LifeApi'
 import RenderUser from 'common/RenderUser'
 import UserAvatar from 'common/UserAvatar'
+import RenderTag from 'components/RenderTag'
 import React from 'react'
 import { connect } from 'react-redux'
 import { AppDispatch, RootState } from 'store'
@@ -42,6 +43,28 @@ const IssueRightBar = ({ currentProject, currentIssue, dispatch }: Props) => {
             assignee_ids: isAssign
               ? [...assigneeIds, userId]
               : assigneeIds.filter((id) => id !== userId),
+          },
+        })
+      )
+    }
+  }
+
+  const handleToggleTag = async (tagId: number, isTagged: boolean) => {
+    if (!currentIssue) return
+    const resp = await LifeApi.toggleTag(
+      currentIssue.project_id,
+      currentIssue.id,
+      tagId
+    )
+
+    if (resp.success) {
+      dispatch(
+        updateIssueSuccess({
+          issue: {
+            ...currentIssue,
+            tag_ids: isTagged
+              ? [...tagIds, tagId]
+              : tagIds.filter((id) => id !== tagId),
           },
         })
       )
@@ -100,7 +123,43 @@ const IssueRightBar = ({ currentProject, currentIssue, dispatch }: Props) => {
       </div>
       <Divider />
       <div className="issue-tags">
-        <div className="issue-tags-title">Tags</div>
+        <Flex justify="space-between" className="issue-assignee-title">
+          Tags
+          <Dropdown
+            trigger={['click']}
+            overlayClassName="issue-assignee-dropdown"
+            menu={{
+              items: projectTags.map((tag) => {
+                const tagged = !!tags.find((t) => tag.id == t.id)
+                return {
+                  key: tag.id,
+                  label: (
+                    <Flex
+                      className={`issue-assignee-user ${
+                        tagged ? 'assigned' : ''
+                      }`}
+                      gap={16}
+                      align="center"
+                      justify="space-between"
+                      onClick={() => handleToggleTag(tag.id, !tagged)}
+                    >
+                      <div>
+                        <RenderTag tag={tag} />
+                        {tagged ? (
+                          <Check size={14} color={COLORS.blue[3]} />
+                        ) : (
+                          ''
+                        )}
+                      </div>
+                    </Flex>
+                  ),
+                }
+              }),
+            }}
+          >
+            <Gear cursor="pointer" />
+          </Dropdown>
+        </Flex>
         <div className="issue-tags-list">
           {tags.map((tag) => (
             <div key={tag.id} className="issue-tag">
