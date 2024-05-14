@@ -12,7 +12,7 @@ import {
 import LifeApi from 'api/LifeApi'
 import { GetAuthResponse } from 'api/LifeApi.d'
 import { Socket } from 'phoenix'
-import { User } from 'types/global'
+import { SocketPayload, User } from 'types/global'
 import { channelConnect, infoNotification } from 'utils'
 import { title } from 'process'
 
@@ -110,6 +110,10 @@ export const connectToChannel = (channelName: string) => {
         )
       }
     )
+
+    channel.on('issue:toggle_assign', (payload: SocketPayload) => {
+      infoNotification('New comment', payload.message)
+    })
 
     return {
       type: 'CHANNEL_CONNECTED',

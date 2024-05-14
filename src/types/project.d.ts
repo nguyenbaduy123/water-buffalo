@@ -1,3 +1,5 @@
+import { FileUploaded } from './global'
+
 export interface UserProject {
   id: number
   name: string
@@ -45,5 +47,11 @@ export interface Task {
   issue_id: number
   project_id: number
   result: string
-  attachments: Record<string, any>[]
+  attachments: Attachment[]
+}
+
+export type Attachment = FileUploaded
+
+export interface UpdateTaskResponse {
+  task: Task
 }

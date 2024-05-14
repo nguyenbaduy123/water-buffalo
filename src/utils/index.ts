@@ -2,7 +2,6 @@ import { notification } from 'antd'
 import { Project } from 'types/global'
 import moment from 'moment'
 import { Socket } from 'phoenix'
-import { distance } from 'fastest-levenshtein'
 
 export const successNotification = (message: string, description: string) => {
   notification.success({
@@ -18,10 +17,15 @@ export const errorNotification = (message: string, description: string) => {
   })
 }
 
-export const infoNotification = (message: string, description: string) => {
+export const infoNotification = (
+  message: string,
+  description: string,
+  onClick?: () => void
+) => {
   notification.info({
     message,
     description,
+    onClick,
   })
 }
 

@@ -30,6 +30,7 @@ import {
   ToggleTagResponse,
   AddTagParams,
   AddTagResponse,
+  UpdateTaskParams,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -39,6 +40,22 @@ class LifeApi extends Api {
   public constructor() {
     super(host)
   }
+
+  private makeProjectEndpoint = (projectId: number, path: string = '') =>
+    `/project/${projectId}${path}`
+
+  private makeIssueEndpoint = (
+    projectId: number,
+    issueId: number,
+    path: string = ''
+  ) => `/project/${projectId}/issue/${issueId}${path}`
+
+  private makeTaskEndpoint = (
+    projectId: number,
+    issueId: number,
+    taskId: number,
+    path: string = ''
+  ) => `/project/${projectId}/issue/${issueId}/task/${taskId}${path}`
 
   public login = (params: LoginParams) =>
     this.post<LoginResponse>('/login', params)
@@ -147,6 +164,17 @@ class LifeApi extends Api {
 
   public deleteTags = (projectId: number, tagIds: number[]) =>
     this.post(`/project/${projectId}/tag/delete`, { tag_ids: tagIds })
+
+  public updateTask = (
+    projectId: number,
+    issueId: number,
+    taskId: number,
+    params: UpdateTaskParams
+  ) =>
+    this.post<UpdateTaskResponse>(
+      this.makeTaskEndpoint(projectId, issueId, taskId),
+      params
+    )
 }
 
 export default new LifeApi() as LifeApi

@@ -63,8 +63,10 @@ export interface ProviderProps {
 export type ProviderFC = React.FC<ProviderProps>
 
 export interface FileUploaded {
+  id: string
+  name: string
   url: string
-  content_type: string
+  type: string
 }
 
 export interface SocketPayload {

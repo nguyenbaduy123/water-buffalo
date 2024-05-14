@@ -1,6 +1,6 @@
 import { string } from 'prop-types'
 import { Project, User, Notification, FileUploaded } from 'types/global'
-import { Issue, ProjectSettings, Tag } from 'types/project'
+import { Attachment, Issue, ProjectSettings, Tag, Task } from 'types/project'
 
 export interface LoginParams {
   username: string
@@ -95,7 +95,7 @@ export interface GetIssueDetailResponse {
 }
 
 export interface UploadFileResponse {
-  file: FileUploaded
+  file: Attachment
 }
 
 export interface CreateTaskParams {
@@ -134,3 +134,5 @@ export interface AddTagParams {
 export interface AddTagResponse {
   tag: Tag
 }
+
+export interface UpdateTaskParams extends Partial<Task> {}

@@ -16,7 +16,6 @@ interface Props {
 }
 const ProjectLayout = ({ children, project, currentTabId }: Props) => {
   const router = useRouter()
-  console.log(router.query)
 
   const { owner_name, project_name } = router.query
   const dispatch = useAppDispatch()
