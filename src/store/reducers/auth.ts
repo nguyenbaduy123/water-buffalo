@@ -15,7 +15,7 @@ import { assignState } from 'utils/redux'
 const initialState: AuthState = {
   fetching: false,
   userId: '',
-  username: null,
+  username: '',
   name: null,
   accessToken: '',
   locale: 'en',

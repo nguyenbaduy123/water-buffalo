@@ -1,5 +1,5 @@
 import { notification } from 'antd'
-import { Project } from 'types/global'
+import { Project, User } from 'types/global'
 import moment from 'moment'
 import { Socket } from 'phoenix'
 
@@ -127,4 +127,18 @@ export const convertVN = (str: string) => {
   str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y')
   str = str.replace(/đ/g, 'd')
   return str
+}
+
+export const dummyUser: User = {
+  id: '',
+  username: 'Anonymous',
+  email: '',
+  avatar_url: null,
+  locale: 'en',
+  country: 'US',
+  name: '',
+}
+
+export const getUserInProject = (project: Project | null, userId: string) => {
+  return project?.users.find((user) => user.id == userId) || dummyUser
 }

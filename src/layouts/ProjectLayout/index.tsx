@@ -17,13 +17,20 @@ interface Props {
 const ProjectLayout = ({ children, project, currentTabId }: Props) => {
   const router = useRouter()
 
-  const { owner_name, project_name } = router.query
+  const { owner_name, project_name } = router.query as {
+    owner_name: string
+    project_name: string
+  }
   const dispatch = useAppDispatch()
   useEffect(() => {
-    const currentProject = project.data.find(
-      (project) =>
-        project.owner.username === owner_name && project.name === project_name
-    )
+    const currentProject =
+      owner_name &&
+      project_name &&
+      project.data.find(
+        (project) =>
+          [project.owner.username, project.owner_id].includes(owner_name) &&
+          [project.name, project.id].includes(project_name)
+      )
 
     if (currentProject) {
       dispatch(selectProject({ currentProject: currentProject }))

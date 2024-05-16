@@ -9,19 +9,42 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { AppDispatch, RootState } from 'store'
 import { COLORS } from 'utils/css'
+import {
+  getProjectPermission,
+  hasMemberPermission,
+  hasModeratorPermission,
+} from 'utils/permission'
+
+import './style.scss'
 
 interface Props {
   currentProject: RootState['project']['currentProject']
   currentIssue: RootState['issue']['currentIssue']
+  auth: RootState['auth']
   dispatch: AppDispatch
 }
 
-const IssueRightBar = ({ currentProject, currentIssue, dispatch }: Props) => {
+const IssueRightBar = ({
+  currentProject,
+  currentIssue,
+  dispatch,
+  auth,
+}: Props) => {
   if (!currentIssue || !currentProject) return null
   const assigneeIds = currentIssue.assignee_ids || []
   const tagIds = currentIssue.tag_ids || []
   const projectTags = currentProject.settings?.tags || []
   const projectUsers = currentProject.users
+  const referenceIds = currentIssue.reference_ids || []
+  const issueReferences = currentProject.users.filter((user) =>
+    referenceIds.includes(user.id)
+  )
+
+  const permission = getProjectPermission(currentProject, auth.userId)
+
+  const canAssignUser = hasModeratorPermission(permission)
+  const canAssignReference = canAssignUser
+  const canTag = hasMemberPermission(permission)
 
   const tags = projectTags.filter((tag) => tagIds.includes(tag.id))
   const assignees = currentProject.users.filter((user) =>
@@ -43,6 +66,27 @@ const IssueRightBar = ({ currentProject, currentIssue, dispatch }: Props) => {
             assignee_ids: isAssign
               ? [...assigneeIds, userId]
               : assigneeIds.filter((id) => id !== userId),
+          },
+        })
+      )
+    }
+  }
+
+  const handleToggleReference = async (userId: string, isAssign: boolean) => {
+    const resp = await LifeApi.toggleReference(
+      currentProject.id,
+      currentIssue.id,
+      userId
+    )
+
+    if (resp.success) {
+      dispatch(
+        updateIssueSuccess({
+          issue: {
+            ...currentIssue,
+            reference_ids: isAssign
+              ? [...referenceIds, userId]
+              : referenceIds.filter((id) => id !== userId),
           },
         })
       )
@@ -76,42 +120,44 @@ const IssueRightBar = ({ currentProject, currentIssue, dispatch }: Props) => {
       <div className="issue-assignee">
         <Flex justify="space-between" className="issue-assignee-title">
           Assignees
-          <Dropdown
-            trigger={['click']}
-            overlayClassName="issue-assignee-dropdown"
-            menu={{
-              items: projectUsers.map((user) => {
-                const assigned = !!assignees.find(
-                  (assignee) => assignee.id === user.id
-                )
-                return {
-                  key: user.id,
-                  label: (
-                    <Flex
-                      className={`issue-assignee-user ${
-                        assigned ? 'assigned' : ''
-                      }`}
-                      gap={16}
-                      align="center"
-                      justify="space-between"
-                      onClick={() => handleToggleAssignee(user.id, !assigned)}
-                    >
-                      <RenderUser gap={8} user={user} />
-                      <div>
-                        {assigned ? (
-                          <Check size={14} color={COLORS.blue[3]} />
-                        ) : (
-                          ''
-                        )}
-                      </div>
-                    </Flex>
-                  ),
-                }
-              }),
-            }}
-          >
-            <Gear cursor="pointer" />
-          </Dropdown>
+          {canAssignUser && (
+            <Dropdown
+              trigger={['click']}
+              overlayClassName="issue-assignee-dropdown"
+              menu={{
+                items: projectUsers.map((user) => {
+                  const assigned = !!assignees.find(
+                    (assignee) => assignee.id === user.id
+                  )
+                  return {
+                    key: user.id,
+                    label: (
+                      <Flex
+                        className={`issue-assignee-user ${
+                          assigned ? 'assigned' : ''
+                        }`}
+                        gap={16}
+                        align="center"
+                        justify="space-between"
+                        onClick={() => handleToggleAssignee(user.id, !assigned)}
+                      >
+                        <RenderUser gap={8} user={user} />
+                        <div>
+                          {assigned ? (
+                            <Check size={14} color={COLORS.blue[3]} />
+                          ) : (
+                            ''
+                          )}
+                        </div>
+                      </Flex>
+                    ),
+                  }
+                }),
+              }}
+            >
+              <Gear cursor="pointer" />
+            </Dropdown>
+          )}
         </Flex>
         <Flex gap={8} className="issue-assignee-list" wrap="wrap">
           {assignees.map((assignee) => (
@@ -125,52 +171,106 @@ const IssueRightBar = ({ currentProject, currentIssue, dispatch }: Props) => {
       <div className="issue-tags">
         <Flex justify="space-between" className="issue-assignee-title">
           Tags
-          <Dropdown
-            trigger={['click']}
-            overlayClassName="issue-assignee-dropdown"
-            menu={{
-              items: projectTags.map((tag) => {
-                const tagged = !!tags.find((t) => tag.id == t.id)
-                return {
-                  key: tag.id,
-                  label: (
-                    <Flex
-                      className={`issue-assignee-user ${
-                        tagged ? 'assigned' : ''
-                      }`}
-                      gap={16}
-                      align="center"
-                      justify="space-between"
-                      onClick={() => handleToggleTag(tag.id, !tagged)}
-                    >
-                      <div>
-                        <RenderTag tag={tag} />
-                        {tagged ? (
-                          <Check size={14} color={COLORS.blue[3]} />
-                        ) : (
-                          ''
-                        )}
-                      </div>
-                    </Flex>
-                  ),
-                }
-              }),
-            }}
-          >
-            <Gear cursor="pointer" />
-          </Dropdown>
+          {canTag && (
+            <Dropdown
+              trigger={['click']}
+              overlayClassName="issue-assignee-dropdown"
+              menu={{
+                items: projectTags.map((tag) => {
+                  const tagged = !!tags.find((t) => tag.id == t.id)
+                  return {
+                    key: tag.id,
+                    label: (
+                      <Flex
+                        className={`issue-assignee-user ${
+                          tagged ? 'assigned' : ''
+                        }`}
+                        gap={16}
+                        align="center"
+                        justify="space-between"
+                        onClick={() => handleToggleTag(tag.id, !tagged)}
+                      >
+                        <div>
+                          <RenderTag tag={tag} />
+                          {tagged ? (
+                            <Check size={14} color={COLORS.blue[3]} />
+                          ) : (
+                            ''
+                          )}
+                        </div>
+                      </Flex>
+                    ),
+                  }
+                }),
+              }}
+            >
+              <Gear cursor="pointer" />
+            </Dropdown>
+          )}
         </Flex>
         <div className="issue-tags-list">
           {tags.map((tag) => (
-            <div key={tag.id} className="issue-tag">
-              <div
-                className="issue-tag-color"
-                style={{ backgroundColor: tag.color }}
-              />
+            <div
+              key={tag.id}
+              className="issue-tag"
+              style={{ backgroundColor: tag.color }}
+            >
               <span>{tag.name}</span>
             </div>
           ))}
         </div>
+      </div>
+      <Divider />
+
+      <div className="issue-references">
+        <Flex justify="space-between" className="issue-assignee-title">
+          References
+          {canAssignReference && (
+            <Dropdown
+              trigger={['click']}
+              overlayClassName="issue-references-dropdown"
+              menu={{
+                items: projectUsers.map((user) => {
+                  const isReference = referenceIds.includes(user.id)
+                  return {
+                    key: user.id,
+                    label: (
+                      <Flex
+                        className={`issue-reference-user ${
+                          isReference ? 'assigned' : ''
+                        }`}
+                        gap={16}
+                        align="center"
+                        justify="space-between"
+                        onClick={() =>
+                          handleToggleReference(user.id, !isReference)
+                        }
+                      >
+                        <RenderUser gap={8} user={user} />
+                        <div>
+                          {isReference ? (
+                            <Check size={14} color={COLORS.blue[3]} />
+                          ) : (
+                            ''
+                          )}
+                        </div>
+                      </Flex>
+                    ),
+                  }
+                }),
+              }}
+            >
+              <Gear cursor="pointer" />
+            </Dropdown>
+          )}
+        </Flex>
+        <Flex gap={8} className="issue-assignee-list" wrap="wrap">
+          {issueReferences.map((assignee) => (
+            <div key={assignee.id} className="issue-assignee-item">
+              <UserAvatar user={assignee} size={24} round withTooltip />
+            </div>
+          ))}
+        </Flex>
       </div>
     </div>
   )
@@ -180,6 +280,7 @@ const mapStateToProps = (state: RootState) => {
   return {
     currentProject: state.project.currentProject,
     currentIssue: state.issue.currentIssue,
+    auth: state.auth,
   }
 }
 

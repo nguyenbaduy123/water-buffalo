@@ -25,6 +25,7 @@ export interface Issue {
   updated_at: string
   assignee_ids: string[]
   tag_ids: number[]
+  reference_ids: string[]
 }
 
 export interface Tag {

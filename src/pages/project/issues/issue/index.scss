@@ -15,6 +15,18 @@
     margin-top: 24px;
     min-height: 200px;
   }
+
+  .issue-main-content {
+    max-height: calc(100vh - 255px);
+    overflow: auto;
+  }
+
+  .issue-comment-box {
+    margin-top: 24px;
+    padding: 12px;
+    background-color: var(--dark-7);
+    border-radius: 8px;
+  }
 }
 
 .issue-assignee-dropdown {

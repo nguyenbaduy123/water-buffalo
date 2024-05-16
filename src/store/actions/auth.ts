@@ -13,8 +13,9 @@ import LifeApi from 'api/LifeApi'
 import { GetAuthResponse } from 'api/LifeApi.d'
 import { Socket } from 'phoenix'
 import { SocketPayload, User } from 'types/global'
-import { channelConnect, infoNotification } from 'utils'
-import { title } from 'process'
+import { channelConnect, getProjectRoute, infoNotification } from 'utils'
+import Router from 'next/router'
+import { notification } from 'antd'
 
 export const loginRequest = () => {
   return {
@@ -113,6 +114,33 @@ export const connectToChannel = (channelName: string) => {
 
     channel.on('issue:toggle_assign', (payload: SocketPayload) => {
       infoNotification('New comment', payload.message)
+    })
+
+    channel.on('issue:toggle_reference', (payload: SocketPayload) => {
+      infoNotification('New comment', payload.message)
+    })
+
+    channel.on('messages:new_comment', (payload: SocketPayload) => {
+      const {
+        project: { data: projects },
+      } = getState()
+      const detail = payload.detail
+      const { project_id } = detail
+      const project = projects.find((p) => p.id == project_id)
+
+      notification.info({
+        message: 'New comment',
+        description: payload.message,
+        style: { cursor: 'pointer' },
+        onClick: () => {
+          if (!project) return
+          Router.push(
+            `/project/issues/issue?owner_name=${project?.owner.id}&project_name=${project?.name}&issue_id=${detail.issue_id}`,
+            `${getProjectRoute(project, `/issues/${detail.issue_id}`)}`
+          )
+          notification.destroy()
+        },
+      })
     })
 
     return {

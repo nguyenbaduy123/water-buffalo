@@ -1,5 +1,5 @@
 import { selectIssue } from 'actions/issue'
-import { Button, Card, Col, Divider, Flex, Row } from 'antd'
+import { Button, Card, Col, Divider, Dropdown, Flex, Row } from 'antd'
 import LifeApi from 'api/LifeApi'
 import withAuth from 'hocs/withAuth'
 import ProjectLayout from 'layouts/ProjectLayout'
@@ -9,13 +9,21 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { AppDispatch, RootState } from 'store'
 import './index.scss'
-import { fromNow } from 'utils'
+import { fromNow, getUserInProject } from 'utils'
 import CommentIssueItem from 'components/CommentIssueItem'
-import { PlusCircle } from '@phosphor-icons/react'
+import {
+  CaretDown,
+  CheckCircle,
+  PlusCircle,
+  XCircle,
+} from '@phosphor-icons/react'
 import ModalCreateTask from 'feature/issues/ModalCreateTask'
 import TaskItem from 'components/TaskItem'
 import { loadTasks } from 'actions/task'
 import IssueRightBar from 'feature/issues/IssueRightBar'
+import Editor from 'components/Editor'
+import { COLORS } from 'utils/css'
+import { Message } from 'types/message'
 
 interface Props {
   issues: RootState['issue']['data']
@@ -24,29 +32,50 @@ interface Props {
   currentIssue: RootState['issue']['currentIssue']
   task: RootState['task']
   dispatch: AppDispatch
+  auth: RootState['auth']
 }
 
 const Issue: NextPage<Props> = ({
   currentProject,
   dispatch,
   currentIssue,
+  issues,
   task,
+  auth,
 }) => {
   const router = useRouter()
 
   const [openModalCreateTask, setOpenModalCreateTask] = React.useState(false)
 
+  const [closeAsCompleted, setCloseAsCompleted] = React.useState(true)
+
   const { issue_id } = router.query
+
+  const [comment, setComment] = React.useState('')
+
+  const [comments, setComments] = React.useState<Message[]>([])
+
+  const getIssueComments = async () => {
+    if (!currentProject || !currentIssue) return
+    const resp = await LifeApi.getIssueComments(
+      currentProject.id,
+      currentIssue.id
+    )
+    if (resp.success) {
+      setComments(resp.messages)
+    }
+  }
 
   const getIssue = async () => {
     if (!currentProject) return
+    const issue = issues.find((issue) => issue.id === parseInt(`${issue_id}`))
     const resp = await LifeApi.getIssueDetail(
       currentProject.id,
       parseInt(`${issue_id}`)
     )
 
     if (resp.success) {
-      dispatch(selectIssue({ currentIssue: resp.issue }))
+      dispatch(selectIssue({ currentIssue: { ...issue, ...resp.issue } }))
     }
   }
 
@@ -55,8 +84,13 @@ const Issue: NextPage<Props> = ({
   }, [currentProject])
 
   useEffect(() => {
-    dispatch(loadTasks())
+    if (currentIssue) {
+      dispatch(loadTasks())
+      getIssueComments()
+    }
   }, [currentIssue])
+
+  console.log(comments)
 
   const userCreated = currentProject?.users.find(
     (user) => user.id === currentIssue?.created_by_id
@@ -64,6 +98,19 @@ const Issue: NextPage<Props> = ({
 
   const creatingNewTask = () => {
     setOpenModalCreateTask(true)
+  }
+
+  const handleComment = async () => {
+    if (!currentProject || !currentIssue) return
+    const resp = await LifeApi.commentOnIssue(
+      currentProject.id,
+      currentIssue.id,
+      comment
+    )
+    if (resp.success) {
+      setComment('')
+      setComments([...comments, resp.message])
+    }
   }
 
   return (
@@ -93,18 +140,16 @@ const Issue: NextPage<Props> = ({
           </div>
           <Divider />
           <Flex className="issue-body">
-            <div style={{ width: '100%', marginRight: 16 }}>
+            <div
+              style={{ width: '100%', marginRight: 16 }}
+              className="issue-main-content"
+            >
               <div>
                 {userCreated && (
                   <CommentIssueItem
+                    id="issueDescription"
                     user={userCreated}
-                    content={
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: currentIssue.description,
-                        }}
-                      />
-                    }
+                    content={currentIssue.description}
                     time={fromNow(currentIssue.inserted_at)}
                   />
                 )}
@@ -118,8 +163,69 @@ const Issue: NextPage<Props> = ({
                   </Flex>
                 </div>
               </Card>
+              <Flex gap={16} vertical style={{ margin: 24 }}>
+                {comments.map((comment) => (
+                  <CommentIssueItem
+                    key={comment.id}
+                    id={comment.id}
+                    rightSide={comment.from_id == auth.userId}
+                    user={getUserInProject(currentProject, comment.from_id)}
+                    content={comment.content}
+                    time={fromNow(comment.inserted_at)}
+                  />
+                ))}
+              </Flex>
+              <div className="issue-comment-box">
+                <h3>Comment</h3>
+                <Editor
+                  height={200}
+                  value={comment}
+                  onEditorChange={(value) => setComment(value)}
+                />
+                <Flex justify="flex-end" style={{ marginTop: 16 }} gap={8}>
+                  <Dropdown.Button
+                    style={{ width: 'unset' }}
+                    icon={<CaretDown size={20} />}
+                    menu={{
+                      items: [
+                        {
+                          key: '1',
+                          label: (
+                            <Flex align="center" gap={8}>
+                              <CheckCircle color={COLORS.purple[6]} />
+                              Close as completed
+                            </Flex>
+                          ),
+                        },
+                        {
+                          key: '2',
+                          label: (
+                            <Flex align="center" gap={8}>
+                              <XCircle color={COLORS.gray[4]} />
+                              Close as not planned
+                            </Flex>
+                          ),
+                        },
+                      ],
+                      onClick: (key) => setCloseAsCompleted(key.key == '1'),
+                    }}
+                  >
+                    <Flex align="center" gap={4}>
+                      {closeAsCompleted ? (
+                        <CheckCircle color={COLORS.purple[6]} size={16} />
+                      ) : (
+                        <XCircle color={COLORS.gray[4]} size={16} />
+                      )}{' '}
+                      Close Issue
+                    </Flex>
+                  </Dropdown.Button>
+                  <Button onClick={handleComment} type="primary">
+                    Comment
+                  </Button>
+                </Flex>
+              </div>
             </div>
-            <Col span={8} style={{ maxWidth: 300 }}>
+            <Col span={8} style={{ maxWidth: '25%' }}>
               <IssueRightBar />
             </Col>
           </Flex>
@@ -129,6 +235,9 @@ const Issue: NextPage<Props> = ({
             issue={currentIssue}
             dispatch={dispatch}
           />
+          <div>
+            <div data-color-mode="light"></div>
+          </div>
         </div>
       )}
     </ProjectLayout>
@@ -140,6 +249,7 @@ const mapStateToProps = (state: RootState) => ({
   task: state.task,
   currentIssue: state.issue.currentIssue,
   currentProject: state.project.currentProject,
+  auth: state.auth,
 })
 
 export default connect(mapStateToProps)(withAuth(Issue))

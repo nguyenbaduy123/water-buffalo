@@ -4,7 +4,7 @@ import { ProjectSettings } from './project'
 export interface User {
   id: string
   email: string
-  username: string | null
+  username: string
   locale: Locale
   country: string | null
   avatar_url: string | null

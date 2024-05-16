@@ -58,8 +58,6 @@ const TaskItem = ({ task, dispatch }: Props) => {
   }
 
   const renderAttachment = (attachment: Attachment, index: number) => {
-    console.log(attachment)
-
     switch (attachment.type) {
       case 'image':
         return (

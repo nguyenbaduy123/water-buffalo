@@ -380,3 +380,21 @@ body {
     margin-bottom: 2px !important;
   }
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-9);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--dark-7);
+  width: 6px;
+  border-radius: 8px;
+}
+
+.tox-toolbar__primary {
+  justify-content: flex-end;
+}

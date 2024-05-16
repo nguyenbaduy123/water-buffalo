@@ -1,5 +1,6 @@
 import { string } from 'prop-types'
 import { Project, User, Notification, FileUploaded } from 'types/global'
+import { Message } from 'types/message'
 import { Attachment, Issue, ProjectSettings, Tag, Task } from 'types/project'
 
 export interface LoginParams {
@@ -136,3 +137,11 @@ export interface AddTagResponse {
 }
 
 export interface UpdateTaskParams extends Partial<Task> {}
+
+export interface MessageResponse {
+  message: Message
+}
+
+export interface MessagesResponse {
+  messages: Message[]
+}

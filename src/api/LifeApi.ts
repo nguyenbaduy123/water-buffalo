@@ -31,6 +31,8 @@ import {
   AddTagParams,
   AddTagResponse,
   UpdateTaskParams,
+  MessagesResponse,
+  MessageResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -174,6 +176,32 @@ class LifeApi extends Api {
     this.post<UpdateTaskResponse>(
       this.makeTaskEndpoint(projectId, issueId, taskId),
       params
+    )
+
+  public toggleReference = (
+    projectId: number,
+    issueId: number,
+    userId: string
+  ) =>
+    this.post(this.makeIssueEndpoint(projectId, issueId, '/reference/toggle'), {
+      user_id: userId,
+    })
+
+  public commentOnIssue = (
+    projectId: number,
+    issueId: number,
+    message: string
+  ) =>
+    this.post<MessageResponse>(
+      this.makeIssueEndpoint(projectId, issueId, '/comment'),
+      {
+        message,
+      }
+    )
+
+  public getIssueComments = (projectId: number, issueId: number) =>
+    this.get<MessagesResponse>(
+      this.makeIssueEndpoint(projectId, issueId, '/comment')
     )
 }
 
