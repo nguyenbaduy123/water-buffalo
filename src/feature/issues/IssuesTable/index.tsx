@@ -60,6 +60,17 @@ const IssueTable = ({
     )
   }
 
+  const getTotalCount = () => {
+    switch (status) {
+      case 'open':
+        return currentProject.issue_open_count
+      case 'closed':
+        return currentProject.issue_closed_count
+      case 'completed':
+        return currentProject.issue_completed_count
+    }
+  }
+
   const columns = [
     {
       title: (
@@ -109,10 +120,7 @@ const IssueTable = ({
       loading={issue.fetching}
       pagination={{
         pageSize: 10,
-        total:
-          currentProject.issue_open_count +
-          currentProject.issue_closed_count +
-          currentProject.issue_completed_count,
+        total: getTotalCount(),
       }}
       onChange={loadMore}
       scroll={{ y: 400 }}

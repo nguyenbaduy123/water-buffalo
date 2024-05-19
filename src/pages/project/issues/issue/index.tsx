@@ -1,5 +1,14 @@
-import { selectIssue } from 'actions/issue'
-import { Button, Card, Col, Divider, Dropdown, Flex, Row } from 'antd'
+import { selectIssue, updateIssueSuccess } from 'actions/issue'
+import {
+  Button,
+  Card,
+  Col,
+  Divider,
+  Dropdown,
+  Flex,
+  Row,
+  notification,
+} from 'antd'
 import LifeApi from 'api/LifeApi'
 import withAuth from 'hocs/withAuth'
 import ProjectLayout from 'layouts/ProjectLayout'
@@ -90,8 +99,6 @@ const Issue: NextPage<Props> = ({
     }
   }, [currentIssue])
 
-  console.log(comments)
-
   const userCreated = currentProject?.users.find(
     (user) => user.id === currentIssue?.created_by_id
   )
@@ -110,6 +117,39 @@ const Issue: NextPage<Props> = ({
     if (resp.success) {
       setComment('')
       setComments([...comments, resp.message])
+    }
+  }
+
+  const handleCloseIssue = async () => {
+    if (!currentProject || !currentIssue) return
+    if (closeAsCompleted) {
+      if (task.data.some((task) => task.status != 'completed')) {
+        notification.error({
+          message: 'Cannot close issue',
+          description: 'All tasks must be completed',
+          placement: 'top',
+        })
+        return
+      }
+
+      const resp = await LifeApi.closeIssue(
+        currentProject.id,
+        currentIssue.id,
+        {
+          is_completed: closeAsCompleted,
+        }
+      )
+
+      if (resp.success) {
+        dispatch(
+          updateIssueSuccess({
+            issue: {
+              ...currentIssue,
+              status: closeAsCompleted ? 'completed' : 'closed',
+            },
+          })
+        )
+      }
     }
   }
 
@@ -186,6 +226,10 @@ const Issue: NextPage<Props> = ({
                   <Dropdown.Button
                     style={{ width: 'unset' }}
                     icon={<CaretDown size={20} />}
+                    onClick={handleCloseIssue}
+                    danger={['closed', 'completed'].includes(
+                      currentIssue.status
+                    )}
                     menu={{
                       items: [
                         {
@@ -216,7 +260,9 @@ const Issue: NextPage<Props> = ({
                       ) : (
                         <XCircle color={COLORS.gray[4]} size={16} />
                       )}{' '}
-                      Close Issue
+                      {['closed', 'completed'].includes(currentIssue.status)
+                        ? 'Reopen Issue'
+                        : 'Close Issue'}
                     </Flex>
                   </Dropdown.Button>
                   <Button onClick={handleComment} type="primary">

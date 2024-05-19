@@ -164,3 +164,7 @@ export interface LoadOrganizationsResponse {
 export interface GetOrganizationResponse {
   organization: Organization
 }
+
+export interface CloseIssueParams {
+  is_completed: boolean
+}

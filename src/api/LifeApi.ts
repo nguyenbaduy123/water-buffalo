@@ -37,6 +37,8 @@ import {
   GetOrganizationResponse,
   LoadOrganizationsResponse,
   CreateOrganizationResponse,
+  CloseIssueParams,
+  UpdateIssueResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -206,6 +208,16 @@ class LifeApi extends Api {
   public getIssueComments = (projectId: number, issueId: number) =>
     this.get<MessagesResponse>(
       this.makeIssueEndpoint(projectId, issueId, '/comment')
+    )
+
+  public closeIssue = (
+    projectId: number,
+    issueId: number,
+    params: CloseIssueParams
+  ) =>
+    this.post<UpdateIssueResponse>(
+      this.makeIssueEndpoint(projectId, issueId, '/close'),
+      params
     )
 
   public createOrganization = (params: CreateOrganizationParams) =>
