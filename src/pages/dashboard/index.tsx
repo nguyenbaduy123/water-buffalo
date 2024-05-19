@@ -6,7 +6,6 @@ import { Col, Row } from 'antd'
 
 import { AuthState } from 'reducers/types'
 import { AppDispatch, RootState } from 'store'
-import MainLayout from 'layouts/MainLayout'
 import Sidebar from 'feature/dashboard/Sidebar'
 import './index.scss'
 
@@ -17,7 +16,7 @@ interface Props {
 
 const Dashboard: NextPage<Props> = (props: Props) => {
   return (
-    <MainLayout>
+    <div>
       <Row className="dashboard-container">
         <Col>
           <Sidebar />
@@ -26,7 +25,7 @@ const Dashboard: NextPage<Props> = (props: Props) => {
           <div className="dashboard-page">123ss123</div>
         </Col>
       </Row>
-    </MainLayout>
+    </div>
   )
 }
 

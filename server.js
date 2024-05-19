@@ -62,6 +62,19 @@ app.prepare().then(() => {
     app.render(req, res, '/project/new')
   )
 
+  server.get('/organization', authenticate, (req, res) =>
+    app.render(req, res, '/organization')
+  )
+
+  server.get('/organization/new', authenticate, (req, res) =>
+    app.render(req, res, '/organization/new')
+  )
+
+  server.get('/organization/:organization_id', authenticate, (req, res) => {
+    const { organization_id } = req.params
+    return app.render(req, res, '/organization', { organization_id })
+  })
+
   server.get('/:owner_name/:project_name', authenticate, handleProjectRoute())
 
   server.get(

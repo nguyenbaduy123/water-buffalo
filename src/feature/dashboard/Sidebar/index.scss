@@ -3,6 +3,7 @@
   padding: 16px 24px;
   height: 100%;
   width: 360px;
+  min-height: calc(100vh - 64px);
 
   .sidebar-header {
     padding: 12px 0;
@@ -19,5 +20,9 @@
         text-decoration: underline;
       }
     }
+  }
+
+  .current-user {
+    cursor: pointer;
   }
 }

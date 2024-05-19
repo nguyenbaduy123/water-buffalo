@@ -3,6 +3,7 @@ import projectReducer from './project'
 import notificationReducer from './notification'
 import issueReducer from './issue'
 import taskReducer from './task'
+import organizationReducer from './organization'
 
 export default {
   auth: authReducer,
@@ -10,4 +11,5 @@ export default {
   notification: notificationReducer,
   issue: issueReducer,
   task: taskReducer,
+  organization: organizationReducer,
 }

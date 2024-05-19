@@ -4,7 +4,6 @@ import { Button, Col, Divider, Flex, Input, Row, Select, Spin } from 'antd'
 import { useCallback, useEffect, useState } from 'react'
 
 import withAuth from 'hocs/withAuth'
-import MainLayout from 'layouts/MainLayout'
 import { AuthState } from 'reducers/types'
 import { connectAndMapStateToProps } from 'utils/redux'
 import './index.scss'
@@ -80,7 +79,7 @@ const NewProject: NextPage<Props> = ({ auth }: Props) => {
   }
 
   return (
-    <MainLayout>
+    <div>
       <div className="new-project-page">
         <div className="new-project-header">
           <h3 className="new-pj-header">Create a new project</h3>
@@ -176,7 +175,7 @@ const NewProject: NextPage<Props> = ({ auth }: Props) => {
           </Flex>
         </div>
       </div>
-    </MainLayout>
+    </div>
   )
 }
 

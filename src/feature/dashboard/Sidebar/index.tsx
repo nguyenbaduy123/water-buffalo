@@ -1,7 +1,7 @@
 import { AppDispatch, RootState } from 'store'
-import { Button, Divider, Flex } from 'antd'
+import { Button, Divider, Dropdown, Flex, MenuProps } from 'antd'
 import Router from 'next/router'
-import { FolderPlus } from '@phosphor-icons/react'
+import { CaretDown, FolderPlus, Plus } from '@phosphor-icons/react'
 
 import './index.scss'
 import CurrentUserAvatar from 'common/CurrentUserAvatar'
@@ -17,6 +17,15 @@ interface Props {
   dispatch: AppDispatch
 }
 
+const UserSelectItems: MenuProps['items'] = [
+  {
+    key: '1',
+    label: 'Create Organization',
+    icon: <Plus size={14} />,
+    onClick: () => Router.push('/organization/new'),
+  },
+]
+
 const Sidebar = ({ auth, project, dispatch }: Props) => {
   const handleClickNew = () => {
     Router.push('project/new', '/new')
@@ -30,42 +39,51 @@ const Sidebar = ({ auth, project, dispatch }: Props) => {
   return (
     <aside className="dashboard-sidebar">
       <div className="sidebar-header">
-        <Flex align="center" gap={8}>
-          <CurrentUserAvatar size={24} textSizeRatio={1.75} />
-          <div className="current-user">{auth.username || auth.email}</div>
-        </Flex>
+        <Dropdown trigger={['click']} menu={{ items: UserSelectItems }}>
+          <Flex align="center" gap={8} className="current-user">
+            <CurrentUserAvatar size={24} textSizeRatio={1.75} />
+            <div className="current-user">{auth.username || auth.email}</div>
+            <CaretDown size={16} />
+          </Flex>
+        </Dropdown>
       </div>
       <div className="sidebar-container">
-        <Flex align="center" justify="space-between">
-          <div className="top-projects">Top Projects</div>
-          <Button type="primary" icon={<FolderPlus />} onClick={handleClickNew}>
-            New
-          </Button>
-        </Flex>
-        <Divider />
-
-        <Flex className="list-projects" vertical>
-          {project.data.map((project) => (
-            <div
-              key={project.id}
-              className="project-item"
-              onClick={() => redirectToProject(project)}
+        <div>
+          <Flex align="center" justify="space-between">
+            <div className="top-projects">Top Projects</div>
+            <Button
+              type="primary"
+              icon={<FolderPlus />}
+              onClick={handleClickNew}
             >
-              <Flex className="project-name" gap={6}>
-                <UserAvatar
-                  name={project.owner.username}
-                  src={project.owner.avatar_url}
-                  size={16}
-                  textSizeRatio={1.5}
-                  round
-                />
-                <div className="project-unique-name">
-                  {getProjectUniqueName(project)}
-                </div>
-              </Flex>
-            </div>
-          ))}
-        </Flex>
+              New
+            </Button>
+          </Flex>
+          <Divider />
+
+          <Flex className="list-projects" vertical>
+            {project.data.map((project) => (
+              <div
+                key={project.id}
+                className="project-item"
+                onClick={() => redirectToProject(project)}
+              >
+                <Flex className="project-name" gap={6}>
+                  <UserAvatar
+                    name={project.owner.username}
+                    src={project.owner.avatar_url}
+                    size={16}
+                    textSizeRatio={1.5}
+                    round
+                  />
+                  <div className="project-unique-name">
+                    {getProjectUniqueName(project)}
+                  </div>
+                </Flex>
+              </div>
+            ))}
+          </Flex>
+        </div>
       </div>
     </aside>
   )

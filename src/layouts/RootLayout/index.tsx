@@ -2,6 +2,7 @@ import { connectSocket } from 'actions/auth'
 import { getNotifications } from 'actions/notification'
 import { loadProjects } from 'actions/project'
 import { useAppDispatch } from 'hooks'
+import MainLayout from 'layouts/MainLayout'
 import { useEffect } from 'react'
 import { AuthState, ProjectState } from 'reducers/types'
 import { connectAndMapStateToProps } from 'utils/redux'
@@ -20,7 +21,11 @@ const RootLayout = ({ children, auth, project }: LayoutProps) => {
     dispatch(loadProjects())
     dispatch(getNotifications())
   }, [])
-  return <main>{children}</main>
+  return (
+    <main>
+      <MainLayout>{children}</MainLayout>
+    </main>
+  )
 }
 
 export default connectAndMapStateToProps(['auth', 'project'])(RootLayout)

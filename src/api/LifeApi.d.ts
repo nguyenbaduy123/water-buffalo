@@ -1,6 +1,7 @@
 import { string } from 'prop-types'
 import { Project, User, Notification, FileUploaded } from 'types/global'
 import { Message } from 'types/message'
+import { Organization } from 'types/organization'
 import { Attachment, Issue, ProjectSettings, Tag, Task } from 'types/project'
 
 export interface LoginParams {
@@ -144,4 +145,22 @@ export interface MessageResponse {
 
 export interface MessagesResponse {
   messages: Message[]
+}
+
+export interface CreateOrganizationParams {
+  name: string
+  description: string
+  avatar_url: string
+}
+
+export interface CreateOrganizationResponse {
+  organization: Organization
+}
+
+export interface LoadOrganizationsResponse {
+  organizations: Organization[]
+}
+
+export interface GetOrganizationResponse {
+  organization: Organization
 }

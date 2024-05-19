@@ -3,7 +3,7 @@ import ProjectNavbar from 'feature/project/ProjectNavbar'
 import { useAppDispatch } from 'hooks'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { AuthState, ProjectState } from 'reducers/types'
+import { ProjectState } from 'reducers/types'
 import { connectAndMapStateToProps } from 'utils/redux'
 import { ProjectTabs } from 'feature/project/ProjectNavbar/ProjectNavbar'
 
@@ -39,7 +39,6 @@ const ProjectLayout = ({ children, project, currentTabId }: Props) => {
 
   return (
     <div className="project-layout main-layout">
-      <Navbar />
       <ProjectNavbar
         currentTabId={currentTabId}
         currentProject={project.currentProject}

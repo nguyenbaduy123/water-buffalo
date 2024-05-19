@@ -3,6 +3,7 @@ import { Locale, Notification, Project, User } from 'types/global'
 import { HYDRATE } from 'next-redux-wrapper'
 import { Issue, Task } from 'types/project'
 import { Socket } from 'phoenix'
+import { Organization } from 'types/organization'
 
 export interface Actions<T extends keyof PayloadTypes> {
   type: T
@@ -63,6 +64,12 @@ export interface PayloadTypes {
 
   LOAD_USER_NOTIFICATIONS: { notifications: Notification[] }
 
+  LOAD_ORGANIZATIONS_REQUEST: undefined
+  LOAD_ORGANIZATIONS_SUCCESS: { organizations: Organization[] }
+  SELECT_ORGANIZATION: { organization: Organization }
+  UPDATE_ORGANIZATION_SUCCESS: { organization: Organization }
+  CREATE_ORGANIZATION_SUCCESS: { organization: Organization }
+
   LOAD_ISSUES_REQUEST: undefined
   LOAD_ISSUES_SUCCESS: { issues: Issue[] }
   LOAD_MORE_ISSUES_SUCCESS: { issues: Issue[] }
@@ -89,4 +96,10 @@ export interface IssueState {
 export interface TaskState {
   data: Task[]
   fetching: boolean
+}
+
+export interface OrganizationState {
+  data: Organization[]
+  fetching: boolean
+  currentOrganization: Organization | null
 }
