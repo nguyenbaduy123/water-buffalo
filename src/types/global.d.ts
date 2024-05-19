@@ -19,6 +19,8 @@ export interface Workspace {
   owner_id: string
 }
 
+export type Permissions = 'OWNER' | 'ADMIN' | 'MODERATOR' | 'MEMBER'
+
 export interface UserProject extends User {
   permission: 'OWNER' | 'ADMIN' | 'MODERATOR' | 'MEMBER'
 }

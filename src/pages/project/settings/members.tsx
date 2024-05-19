@@ -1,3 +1,4 @@
+import ProjectUsersTable from 'feature/project/UsersTable'
 import SettingLayout from 'layouts/SettingLayout'
 import { NextPage } from 'next'
 import React from 'react'
@@ -8,8 +9,12 @@ interface Props {
   currentProject: RootState['project']['currentProject']
 }
 
-const SettingMember: NextPage<Props> = () => {
-  return <SettingLayout currentTabId="members">Tags</SettingLayout>
+const SettingMember: NextPage<Props> = ({ currentProject }) => {
+  return (
+    <SettingLayout currentTabId="members">
+      {currentProject && <ProjectUsersTable currentProject={currentProject} />}
+    </SettingLayout>
+  )
 }
 
 const mapStateToProps = (state: RootState) => {

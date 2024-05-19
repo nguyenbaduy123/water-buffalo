@@ -1,12 +1,12 @@
 import { FileUploaded } from './global'
 
 export interface UserProject {
-  id: number
+  id: string
   name: string
   username: string
   email: string
   avatar_url: string | null
-  role: string
+  permission: string
 }
 
 export type IssueStatus = 'open' | 'closed' | 'completed'

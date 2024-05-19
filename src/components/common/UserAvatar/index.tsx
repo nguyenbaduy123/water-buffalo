@@ -6,7 +6,11 @@ import { Tooltip } from 'antd'
 
 interface Props extends Omit<UserAvatarProps, 'name'> {
   name?: string | null
-  user?: User
+  user?: {
+    avatar_url?: string | null
+    name?: string | null
+    username: string
+  }
   withTooltip?: boolean
 }
 
@@ -16,6 +20,7 @@ const UserAvatar = ({
   src,
   name,
   withTooltip,
+  round = true,
   ...props
 }: Props) => {
   const sizeString = size?.toString()
@@ -24,7 +29,8 @@ const UserAvatar = ({
     <Avatar
       size={sizeString}
       src={user.avatar_url || undefined}
-      name={user.name || user.username || user.email}
+      name={user.name || user.username}
+      round={round}
       {...props}
     />
   ) : (

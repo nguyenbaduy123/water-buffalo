@@ -17,7 +17,7 @@ interface Props {
   dispatch: AppDispatch
 }
 
-const UserSelectItems: MenuProps['items'] = [
+const userSelectItems: MenuProps['items'] = [
   {
     key: '1',
     label: 'Create Organization',
@@ -39,7 +39,7 @@ const Sidebar = ({ auth, project, dispatch }: Props) => {
   return (
     <aside className="dashboard-sidebar">
       <div className="sidebar-header">
-        <Dropdown trigger={['click']} menu={{ items: UserSelectItems }}>
+        <Dropdown trigger={['click']} menu={{ items: userSelectItems }}>
           <Flex align="center" gap={8} className="current-user">
             <CurrentUserAvatar size={24} textSizeRatio={1.75} />
             <div className="current-user">{auth.username || auth.email}</div>

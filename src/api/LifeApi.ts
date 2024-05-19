@@ -39,6 +39,7 @@ import {
   CreateOrganizationResponse,
   CloseIssueParams,
   UpdateIssueResponse,
+  UpdateProjectPermissionParams,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -228,6 +229,11 @@ class LifeApi extends Api {
 
   public getOrganization = (id: string) =>
     this.get<GetOrganizationResponse>(`/organization/${id}`)
+
+  public updateProjectPermission = (
+    projectId: number,
+    params: UpdateProjectPermissionParams
+  ) => this.post(`/project/${projectId}/user/permission`, params)
 }
 
 export default new LifeApi()

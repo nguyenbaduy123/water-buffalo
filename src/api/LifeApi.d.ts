@@ -1,5 +1,11 @@
 import { string } from 'prop-types'
-import { Project, User, Notification, FileUploaded } from 'types/global'
+import {
+  Project,
+  User,
+  Notification,
+  FileUploaded,
+  Permissions,
+} from 'types/global.d'
 import { Message } from 'types/message'
 import { Organization } from 'types/organization'
 import { Attachment, Issue, ProjectSettings, Tag, Task } from 'types/project'
@@ -167,4 +173,9 @@ export interface GetOrganizationResponse {
 
 export interface CloseIssueParams {
   is_completed: boolean
+}
+
+export interface UpdateProjectPermissionParams {
+  user_id: string
+  permission: Permissions | 'remove'
 }
