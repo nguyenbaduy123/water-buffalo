@@ -1,5 +1,6 @@
 import { connectSocket } from 'actions/auth'
 import { getNotifications } from 'actions/notification'
+import { loadOrganizations } from 'actions/organization'
 import { loadProjects } from 'actions/project'
 import { useAppDispatch } from 'hooks'
 import MainLayout from 'layouts/MainLayout'
@@ -20,6 +21,7 @@ const RootLayout = ({ children, auth, project }: LayoutProps) => {
     dispatch(connectSocket())
     dispatch(loadProjects())
     dispatch(getNotifications())
+    dispatch(loadOrganizations())
   }, [])
   return (
     <main>

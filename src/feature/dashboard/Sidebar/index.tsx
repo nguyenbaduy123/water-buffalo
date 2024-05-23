@@ -14,6 +14,7 @@ import { selectProject } from 'actions/project'
 interface Props {
   auth: RootState['auth']
   project: RootState['project']
+  organization: RootState['organization']
   dispatch: AppDispatch
 }
 
@@ -26,7 +27,7 @@ const userSelectItems: MenuProps['items'] = [
   },
 ]
 
-const Sidebar = ({ auth, project, dispatch }: Props) => {
+const Sidebar = ({ auth, project, organization, dispatch }: Props) => {
   const handleClickNew = () => {
     Router.push('project/new', '/new')
   }
@@ -59,7 +60,6 @@ const Sidebar = ({ auth, project, dispatch }: Props) => {
               New
             </Button>
           </Flex>
-          <Divider />
 
           <Flex className="list-projects" vertical>
             {project.data.map((project) => (
@@ -83,10 +83,50 @@ const Sidebar = ({ auth, project, dispatch }: Props) => {
               </div>
             ))}
           </Flex>
+
+          <Divider />
+
+          <div className="organization">
+            <Flex
+              align="center"
+              justify="space-between"
+              style={{ marginBottom: 12 }}
+            >
+              <div>Organizations</div>
+            </Flex>
+            <div className="organization-list">
+              {organization.data.map((org) => (
+                <Flex
+                  align="center"
+                  gap={4}
+                  key={org.id}
+                  className="organization-item"
+                  style={{ cursor: 'pointer', padding: '8px 0' }}
+                  onClick={() =>
+                    Router.push(
+                      `/organization/${org.username}?organization_id=${org.id}`,
+                      `/organization/${org.username}`
+                    )
+                  }
+                >
+                  <UserAvatar
+                    name={org.name}
+                    src={org.avatar_url}
+                    size={16}
+                    textSizeRatio={1.75}
+                    round
+                  />
+                  <div className="organization-name">{org.name}</div>
+                </Flex>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </aside>
   )
 }
 
-export default connectAndMapStateToProps(['auth', 'project'])(Sidebar)
+export default connectAndMapStateToProps(['auth', 'project', 'organization'])(
+  Sidebar
+)

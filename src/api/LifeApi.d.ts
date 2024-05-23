@@ -1,3 +1,4 @@
+import { Channel } from 'diagnostics_channel'
 import { string } from 'prop-types'
 import {
   Project,
@@ -178,4 +179,16 @@ export interface CloseIssueParams {
 export interface UpdateProjectPermissionParams {
   user_id: string
   permission: Permissions | 'remove'
+}
+
+export interface LoadChannelsResponse {
+  channels: Channel[]
+}
+
+export interface CreateChannelParams {
+  name: string
+}
+
+export interface CreateChannelResponse {
+  channel: Channel
 }

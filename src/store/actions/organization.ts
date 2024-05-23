@@ -25,13 +25,17 @@ export const selectOrganizationSuccess = createPlainAction(SELECT_ORGANIZATION)
 
 export const selectOrganization = (organizationId: string) => {
   return async (dispatch: AppDispatch, getState: GetStateFunc) => {
-    const resp = await LifeApi.getOrganization(organizationId)
-
     const organizations = getState().organization.data
 
     const currentOrganization = organizations.find(
-      (org) => org.id === organizationId
+      (org) => org.id === organizationId || org.username === organizationId
     )
+
+    if (!currentOrganization) {
+      return
+    }
+
+    const resp = await LifeApi.getOrganization(currentOrganization.id)
 
     if (resp.success) {
       dispatch(
@@ -43,7 +47,7 @@ export const selectOrganization = (organizationId: string) => {
   }
 }
 
-export const loadOrganization: ActionFunc = () => {
+export const loadOrganizations: ActionFunc = () => {
   return async (dispatch, getState) => {
     dispatch(loadOrganizationRequest())
 

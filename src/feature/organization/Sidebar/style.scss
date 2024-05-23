@@ -1,0 +1,33 @@
+.organization-sidebar {
+  padding-left: 12px;
+  max-width: 360px;
+  width: 25%;
+  height: calc(100vh - 58px);
+  .channels-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding: 12px 8px;
+  }
+
+  .channel-item {
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    line-height: 22px;
+
+    &:not(:last-child) {
+      margin-bottom: 8px;
+    }
+
+    &:hover {
+      background-color: var(--dark-8);
+    }
+
+    &.selected {
+      background-color: var(--dark-6);
+    }
+  }
+}

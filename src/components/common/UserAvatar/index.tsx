@@ -38,6 +38,7 @@ const UserAvatar = ({
       size={sizeString}
       src={src || undefined}
       name={name || undefined}
+      round={round}
       {...props}
     />
   )

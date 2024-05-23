@@ -3,3 +3,16 @@
   align-items: center;
   justify-content: center;
 }
+
+.reply-box {
+  padding: 4px;
+  background-color: #000;
+  border-radius: 4px;
+  .ant-input {
+    border: none !important;
+    background-color: #000;
+    font-size: 14px;
+    font-weight: 400;
+    box-shadow: none;
+  }
+}

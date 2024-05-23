@@ -372,6 +372,7 @@
 
 body {
   color: var(--color-white);
+  font-weight: 400;
 }
 
 .ant-dropdown-menu-item {
@@ -397,4 +398,35 @@ body {
 
 .tox-toolbar__primary {
   justify-content: flex-end;
+}
+
+.w100p {
+  width: 100% !important;
+}
+
+.h100p {
+  height: 100% !important;
+}
+
+.ph24 {
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+
+.ph16 {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+.pv24 {
+  padding-top: 24px !important;
+  padding-bottom: 24px !important;
+}
+
+.p8 {
+  padding: 8px !important;
+}
+
+.cpt {
+  cursor: pointer;
 }

@@ -80,6 +80,10 @@ export interface PayloadTypes {
   LOAD_TASK_SUCCESS: { tasks: Task[] }
   UPDATE_TASK_SUCCESS: { task: Task }
   CREATE_TASK_SUCCESS: { task: Task }
+
+  LOAD_CHANNELS_SUCCESS: { channels: Channel[] }
+  LOAD_CHANNELS_REQUEST: undefined
+  SELECT_CHANNEL: { currentChannelId: string }
 }
 
 export interface NotificationState {
@@ -102,4 +106,10 @@ export interface OrganizationState {
   data: Organization[]
   fetching: boolean
   currentOrganization: Organization | null
+}
+
+export interface ChannelState {
+  data: Channel[]
+  fetching: boolean
+  currentChannelId: string
 }

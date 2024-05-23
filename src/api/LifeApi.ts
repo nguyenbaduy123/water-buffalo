@@ -40,6 +40,9 @@ import {
   CloseIssueParams,
   UpdateIssueResponse,
   UpdateProjectPermissionParams,
+  CreateChannelParams,
+  CreateChannelResponse,
+  LoadChannelsResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -234,6 +237,18 @@ class LifeApi extends Api {
     projectId: number,
     params: UpdateProjectPermissionParams
   ) => this.post(`/project/${projectId}/user/permission`, params)
+
+  public loadChannels = (organizationId: string) =>
+    this.get<LoadChannelsResponse>(`/organization/${organizationId}/channel`)
+
+  public createChannel = (
+    organizationId: string,
+    params: CreateChannelParams
+  ) =>
+    this.post<CreateChannelResponse>(
+      `organization/${organizationId}/channel`,
+      params
+    )
 }
 
 export default new LifeApi()
