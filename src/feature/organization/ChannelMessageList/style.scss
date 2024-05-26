@@ -4,4 +4,6 @@
   border-radius: 16px;
   margin-top: 8px;
   padding: 8px;
+  max-height: calc(100vh - 220px);
+  overflow: auto;
 }

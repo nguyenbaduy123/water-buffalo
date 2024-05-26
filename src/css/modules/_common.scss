@@ -16,3 +16,65 @@
     box-shadow: none;
   }
 }
+
+.message-list-item {
+  margin-top: 8px;
+  margin-bottom: 8px;
+
+  .message-content {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    display: inline-block;
+    border-radius: 12px;
+  }
+
+  &.message--same-user-top {
+    margin-top: 4px;
+  }
+
+  &.message--same-user-bottom {
+    margin-bottom: 4px;
+  }
+
+  &.message--mine {
+    margin-left: auto;
+    text-align: right;
+
+    .message-content {
+      background-color: var(--blue-8);
+    }
+
+    &.message--same-user-top {
+      .message-content {
+        border-top-right-radius: 4px;
+      }
+    }
+
+    &.message--same-user-bottom {
+      .message-content {
+        border-bottom-right-radius: 4px;
+      }
+    }
+  }
+
+  &.message--other {
+    margin-right: auto;
+
+    .message-content {
+      background-color: #000;
+    }
+
+    &.message--same-user-top {
+      .message-content {
+        border-top-left-radius: 4px;
+      }
+    }
+
+    &.message--same-user-bottom {
+      .message-content {
+        border-bottom-left-radius: 4px;
+      }
+    }
+  }
+}

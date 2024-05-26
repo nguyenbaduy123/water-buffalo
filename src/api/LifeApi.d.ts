@@ -1,5 +1,3 @@
-import { Channel } from 'diagnostics_channel'
-import { string } from 'prop-types'
 import {
   Project,
   User,
@@ -8,7 +6,7 @@ import {
   Permissions,
 } from 'types/global.d'
 import { Message } from 'types/message'
-import { Organization } from 'types/organization'
+import { Channel, Organization } from 'types/organization'
 import { Attachment, Issue, ProjectSettings, Tag, Task } from 'types/project'
 
 export interface LoginParams {
@@ -191,4 +189,9 @@ export interface CreateChannelParams {
 
 export interface CreateChannelResponse {
   channel: Channel
+}
+
+export interface SendMessageParams {
+  message: string
+  attachments?: FileUploaded[] | null
 }

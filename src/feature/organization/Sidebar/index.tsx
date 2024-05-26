@@ -1,13 +1,15 @@
-import { Button, Flex, Tooltip } from 'antd'
+import { Button, Dropdown, Flex, Tooltip } from 'antd'
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { AppDispatch, RootState } from 'store'
 import { Channel } from 'types/organization'
 
 import './style.scss'
-import { Plus } from '@phosphor-icons/react'
+import { CaretDown, Plus } from '@phosphor-icons/react'
 import ModalCreateNewChannel from '../ModalCreateNewChannel'
 import { selectChannel } from 'actions/channel'
+import ModalInviteUsers from 'components/ModalInviteUsers'
+import ModalInviteMembers from '../ModalInviteMembers'
 
 interface Props {
   currentOrganization: RootState['organization']['currentOrganization']
@@ -21,6 +23,7 @@ const OrganizationSidebar = ({
   currentChannelId,
 }: Props) => {
   const [openModalCreateChannel, setOpenModalCreateChannel] = useState(false)
+  const [openModalInviteMembers, setOpenModalInviteMembers] = useState(false)
 
   const handleSelectChannel = (channelId: string) => {
     dispatch(selectChannel(channelId))
@@ -42,24 +45,48 @@ const OrganizationSidebar = ({
 
   return (
     <div className="organization-sidebar">
-      <Flex align="center" justify="space-between">
-        <h3 className="channels-title">Channels</h3>
-        <Tooltip title="Create a new channel">
-          <Button onClick={() => setOpenModalCreateChannel(true)}>
-            <Plus size={16} />
-          </Button>
-        </Tooltip>
-      </Flex>
+      <h3 className="channels-title">
+        <Flex align="center" justify="space-between">
+          <div>{currentOrganization?.name}</div>
+          <div>
+            <Dropdown
+              trigger={['click']}
+              placement="bottomRight"
+              menu={{
+                items: [
+                  {
+                    key: '1',
+                    label: 'Create a new Channel',
+                    onClick: () => setOpenModalCreateChannel(true),
+                  },
+                  {
+                    key: '2',
+                    label: 'Invite members',
+                    onClick: () => setOpenModalInviteMembers(true),
+                  },
+                ],
+              }}
+            >
+              <Button icon={<CaretDown />} />
+            </Dropdown>
+          </div>
+        </Flex>
+      </h3>
       {currentOrganization && (
         <Flex vertical gap={8}>
           {currentOrganization.channels.map(renderChannelItem)}
         </Flex>
       )}
-
       <ModalCreateNewChannel
         open={openModalCreateChannel}
         onCancel={() => setOpenModalCreateChannel(false)}
         organizationId={currentOrganization?.id || ''}
+      />
+
+      <ModalInviteMembers
+        organizationId={currentOrganization?.id || ''}
+        open={openModalInviteMembers}
+        onCancel={() => setOpenModalInviteMembers(false)}
       />
     </div>
   )

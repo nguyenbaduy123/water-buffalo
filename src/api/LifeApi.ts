@@ -43,6 +43,7 @@ import {
   CreateChannelParams,
   CreateChannelResponse,
   LoadChannelsResponse,
+  SendMessageParams,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -249,6 +250,42 @@ class LifeApi extends Api {
       `organization/${organizationId}/channel`,
       params
     )
+
+  public getChannelMessages = (organizationId: string, channelId: string) =>
+    this.get<MessagesResponse>(
+      `/organization/${organizationId}/channel/${channelId}/message`
+    )
+
+  public sendMessageToChannel = (
+    organizationId: string,
+    channelId: string,
+    params: SendMessageParams
+  ) =>
+    this.post<MessageResponse>(
+      `/organization/${organizationId}/channel/${channelId}/message`,
+      params
+    )
+
+  public inviteToOrganization = (organizationId: string, userId: string) =>
+    this.post(`/organization/${organizationId}/invite`, { user_id: userId })
+
+  public acceptOrDeclineOrganizationInvitation = (
+    organizationId: string,
+    invitationId: string,
+    isAccept: boolean
+  ) =>
+    this.post(`/organization/${organizationId}/invite/${invitationId}/status`, {
+      is_accept: isAccept,
+    })
+
+  public addUserToChannel = (
+    organizationId: string,
+    channelId: string,
+    userId: string
+  ) =>
+    this.post(`/organization/${organizationId}/channel/${channelId}/user`, {
+      user_id: userId,
+    })
 }
 
 export default new LifeApi()

@@ -3,7 +3,8 @@ import { Locale, Notification, Project, User } from 'types/global'
 import { HYDRATE } from 'next-redux-wrapper'
 import { Issue, Task } from 'types/project'
 import { Socket } from 'phoenix'
-import { Organization } from 'types/organization'
+import { Channel, Organization } from 'types/organization'
+import { Message } from 'types/message'
 
 export interface Actions<T extends keyof PayloadTypes> {
   type: T
@@ -84,6 +85,9 @@ export interface PayloadTypes {
   LOAD_CHANNELS_SUCCESS: { channels: Channel[] }
   LOAD_CHANNELS_REQUEST: undefined
   SELECT_CHANNEL: { currentChannelId: string }
+  LOAD_CHANNEL_MESSAGES_REQUEST: undefined
+  LOAD_CHANNEL_MESSAGES_SUCCESS: { messages: Message[] }
+  CHANNEL_NEW_MESSAGE: { message: Message }
 }
 
 export interface NotificationState {
@@ -112,4 +116,6 @@ export interface ChannelState {
   data: Channel[]
   fetching: boolean
   currentChannelId: string
+  messages: Message[]
+  fetchingMessages: boolean
 }

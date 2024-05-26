@@ -1,3 +1,4 @@
+import { loadChannels } from 'actions/channel'
 import { selectOrganization } from 'actions/organization'
 import withAuth from 'hocs/withAuth'
 import { useRouter } from 'next/router'
@@ -22,6 +23,13 @@ const OrganizationLayout = ({ organization, dispatch, children }: Props) => {
     }
     dispatch(selectOrganization(organization_id as string))
   }, [organization.fetching])
+
+  useEffect(() => {
+    if (!organization.currentOrganization) {
+      return
+    }
+    dispatch(loadChannels(organization.currentOrganization.id))
+  }, [organization.currentOrganization])
 
   return <div>{children}</div>
 }

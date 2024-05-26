@@ -16,6 +16,7 @@ import { SocketPayload, User } from 'types/global'
 import { channelConnect, getProjectRoute, infoNotification } from 'utils'
 import Router from 'next/router'
 import { notification } from 'antd'
+import { channelNewMessage, loadChannels } from './channel'
 
 export const loginRequest = () => {
   return {
@@ -124,7 +125,7 @@ export const connectToChannel = (channelName: string) => {
       const {
         project: { data: projects },
       } = getState()
-      const detail = payload.detail
+      const detail = payload.info
       const { project_id } = detail
       const project = projects.find((p) => p.id == project_id)
 
@@ -141,6 +142,44 @@ export const connectToChannel = (channelName: string) => {
           notification.destroy()
         },
       })
+    })
+
+    channel.on('organization:invitation', (payload: SocketPayload) => {
+      notification.info({
+        message: 'New invitation',
+        description: payload.message,
+        style: { cursor: 'pointer' },
+        btn: 'OK',
+      })
+    })
+
+    channel.on('channels:new_user', (payload: SocketPayload) => {
+      notification.info({
+        message: 'New user',
+        description: payload.message,
+      })
+
+      const {
+        organization: { currentOrganization },
+      } = getState()
+      if (currentOrganization) {
+        dispatch(loadChannels(currentOrganization.id))
+      }
+    })
+
+    channel.on('channels:new_message', (payload: SocketPayload) => {
+      const {
+        channel: { currentChannelId },
+      } = getState()
+
+      if (currentChannelId == payload.info.channel_id) {
+        dispatch(channelNewMessage({ message: payload.info.message }))
+      } else {
+        notification.info({
+          message: 'New message',
+          description: payload.message,
+        })
+      }
     })
 
     return {

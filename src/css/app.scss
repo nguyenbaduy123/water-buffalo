@@ -430,3 +430,9 @@ body {
 .cpt {
   cursor: pointer;
 }
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

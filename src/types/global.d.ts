@@ -46,16 +46,21 @@ export interface NotificationMap {
     from: User
     invitation_id: string
   }
+  'organization:invitation': {
+    organization_id: string
+    from: User
+    invitation_id: string
+  }
 }
 
 export type NotificationType = keyof NotificationMap
 export interface Notification<T extends NotificationType = NotificationType> {
   id: number
   message: string
-  type: T
+  type: string
   seen: boolean
   inserted_at: string
-  detail: NotificationMap[T]
+  detail: Record<string, any>
 }
 
 export interface ProviderProps {
@@ -74,5 +79,5 @@ export interface FileUploaded {
 export interface SocketPayload {
   type: string
   message: string
-  detail: Record<string, any>
+  info: Record<string, any>
 }

@@ -65,6 +65,54 @@ const NotificationItem = ({ notification }: Props) => {
             </div>
           </Flex>
         )
+
+      case 'organization:invitation':
+        const acceptOrDeclineOrganizationInvitation = async (
+          accept: boolean
+        ) => {
+          const resp = await LifeApi.acceptOrDeclineOrganizationInvitation(
+            notification.detail.organization_id,
+            notification.detail.invitation_id,
+            accept
+          )
+
+          if (resp.success) {
+            successNotification(
+              'Success',
+              `Invitation has been ${accept ? 'accepted' : 'declined'}`
+            )
+          }
+        }
+        return (
+          <Flex className="notification-item-body" gap={8}>
+            <div className="notification-item-icon">
+              <UserPlus size={32} />
+            </div>
+            <div className="notification-item-text">
+              <div className="notification-item-title">
+                {notification.message}
+              </div>
+              {renderTimeAgo()}
+              <Flex align="center" gap={16} className="group-button">
+                <Button
+                  type="primary"
+                  size="small"
+                  onClick={() => acceptOrDeclineOrganizationInvitation(true)}
+                >
+                  Accept
+                </Button>
+                <Button
+                  type="primary"
+                  danger
+                  size="small"
+                  onClick={() => acceptOrDeclineOrganizationInvitation(false)}
+                >
+                  Decline
+                </Button>
+              </Flex>
+            </div>
+          </Flex>
+        )
     }
   }, [])
 
