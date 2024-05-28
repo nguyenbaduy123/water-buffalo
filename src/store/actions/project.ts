@@ -8,6 +8,7 @@ import {
 import { createPlainAction } from 'utils/redux'
 import { Project, SocketPayload } from 'types/global'
 import { channelConnect, infoNotification } from 'utils'
+import { AppDispatch, GetStateFunc } from 'store'
 
 export const loadProjectsRequest = createPlainAction(LOAD_PROJECTS_REQUEST)
 export const loadProjectsSuccess = createPlainAction(LOAD_PROJECTS_SUCCESS)
@@ -16,26 +17,27 @@ export const selectedProject = createPlainAction(SELECT_PROJECT)
 
 export const updateProjectSuccess = createPlainAction('UPDATE_PROJECT_SUCCESS')
 
-interface SelectProjectPayload {
-  currentProject: Project
-}
-export const selectProject: ActionFunc<SelectProjectPayload> = (payload) => {
-  return async (dispatch, getState) => {
-    if (!payload?.currentProject) return
-    const currentProject = payload.currentProject
+export const selectProject = (projectId: number) => {
+  return async (dispatch: AppDispatch, getState: GetStateFunc) => {
+    const {
+      auth: { userId },
+      project: { data: projects },
+    } = getState()
+    const currentProject = projects.find((project) => project.id === projectId)
 
-    if (currentProject.settings) {
-      dispatch(selectedProject(payload))
-    } else {
-      const resp = await LifeApi.loadProjectSettings(currentProject.id)
-      if (resp.success) {
-        await dispatch(
-          selectedProject({
-            currentProject: { ...currentProject, settings: resp.settings },
-          })
-        )
-        dispatch(connectToProjectChannel())
-      }
+    const userProject = currentProject?.users.find((user) => user.id === userId)
+
+    if (!currentProject || !userProject) return
+
+    const resp = await LifeApi.loadProjectSettings(currentProject.id)
+    if (resp.success) {
+      dispatch(
+        selectedProject({
+          currentProject: { ...currentProject, settings: resp.settings },
+          currentUserProject: userProject,
+        })
+      )
+      dispatch(connectToProjectChannel())
     }
   }
 }
@@ -74,6 +76,15 @@ const connectToProjectChannel: ActionFunc = () => {
 
     channel.on('issue:toggle_tag', (payload: SocketPayload) => {
       infoNotification('Issue updated', payload.message)
+    })
+
+    channel.on('projects:updated', (payload: SocketPayload<Project>) => {
+      dispatch(updateProjectSuccess({ project: payload.info }))
+    })
+
+    channel.on('projects:closed', () => {
+      infoNotification('Project closed', 'This project has been closed')
+      location.href = '/dashboard'
     })
 
     return {

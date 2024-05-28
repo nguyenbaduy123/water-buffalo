@@ -286,6 +286,15 @@ class LifeApi extends Api {
     this.post(`/organization/${organizationId}/channel/${channelId}/user`, {
       user_id: userId,
     })
+
+  public transferProjectOwnership = (projectId: number, email: string) =>
+    this.post(`/project/${projectId}/transfer_ownership`, { email })
+
+  public updatePriorityProject = (projectId: number, priority: number) =>
+    this.post(`/project/${projectId}/priority`, { priority })
+
+  public closeProject = (projectId: number) =>
+    this.post(`/project/${projectId}/close`)
 }
 
 export default new LifeApi()

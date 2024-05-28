@@ -195,3 +195,7 @@ export interface SendMessageParams {
   message: string
   attachments?: FileUploaded[] | null
 }
+
+export interface TransferProjectOwnershipParams {
+  email: string
+}

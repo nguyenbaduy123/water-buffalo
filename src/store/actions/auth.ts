@@ -182,6 +182,12 @@ export const connectToChannel = (channelName: string) => {
       }
     })
 
+    channel.on('projects:ownership_transferred', (payload: SocketPayload) => {
+      notification.info({
+        message: payload.message,
+      })
+    })
+
     return {
       type: 'CHANNEL_CONNECTED',
       payload: channel,

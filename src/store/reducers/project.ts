@@ -12,6 +12,7 @@ const initialState: ProjectState = {
   fetching: false,
   data: [],
   currentProject: null,
+  currentUserProject: null,
 }
 
 const reducerMap: ReducerMap<ProjectState> = {
@@ -22,19 +23,19 @@ const reducerMap: ReducerMap<ProjectState> = {
     return { ...state, data: payload.projects, fetching: false }
   },
   [SELECT_PROJECT]: (state, { payload }) => {
-    return { ...state, currentProject: payload.currentProject }
+    return { ...state, ...payload }
   },
   [UPDATE_PROJECT_SUCCESS]: (state, { payload }) => {
     const currentProject = state.currentProject
     return {
       ...state,
       data: state.data.map((project) =>
-        project.id === payload.project.id
+        project.id == payload.project.id
           ? { ...project, ...payload.project }
           : project
       ),
       currentProject:
-        currentProject && currentProject.id === payload.project.id
+        currentProject && currentProject.id == payload.project.id
           ? { ...currentProject, ...payload.project }
           : currentProject,
     }

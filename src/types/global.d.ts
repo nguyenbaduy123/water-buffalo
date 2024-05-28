@@ -76,8 +76,8 @@ export interface FileUploaded {
   type: string
 }
 
-export interface SocketPayload {
+export interface SocketPayload<T = Record<string, any>> {
   type: string
   message: string
-  info: Record<string, any>
+  info: T
 }

@@ -33,7 +33,7 @@ const ProjectLayout = ({ children, project, currentTabId }: Props) => {
       )
 
     if (currentProject) {
-      dispatch(selectProject({ currentProject: currentProject }))
+      dispatch(selectProject(currentProject.id))
     }
   }, [project.fetching])
 

@@ -33,7 +33,7 @@ const Sidebar = ({ auth, project, organization, dispatch }: Props) => {
   }
 
   const redirectToProject = (project: Project) => {
-    dispatch(selectProject({ currentProject: project }))
+    dispatch(selectProject(project.id))
     Router.push('/project', getProjectUniqueName(project))
   }
 

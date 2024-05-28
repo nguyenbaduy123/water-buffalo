@@ -1,7 +1,8 @@
-import { notification } from 'antd'
+import { NotificationArgsProps, notification } from 'antd'
 import { Project, User } from 'types/global'
 import moment from 'moment'
 import { Socket } from 'phoenix'
+import { COLORS } from './css'
 
 export const successNotification = (message: string, description: string) => {
   notification.success({
@@ -141,4 +142,50 @@ export const dummyUser: User = {
 
 export const getUserInProject = (project: Project | null, userId: string) => {
   return project?.users.find((user) => user.id == userId) || dummyUser
+}
+
+export const notificationSuccess = (
+  description: string,
+  options: Partial<NotificationArgsProps> = {}
+) => {
+  notification.success({
+    message: 'Success',
+    description,
+    ...options,
+  })
+}
+
+export const notificationError = (
+  description: string,
+  options: Partial<NotificationArgsProps> = {}
+) => {
+  notification.error({
+    message: 'Error',
+    description,
+    ...options,
+  })
+}
+
+export const getPriorityData = (priority: number | null) => {
+  let text: string, color: string
+
+  switch (priority) {
+    case 1:
+      text = 'Low'
+      color = COLORS.green[6]
+      break
+    case 2:
+      text = 'Medium'
+      color = COLORS.orange[6]
+      break
+    case 3:
+      text = 'High'
+      color = COLORS.red[6]
+      break
+    default:
+      text = 'None'
+      color = COLORS.gray[6]
+  }
+
+  return { text, color }
 }

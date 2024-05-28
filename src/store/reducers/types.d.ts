@@ -1,7 +1,7 @@
 import { JwtPayload } from 'jwt-decode'
 import { Locale, Notification, Project, User } from 'types/global'
 import { HYDRATE } from 'next-redux-wrapper'
-import { Issue, Task } from 'types/project'
+import { Issue, Task, UserProject } from 'types/project'
 import { Socket } from 'phoenix'
 import { Channel, Organization } from 'types/organization'
 import { Message } from 'types/message'
@@ -35,12 +35,6 @@ interface ProjectDetail extends Project {
   issues: Issue[]
 }
 
-export interface ProjectState {
-  fetching: boolean
-  data: Project[]
-  currentProject: Project | null
-}
-
 export type Payload = PayloadTypes[keyof PayloadTypes]
 
 export interface ClaimsFromToken extends JwtPayload {
@@ -55,7 +49,7 @@ export interface PayloadTypes {
 
   LOAD_PROJECTS_REQUEST: undefined
   LOAD_PROJECTS_SUCCESS: { projects: Project[] }
-  SELECT_PROJECT: { currentProject: Project }
+  SELECT_PROJECT: { currentProject: Project; currentUserProject: UserProject }
   UPDATE_PROJECT_SUCCESS: { project: Project }
   CREATE_PROJECT_SUCCESS: { project: Project }
 
@@ -90,6 +84,13 @@ export interface PayloadTypes {
   CHANNEL_NEW_MESSAGE: { message: Message }
 }
 
+export interface ProjectState {
+  fetching: boolean
+  data: Project[]
+  currentProject: Project | null
+  currentUserProject: UserProject | null
+}
+
 export interface NotificationState {
   data: Notification[]
   fetching: boolean
@@ -110,6 +111,7 @@ export interface OrganizationState {
   data: Organization[]
   fetching: boolean
   currentOrganization: Organization | null
+  currentUserOrganization: Organization | null
 }
 
 export interface ChannelState {

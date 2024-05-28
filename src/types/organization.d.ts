@@ -7,6 +7,15 @@ export interface Channel {
   users: User[]
 }
 
+export interface OrganizationUser {
+  id: string
+  name: string
+  username: string
+  email: string
+  avatar_url: string | null
+  permission: string
+}
+
 export interface Organization {
   id: string
   name: string
