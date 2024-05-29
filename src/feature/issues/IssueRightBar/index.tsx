@@ -11,23 +11,27 @@ import { AppDispatch, RootState } from 'store'
 import { COLORS } from 'utils/css'
 import {
   getProjectPermission,
+  hasAdminPermission,
   hasMemberPermission,
   hasModeratorPermission,
 } from 'utils/permission'
 
 import './style.scss'
+import PriorityTag from 'components/PriorityTag'
 
 interface Props {
   currentProject: RootState['project']['currentProject']
   currentIssue: RootState['issue']['currentIssue']
   auth: RootState['auth']
   dispatch: AppDispatch
+  currentUserProject: RootState['project']['currentUserProject']
 }
 
 const IssueRightBar = ({
   currentProject,
   currentIssue,
   dispatch,
+  currentUserProject,
   auth,
 }: Props) => {
   if (!currentIssue || !currentProject) return null
@@ -50,6 +54,12 @@ const IssueRightBar = ({
   const assignees = currentProject.users.filter((user) =>
     assigneeIds.includes(user.id)
   )
+
+  const handleUpdatePriority = async (priority: number) => {
+    const resp = await LifeApi.updateIssue(currentProject.id, currentIssue.id, {
+      priority,
+    })
+  }
 
   const handleToggleAssignee = async (userId: string, isAssign: boolean) => {
     const resp = await LifeApi.toggleAssignee(
@@ -118,7 +128,7 @@ const IssueRightBar = ({
   return (
     <div className="issue-right-bar">
       <div className="issue-assignee">
-        <Flex justify="space-between" className="issue-assignee-title">
+        <Flex justify="space-between" className="issue-assignee-title mb12">
           Assignees
           {canAssignUser && (
             <Dropdown
@@ -155,7 +165,7 @@ const IssueRightBar = ({
                 }),
               }}
             >
-              <Gear cursor="pointer" />
+              <Gear size={20} cursor="pointer" />
             </Dropdown>
           )}
         </Flex>
@@ -168,8 +178,40 @@ const IssueRightBar = ({
         </Flex>
       </div>
       <Divider />
+      <div className="issue-priority">
+        <Flex justify="space-between" className="issue-assignee-title mb12">
+          Priority
+          {canAssignUser && (
+            <Dropdown
+              open={
+                hasAdminPermission(currentUserProject?.permission)
+                  ? undefined
+                  : false
+              }
+              trigger={['click']}
+              menu={{
+                items: [3, 2, 1, 0].map((priority) => ({
+                  key: priority,
+                  label: <PriorityTag priority={priority} />,
+                  onClick: () => handleUpdatePriority(priority),
+                })),
+              }}
+            >
+              <Gear size={20} cursor="pointer" />
+            </Dropdown>
+          )}
+        </Flex>
+        <div className="issue-priority-list">
+          <Flex gap={8}>
+            <div>
+              <PriorityTag priority={currentIssue.priority} />
+            </div>
+          </Flex>
+        </div>
+      </div>
+      <Divider />
       <div className="issue-tags">
-        <Flex justify="space-between" className="issue-assignee-title">
+        <Flex justify="space-between" className="issue-assignee-title mb12">
           Tags
           {canTag && (
             <Dropdown
@@ -190,21 +232,21 @@ const IssueRightBar = ({
                         justify="space-between"
                         onClick={() => handleToggleTag(tag.id, !tagged)}
                       >
-                        <div>
+                        <Flex align="center" justify="space-between" gap={24}>
                           <RenderTag tag={tag} />
                           {tagged ? (
                             <Check size={14} color={COLORS.blue[3]} />
                           ) : (
                             ''
                           )}
-                        </div>
+                        </Flex>
                       </Flex>
                     ),
                   }
                 }),
               }}
             >
-              <Gear cursor="pointer" />
+              <Gear size={20} cursor="pointer" />
             </Dropdown>
           )}
         </Flex>
@@ -223,7 +265,7 @@ const IssueRightBar = ({
       <Divider />
 
       <div className="issue-references">
-        <Flex justify="space-between" className="issue-assignee-title">
+        <Flex justify="space-between" className="issue-assignee-title mb12">
           References
           {canAssignReference && (
             <Dropdown
@@ -260,7 +302,7 @@ const IssueRightBar = ({
                 }),
               }}
             >
-              <Gear cursor="pointer" />
+              <Gear size={20} cursor="pointer" />
             </Dropdown>
           )}
         </Flex>
@@ -280,6 +322,7 @@ const mapStateToProps = (state: RootState) => {
   return {
     currentProject: state.project.currentProject,
     currentIssue: state.issue.currentIssue,
+    currentUserProject: state.project.currentUserProject,
     auth: state.auth,
   }
 }

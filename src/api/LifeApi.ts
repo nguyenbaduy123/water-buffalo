@@ -44,6 +44,7 @@ import {
   CreateChannelResponse,
   LoadChannelsResponse,
   SendMessageParams,
+  UpdateIssueParams,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -295,6 +296,16 @@ class LifeApi extends Api {
 
   public closeProject = (projectId: number) =>
     this.post(`/project/${projectId}/close`)
+
+  public updateIssue = (
+    projectId: number,
+    issueId: number,
+    params: UpdateIssueParams
+  ) =>
+    this.put<UpdateIssueResponse>(
+      this.makeIssueEndpoint(projectId, issueId),
+      params
+    )
 }
 
 export default new LifeApi()

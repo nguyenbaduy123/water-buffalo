@@ -4,7 +4,7 @@ const Document = () => {
   return (
     <Html lang="en">
       <Head>
-        <title>WBuff</title>
+        <title>WB</title>
         <link href="/static/cc-assets/css/global.css" rel="stylesheet" />
         <link
           href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&amp;subset=vietnamese"

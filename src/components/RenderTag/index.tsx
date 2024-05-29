@@ -15,9 +15,9 @@ const RenderTag = ({ tag, width, fontSize, radius }: Props) => {
       style={{
         backgroundColor: tag.color,
         padding: '2px 4px',
-        width: width || 100,
         fontSize: fontSize || 12,
         borderRadius: radius || 6,
+        display: 'inline-block',
       }}
     >
       <span className="tag-name">{tag.name}</span>

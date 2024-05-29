@@ -22,7 +22,7 @@ const RootLayout = ({ children, auth, project }: LayoutProps) => {
     dispatch(loadProjects())
     dispatch(getNotifications())
     dispatch(loadOrganizations())
-  }, [])
+  }, [auth.userId])
   return (
     <main>
       <MainLayout>{children}</MainLayout>

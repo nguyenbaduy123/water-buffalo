@@ -17,7 +17,7 @@ const reducerMap: ReducerMap<TaskState> = {
     return {
       ...state,
       data: state.data.map((task) =>
-        task.id === payload.task.id ? payload.task : task
+        task.id == payload.task.id ? { ...task, ...payload.task } : task
       ),
     }
   },

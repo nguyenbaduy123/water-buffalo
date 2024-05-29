@@ -26,10 +26,6 @@ const STATUSES_FILTER: { label: string; value: Issue['status'] }[] = [
     label: 'Closed',
     value: 'closed',
   },
-  {
-    label: 'Completed',
-    value: 'completed',
-  },
 ]
 
 interface Props {
@@ -65,9 +61,10 @@ const IssueTable = ({
       case 'open':
         return currentProject.issue_open_count
       case 'closed':
-        return currentProject.issue_closed_count
-      case 'completed':
-        return currentProject.issue_completed_count
+        return (
+          currentProject.issue_closed_count +
+          currentProject.issue_completed_count
+        )
     }
   }
 

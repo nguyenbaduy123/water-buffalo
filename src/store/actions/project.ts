@@ -9,6 +9,9 @@ import { createPlainAction } from 'utils/redux'
 import { Project, SocketPayload } from 'types/global'
 import { channelConnect, infoNotification } from 'utils'
 import { AppDispatch, GetStateFunc } from 'store'
+import { updateIssueSuccess } from './issue'
+import { Issue, Task } from 'types/project'
+import { updateTaskSuccess } from './task'
 
 export const loadProjectsRequest = createPlainAction(LOAD_PROJECTS_REQUEST)
 export const loadProjectsSuccess = createPlainAction(LOAD_PROJECTS_SUCCESS)
@@ -85,6 +88,14 @@ const connectToProjectChannel: ActionFunc = () => {
     channel.on('projects:closed', () => {
       infoNotification('Project closed', 'This project has been closed')
       location.href = '/dashboard'
+    })
+
+    channel.on('issues:updated', (payload: SocketPayload<Issue>) => {
+      dispatch(updateIssueSuccess({ issue: payload.info }))
+    })
+
+    channel.on('tasks:updated', (payload: SocketPayload<Task>) => {
+      dispatch(updateTaskSuccess({ task: payload.info }))
     })
 
     return {

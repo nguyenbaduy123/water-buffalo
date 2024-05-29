@@ -4,20 +4,24 @@ import './index.scss'
 import { Badge, Button, Checkbox, Flex } from 'antd'
 import LifeApi from 'api/LifeApi'
 import { updateTaskSuccess } from 'actions/task'
-import { AppDispatch } from 'store'
-import { Paperclip, X } from '@phosphor-icons/react'
+import { AppDispatch, RootState } from 'store'
+import { File, Files, Paperclip, X } from '@phosphor-icons/react'
 import UploadButton from 'common/UploadButton'
 import { errorNotification, successNotification } from 'utils'
 import ImagePreview from 'components/ImagePreview'
 import { FileUploaded } from 'types/global'
 import VideoPreview from 'components/VideoPreview'
+import { COLORS } from 'utils/css'
+import { groupBy } from 'lodash'
 
 interface Props {
   task: Task
   dispatch: AppDispatch
+  isAssignee: boolean
+  isReference?: boolean
 }
 
-const TaskItem = ({ task, dispatch }: Props) => {
+const TaskItem = ({ task, dispatch, isAssignee, isReference }: Props) => {
   const toggleComplete = async () => {
     const resp = await LifeApi.updateTagStatus(
       task.project_id,
@@ -84,12 +88,34 @@ const TaskItem = ({ task, dispatch }: Props) => {
         )
       case 'file':
         return (
-          <div key={attachment.id} className="task-attachment">
-            <a href={attachment.url}>{attachment.name}</a>
-          </div>
+          <a
+            key={attachment.id}
+            href={attachment.url}
+            className="task-attachment"
+            target="_blank"
+          >
+            <Flex
+              align="center"
+              gap={6}
+              className="p2 pl4 pr4"
+              style={{
+                backgroundColor: COLORS.blue[6],
+                borderRadius: 10,
+              }}
+            >
+              <Files size={14} />
+              <span className="ellipsis" style={{ maxWidth: 120 }}>
+                {attachment.name}
+              </span>
+            </Flex>
+          </a>
         )
     }
   }
+
+  const attachmentsGrouped = groupBy(task.attachments, 'type')
+
+  console.log(attachmentsGrouped)
 
   return (
     <div className="task-item">
@@ -104,15 +130,30 @@ const TaskItem = ({ task, dispatch }: Props) => {
             <div className="task-item-description">{task.description}</div>
           </div>
         </Flex>
-        <div className="task-result">
-          <UploadButton onChangeDone={handleAfterUpload} multiple>
-            <Button icon={<Paperclip size={14} />} />
-          </UploadButton>
+        {
+          <div className="task-result">
+            {isAssignee && (
+              <UploadButton onChangeDone={handleAfterUpload} multiple>
+                <Button icon={<Paperclip size={14} />} />
+              </UploadButton>
+            )}
+          </div>
+        }
+      </Flex>
+      {(isAssignee || isReference) && (
+        <div className="mb2 mt12 task-result-list">
+          <div>Result</div>
+          <Flex gap={4} className="mb8" wrap="wrap">
+            {attachmentsGrouped.file?.map(renderAttachment)}
+          </Flex>
+          <Flex gap={4} className="mb8" wrap="wrap">
+            {attachmentsGrouped.image?.map(renderAttachment)}
+          </Flex>
+          <Flex gap={4} className="mb8" wrap="wrap">
+            {attachmentsGrouped.video?.map(renderAttachment)}
+          </Flex>
         </div>
-      </Flex>
-      <Flex gap={4} align="end" vertical className="task-result">
-        {task.attachments.map(renderAttachment)}
-      </Flex>
+      )}
     </div>
   )
 }

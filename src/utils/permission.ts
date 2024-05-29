@@ -13,17 +13,19 @@ export const getProjectPermission = (project: Project, userId: string) => {
   return userProject.permission
 }
 
-export const hasAdminPermission = (permission: string | null) => {
+type MaybePermission = string | null | undefined
+
+export const hasAdminPermission = (permission: MaybePermission) => {
   return permission === OWNER || permission === ADMIN
 }
 
-export const hasModeratorPermission = (permission: string | null) => {
+export const hasModeratorPermission = (permission: MaybePermission) => {
   return (
     permission === OWNER || permission === ADMIN || permission === MODERATOR
   )
 }
 
-export const hasMemberPermission = (permission: string | null) => {
+export const hasMemberPermission = (permission: MaybePermission) => {
   return (
     permission === OWNER ||
     permission === ADMIN ||
@@ -34,7 +36,7 @@ export const hasMemberPermission = (permission: string | null) => {
 
 export const checkHasPermission = (
   permissionCheck: string,
-  permission: string | null | undefined
+  permission: MaybePermission
 ) => {
   switch (permissionCheck) {
     case OWNER:

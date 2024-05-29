@@ -199,3 +199,5 @@ export interface SendMessageParams {
 export interface TransferProjectOwnershipParams {
   email: string
 }
+
+export interface UpdateIssueParams extends Partial<Issue> {}

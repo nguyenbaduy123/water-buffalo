@@ -33,6 +33,7 @@ import IssueRightBar from 'feature/issues/IssueRightBar'
 import Editor from 'components/Editor'
 import { COLORS } from 'utils/css'
 import { Message } from 'types/message'
+import { hasAdminPermission } from 'utils/permission'
 
 interface Props {
   issues: RootState['issue']['data']
@@ -42,6 +43,7 @@ interface Props {
   task: RootState['task']
   dispatch: AppDispatch
   auth: RootState['auth']
+  currentUserProject: RootState['project']['currentUserProject']
 }
 
 const Issue: NextPage<Props> = ({
@@ -51,6 +53,7 @@ const Issue: NextPage<Props> = ({
   issues,
   task,
   auth,
+  currentUserProject,
 }) => {
   const router = useRouter()
 
@@ -63,6 +66,14 @@ const Issue: NextPage<Props> = ({
   const [comment, setComment] = React.useState('')
 
   const [comments, setComments] = React.useState<Message[]>([])
+
+  const isAssignee = currentIssue?.assignee_ids.includes(auth.userId) || false
+
+  const isReference =
+    currentIssue?.reference_ids.includes(auth.userId) ||
+    hasAdminPermission(currentUserProject?.permission)
+
+  console.log(isAssignee, isReference)
 
   const getIssueComments = async () => {
     if (!currentProject || !currentIssue) return
@@ -97,7 +108,7 @@ const Issue: NextPage<Props> = ({
       dispatch(loadTasks())
       getIssueComments()
     }
-  }, [currentIssue])
+  }, [currentIssue?.id])
 
   const userCreated = currentProject?.users.find(
     (user) => user.id === currentIssue?.created_by_id
@@ -198,7 +209,13 @@ const Issue: NextPage<Props> = ({
                 <div className="list-task">
                   <Flex vertical gap={12}>
                     {task.data.map((task) => (
-                      <TaskItem key={task.id} task={task} dispatch={dispatch} />
+                      <TaskItem
+                        key={task.id}
+                        task={task}
+                        dispatch={dispatch}
+                        isAssignee={isAssignee}
+                        isReference={isReference}
+                      />
                     ))}
                   </Flex>
                 </div>
@@ -295,6 +312,7 @@ const mapStateToProps = (state: RootState) => ({
   task: state.task,
   currentIssue: state.issue.currentIssue,
   currentProject: state.project.currentProject,
+  currentUserProject: state.project.currentUserProject,
   auth: state.auth,
 })
 

@@ -27,14 +27,14 @@ const reducerMap: ReducerMap<IssueState> = {
   },
 
   [UPDATE_ISSUE_SUCCESS]: (state, { payload }) => {
-    let currentIssue = state.currentIssue
+    const currentIssue = state.currentIssue
 
-    if (currentIssue && currentIssue.id === payload.issue.id) {
-      currentIssue = { ...currentIssue, ...payload.issue }
-    }
     return {
       ...state,
-      currentIssue,
+      currentIssue:
+        currentIssue && currentIssue.id == payload.issue.id
+          ? { ...currentIssue, ...payload.issue }
+          : currentIssue,
       data: state.data.map((issue) => {
         if (issue.id === payload.issue.id) {
           return { ...issue, ...payload.issue }
