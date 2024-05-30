@@ -10,6 +10,8 @@ import { COLORS } from 'utils/css'
 
 import './index.scss'
 import Router from 'next/router'
+import PriorityTag from 'components/PriorityTag'
+import RenderTag from 'components/RenderTag'
 
 const statusToIcon = {
   open: <DotsThreeCircle size={24} color={COLORS.green[6]} />,
@@ -91,12 +93,29 @@ const IssueTable = ({
         <Flex gap={8}>
           <Flex>{statusToIcon[record.status]}</Flex>
           <Flex vertical>
-            <div
+            <Flex
               className="issue-title"
+              gap={16}
               onClick={() => handleClickIssue(record.id)}
             >
-              {title}
-            </div>
+              <div className="issue-title-text">{title}</div>
+              <Flex>
+                {!!record.priority && (
+                  <div className="priority mr12">
+                    <PriorityTag priority={record.priority} />
+                  </div>
+                )}
+
+                <Flex gap={6} align="center">
+                  {record.tag_ids.map((tagId) => {
+                    const tag = currentProject.settings.tags.find(
+                      (tag) => tag.id == tagId
+                    )
+                    return tag ? <RenderTag key={tag.id} tag={tag} /> : null
+                  })}
+                </Flex>
+              </Flex>
+            </Flex>
             <div className="issue-inserted-from-now">{`Opened ${fromNow(
               record.inserted_at
             )}`}</div>

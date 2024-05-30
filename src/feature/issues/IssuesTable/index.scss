@@ -21,7 +21,9 @@
     white-space: nowrap;
     cursor: pointer;
     &:hover {
-      color: var(--blue-6);
+      .issue-title-text {
+        color: var(--blue-6);
+      }
     }
   }
 }

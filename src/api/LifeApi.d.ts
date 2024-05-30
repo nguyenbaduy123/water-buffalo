@@ -200,4 +200,12 @@ export interface TransferProjectOwnershipParams {
   email: string
 }
 
+export interface SearchIssueParams {
+  keyword?: string
+  assignee_id?: string
+  tag_ids?: number[]
+  current_count?: number
+  status: Issue['status']
+}
+
 export interface UpdateIssueParams extends Partial<Issue> {}

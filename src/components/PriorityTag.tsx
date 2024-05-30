@@ -7,12 +7,17 @@ interface Props {
 }
 
 const PriorityTag = ({ priority, style }: Props) => {
-  const { text, color } = getPriorityData(priority)
+  const { text, color, backgroundColor } = getPriorityData(priority)
 
   return (
     <div
       className={`priority-tag priority-${text}-level`}
-      style={{ backgroundColor: color, color: '#fff', ...style }}
+      style={{
+        border: `1px dashed ${color}`,
+        color: color,
+        backgroundColor: backgroundColor,
+        ...style,
+      }}
     >
       {text}
     </div>

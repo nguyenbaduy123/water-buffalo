@@ -45,6 +45,7 @@ import {
   LoadChannelsResponse,
   SendMessageParams,
   UpdateIssueParams,
+  SearchIssueParams,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -306,6 +307,9 @@ class LifeApi extends Api {
       this.makeIssueEndpoint(projectId, issueId),
       params
     )
+
+  public searchIssues = (projectId: number, params: SearchIssueParams) =>
+    this.get<LoadIssuesResponse>(`/project/${projectId}/issue/search`, params)
 }
 
 export default new LifeApi()

@@ -41,6 +41,29 @@
     background-color: var(--dark-8);
     padding: 8px;
   }
+
+  .task-attachment {
+    position: relative;
+
+    .remove-attachment-btn {
+      padding: 1px;
+      border-radius: 50%;
+      position: absolute;
+      background-color: var(--red-6);
+      height: 12px;
+      width: 12px;
+      right: -2px;
+      display: none;
+      top: -4px;
+      z-index: 10;
+    }
+
+    &:hover {
+      .remove-attachment-btn {
+        display: flex;
+      }
+    }
+  }
 }
 
 .tasks-card {

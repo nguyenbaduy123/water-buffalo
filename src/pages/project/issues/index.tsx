@@ -1,11 +1,15 @@
 import { MagnifyingGlass } from '@phosphor-icons/react'
-import { loadIssues } from 'actions/issue'
-import { Button, Flex, Input, Space } from 'antd'
+import { loadIssues, searchIssues } from 'actions/issue'
+import { Button, Flex, Input, Select, Space } from 'antd'
+import { SearchIssueParams } from 'api/LifeApi.d'
+import UserAvatar from 'common/UserAvatar'
+import RenderTag from 'components/RenderTag'
 import IssueTable from 'feature/issues/IssuesTable'
 import withAuth from 'hocs/withAuth'
 import ProjectLayout from 'layouts/ProjectLayout'
+import { debounce } from 'lodash'
 import Router from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { AppDispatch, RootState } from 'store'
 import { IssueStatus } from 'types/project'
@@ -20,6 +24,9 @@ interface Props {
 
 const Issues = ({ auth, issues, dispatch, currentProject }: Props) => {
   const [status, setStatus] = useState<IssueStatus>('open')
+  const [searchIssue, setSearchIssue] = useState('')
+  const [searchByAssignee, setSearchByAssignee] = useState('')
+  const [searchByTags, setSearchByTags] = useState<number[]>([])
 
   const onChangeStatus = (status: IssueStatus) => {
     setStatus(status)
@@ -36,13 +43,89 @@ const Issues = ({ auth, issues, dispatch, currentProject }: Props) => {
     )
   }
 
+  const debouncedSearchIssue = useCallback(
+    debounce((params: SearchIssueParams) => {
+      handleSearchIssue(params)
+    }, 500),
+    []
+  )
+
+  const handleSearchIssue = async (params: SearchIssueParams) => {
+    dispatch(searchIssues(params))
+  }
+
+  const handleChangeInput = (value: string) => {
+    setSearchByAssignee(value)
+    debouncedSearchIssue({
+      status,
+      keyword: value,
+      tag_ids: searchByTags,
+      assignee_id: value,
+    })
+  }
+
+  const handleChangeTags = (value: number[]) => {
+    setSearchByTags(value)
+    debouncedSearchIssue({
+      status,
+      tag_ids: value,
+      assignee_id: searchByAssignee,
+      keyword: searchIssue,
+    })
+  }
+
+  const handleChangeAssignee = (value: string) => {
+    setSearchByAssignee(value)
+    debouncedSearchIssue({
+      status,
+      assignee_id: value,
+      tag_ids: searchByTags,
+      keyword: searchIssue,
+    })
+  }
+
   return (
     <ProjectLayout currentTabId="issues">
       <div className="issue-page-container">
         <Flex justify="space-between" className="issue-page-header">
-          <Space.Compact>
-            <Input addonBefore={<MagnifyingGlass />} placeholder="large size" />
-          </Space.Compact>
+          <Flex gap={12}>
+            <Space.Compact>
+              <Input
+                addonBefore={<MagnifyingGlass />}
+                placeholder="Type to search"
+                value={searchIssue}
+                onChange={(e) => handleChangeInput(e.target.value)}
+              />
+            </Space.Compact>
+            <Select
+              className="mnw200px"
+              placeholder="Filter by assignee"
+              value={searchByAssignee}
+              onChange={handleChangeAssignee}
+              allowClear
+              options={currentProject?.users.map((user) => ({
+                value: user.id,
+                label: (
+                  <Flex gap={8} align="center">
+                    <UserAvatar user={user} size={24} />
+                    {user.name || user.username}
+                  </Flex>
+                ),
+              }))}
+            />
+
+            <Select
+              mode="tags"
+              className="mnw200px"
+              placeholder="Filter by tag"
+              value={searchByTags}
+              onChange={handleChangeTags}
+              options={currentProject?.settings.tags.map((tag) => ({
+                value: tag.id,
+                label: <RenderTag tag={tag} />,
+              }))}
+            />
+          </Flex>
           <Flex className="issue-page-header-tail">
             <Button type="primary" onClick={redirectToNewIssuePage}>
               New Issue

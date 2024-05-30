@@ -8,16 +8,20 @@ interface Props {
   radius?: number
 }
 
-const RenderTag = ({ tag, width, fontSize, radius }: Props) => {
+const RenderTag = ({ tag, width, fontSize = 12, radius }: Props) => {
+  const lineHeight = fontSize + 2
+  const height = lineHeight + 2
   return (
     <div
       className="tag-item"
       style={{
         backgroundColor: tag.color,
-        padding: '2px 4px',
-        fontSize: fontSize || 12,
+        padding: '1px 4px',
+        fontSize: fontSize,
         borderRadius: radius || 6,
         display: 'inline-block',
+        height: height,
+        lineHeight: `${lineHeight}px`,
       }}
     >
       <span className="tag-name">{tag.name}</span>

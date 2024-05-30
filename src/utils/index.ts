@@ -167,25 +167,33 @@ export const notificationError = (
 }
 
 export const getPriorityData = (priority: number | null) => {
-  let text: string, color: string
+  let text: string, color: string, backgroundColor: string
 
   switch (priority) {
     case 1:
       text = 'Low'
       color = COLORS.green[6]
+      backgroundColor = 'rgba(76, 175, 80, 0.2)'
       break
     case 2:
       text = 'Medium'
       color = COLORS.orange[6]
+      backgroundColor = 'rgba(255, 152, 0, 0.2)'
       break
     case 3:
       text = 'High'
       color = COLORS.red[6]
+      backgroundColor = 'rgba(244, 67, 54, 0.2)'
       break
     default:
       text = 'None'
       color = COLORS.gray[6]
+      backgroundColor = 'rgba(158, 158, 158, 0.2)'
   }
 
-  return { text, color }
+  return { text, color, backgroundColor }
+}
+
+export const toCapitalCase = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLocaleLowerCase()
 }

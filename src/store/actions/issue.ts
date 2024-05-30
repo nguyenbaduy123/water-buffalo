@@ -8,6 +8,8 @@ import {
 } from 'constants/action'
 import LifeApi from 'api/LifeApi'
 import { Issue } from 'types/project'
+import { SearchIssueParams } from 'api/LifeApi.d'
+import { AppDispatch, GetStateFunc } from 'store'
 
 export const loadIssuesRequest = createPlainAction(LOAD_ISSUES_REQUEST)
 
@@ -18,6 +20,23 @@ export const loadMoreIssuesSuccess = createPlainAction(LOAD_ISSUES_SUCCESS)
 export const selectIssue = createPlainAction(SELECT_ISSUE)
 
 export const updateIssueSuccess = createPlainAction(UPDATE_ISSUE_SUCCESS)
+
+export const searchIssues = (params: SearchIssueParams) => {
+  return async (dispatch: AppDispatch, getState: GetStateFunc) => {
+    const {
+      project: { currentProject },
+    } = getState()
+
+    if (!currentProject) return
+    dispatch(loadIssuesRequest())
+
+    const resp = await LifeApi.searchIssues(currentProject.id, params)
+
+    if (resp.success) {
+      dispatch(loadIssuesSuccess({ issues: resp.issues }))
+    }
+  }
+}
 
 interface LoadIssueArgs {
   status: Issue['status']

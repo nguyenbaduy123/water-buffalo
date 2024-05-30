@@ -69,11 +69,10 @@ const Issue: NextPage<Props> = ({
 
   const isAssignee = currentIssue?.assignee_ids.includes(auth.userId) || false
 
-  const isReference =
-    currentIssue?.reference_ids.includes(auth.userId) ||
-    hasAdminPermission(currentUserProject?.permission)
+  const isAdmin = hasAdminPermission(currentUserProject?.permission)
 
-  console.log(isAssignee, isReference)
+  const isReference =
+    currentIssue?.reference_ids.includes(auth.userId) || isAdmin
 
   const getIssueComments = async () => {
     if (!currentProject || !currentIssue) return
@@ -178,15 +177,17 @@ const Issue: NextPage<Props> = ({
               </div>
             )}
             <div>
-              <Flex justify="end">
-                <Button
-                  type="primary"
-                  icon={<PlusCircle />}
-                  onClick={creatingNewTask}
-                >
-                  New task
-                </Button>
-              </Flex>
+              {isAdmin && (
+                <Flex justify="end">
+                  <Button
+                    type="primary"
+                    icon={<PlusCircle />}
+                    onClick={creatingNewTask}
+                  >
+                    New task
+                  </Button>
+                </Flex>
+              )}
             </div>
           </div>
           <Divider />

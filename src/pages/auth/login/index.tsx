@@ -1,4 +1,4 @@
-import { Flex, Button, Form, type FormProps, Input } from 'antd'
+import { Flex, Button, Form, type FormProps, Input, notification } from 'antd'
 import React from 'react'
 import Router from 'next/router'
 import { NextPage } from 'next'
@@ -7,7 +7,7 @@ import { useAppDispatch } from 'hooks'
 import { getUserAuth, loginSuccess } from 'actions/auth'
 import LifeApi from 'api/LifeApi'
 import AuthLayout from 'layouts/AuthLayout'
-import { redirectGoogleLogin } from 'utils'
+import { notificationError, redirectGoogleLogin } from 'utils'
 
 type FieldType = {
   username: string
@@ -24,6 +24,8 @@ const Login: NextPage = () => {
       dispatch(loginSuccess(resp))
       await dispatch(getUserAuth())
       Router.push('/dashboard')
+    } else {
+      notificationError(resp.message || 'Login failed')
     }
   }
 

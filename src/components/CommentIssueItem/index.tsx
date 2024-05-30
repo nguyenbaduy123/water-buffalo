@@ -1,5 +1,4 @@
 import React from 'react'
-import './index.scss'
 import { User } from 'types/global'
 import { Flex } from 'antd'
 import UserAvatar from 'common/UserAvatar'

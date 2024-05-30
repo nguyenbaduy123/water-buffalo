@@ -19,8 +19,10 @@ const Project = ({ auth, project, dispatch }: Props) => {
       <div className="project-content">
         <Row gutter={4}>
           <Col span={18}>
-            {project.currentProject?.name}
-            <div>{project.currentProject?.description}</div>
+            <h2 className="text-center">{project.currentProject?.name}</h2>
+            <h3 className="text-center mt8">
+              {project.currentProject?.description}
+            </h3>
           </Col>
           <Col span={6}>
             <RightBar />
