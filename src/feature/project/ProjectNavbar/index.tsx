@@ -1,4 +1,9 @@
-import { Checks, Gear, LightbulbFilament } from '@phosphor-icons/react'
+import {
+  ChartBar,
+  Checks,
+  Gear,
+  LightbulbFilament,
+} from '@phosphor-icons/react'
 import { Badge, Flex } from 'antd'
 import Router from 'next/router'
 import { getProjectRoute } from 'utils'
@@ -28,6 +33,13 @@ const NAVBAR_ITEMS = [
     title: 'Settings',
     href: '/settings/general',
     icon: <Gear size={16} />,
+    permission: ADMIN,
+  },
+  {
+    id: 'statistics',
+    title: 'Statistics',
+    href: '/settings/statistics',
+    icon: <ChartBar size={16} />,
     permission: ADMIN,
   },
 ]

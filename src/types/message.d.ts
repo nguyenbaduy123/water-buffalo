@@ -2,7 +2,7 @@ import { Attachment } from './project'
 
 export interface Message {
   id: string
-  content: string
+  message: string
   seen: boolean
   attachments: Attachment[]
   from_id: string

@@ -52,6 +52,8 @@ export interface PayloadTypes {
   SELECT_PROJECT: { currentProject: Project; currentUserProject: UserProject }
   UPDATE_PROJECT_SUCCESS: { project: Project }
   CREATE_PROJECT_SUCCESS: { project: Project }
+  LOAD_PROJECT_COMMENTS_SUCCESS: { comments: Message[] }
+  PROJECT_NEW_COMMENT: { comment: Message }
 
   SOCKET_CONNECTING: undefined
   SOCKET_CONNECTED: { socket: Socket }

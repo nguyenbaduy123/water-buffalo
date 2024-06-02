@@ -1,4 +1,3 @@
-import Navbar from 'components/Navbar'
 import ProjectNavbar from 'feature/project/ProjectNavbar'
 import { useAppDispatch } from 'hooks'
 import { useRouter } from 'next/router'

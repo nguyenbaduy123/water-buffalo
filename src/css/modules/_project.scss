@@ -17,6 +17,9 @@
   display: flex;
   justify-content: flex-start;
 
+  img {
+    max-height: 120px;
+  }
   &.right-side-issue {
     justify-content: flex-end;
   }
@@ -32,7 +35,7 @@
       .comment-content-head {
         border-radius: 8px 8px 0 0;
         background-color: var(--blue-9);
-        padding: 12px;
+        padding: 8px;
         .user-name {
           font-weight: 500;
         }
@@ -43,7 +46,34 @@
       }
       .comment-text {
         padding: 12px;
-        min-height: 50px;
+        min-height: 32px;
+        max-height: 200px;
+        overflow: auto;
+      }
+    }
+  }
+}
+
+.project-settings-general {
+  .setting-item {
+    width: 100%;
+    .setting-item-title {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .setting-item-content {
+      flex: 1;
+    }
+
+    .setting-item-description {
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      &-text {
+        max-width: 75%;
       }
     }
   }

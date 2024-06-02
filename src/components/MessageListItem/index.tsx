@@ -34,7 +34,7 @@ const MessageListItem = ({
 
   return (
     <div className={getClassName()} id={`message_${message.id}`}>
-      <div className="message-content">{message.content}</div>
+      <div className="message-content">{message.message}</div>
     </div>
   )
 }

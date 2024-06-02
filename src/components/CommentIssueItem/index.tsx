@@ -20,11 +20,16 @@ const CommentIssueItem = ({
 }: Props) => {
   const x = [
     <div className="user-avatar" key="avatar">
-      <UserAvatar name={user.username} src={user.avatar_url} size={32} round />
+      <UserAvatar
+        name={user.name || user.username}
+        src={user.avatar_url}
+        size={32}
+        round
+      />
     </div>,
     <div className="comment-content" key="comment">
       <Flex className="comment-content-head" gap={12} align="center">
-        <div className="user-name">{user.username}</div>
+        <div className="user-name">{user.name || user.username}</div>
         <div className="comment-time">{time}</div>
       </Flex>
       <div

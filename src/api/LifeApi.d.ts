@@ -209,3 +209,7 @@ export interface SearchIssueParams {
 }
 
 export interface UpdateIssueParams extends Partial<Issue> {}
+
+export interface GetProjectCommentsParams {
+  current_count?: number
+}

@@ -46,6 +46,7 @@ import {
   SendMessageParams,
   UpdateIssueParams,
   SearchIssueParams,
+  GetProjectCommentsParams,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -310,6 +311,14 @@ class LifeApi extends Api {
 
   public searchIssues = (projectId: number, params: SearchIssueParams) =>
     this.get<LoadIssuesResponse>(`/project/${projectId}/issue/search`, params)
+
+  public getProjectComments = (
+    projectId: number,
+    params: GetProjectCommentsParams
+  ) => this.get<MessagesResponse>(`/project/${projectId}/comment`, params)
+
+  public commentOnProject = (projectId: number, params: SendMessageParams) =>
+    this.post<MessageResponse>(`/project/${projectId}/comment`, params)
 }
 
 export default new LifeApi()

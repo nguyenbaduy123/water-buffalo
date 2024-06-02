@@ -1,0 +1,28 @@
+.project-comment-list {
+  padding: 12px;
+  height: calc(100vh - 380px);
+  min-height: calc(100vh - 380px);
+  overflow: auto;
+  border-radius: 12px;
+  background-color: #000;
+  margin-top: 8px;
+  margin-bottom: 8px;
+
+  .issue-comment-wrapper {
+    margin-bottom: 16px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #000;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--dark-6);
+    width: 6px;
+    border-radius: 8px;
+  }
+}

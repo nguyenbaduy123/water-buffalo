@@ -4,6 +4,8 @@ import {
   CREATE_PROJECT_SUCCESS,
   LOAD_PROJECTS_REQUEST,
   LOAD_PROJECTS_SUCCESS,
+  LOAD_PROJECT_COMMENTS_SUCCESS,
+  PROJECT_NEW_COMMENT,
   SELECT_PROJECT,
   UPDATE_PROJECT_SUCCESS,
 } from 'constants/action'
@@ -42,6 +44,31 @@ const reducerMap: ReducerMap<ProjectState> = {
   },
   [CREATE_PROJECT_SUCCESS]: (state, { payload }) => {
     return { ...state, data: [payload.project, ...state.data] }
+  },
+  [LOAD_PROJECT_COMMENTS_SUCCESS]: (state, { payload }) => {
+    const currentProject = state.currentProject
+    return {
+      ...state,
+      currentProject: currentProject
+        ? {
+            ...currentProject,
+            comments: payload.comments.reverse(),
+          }
+        : currentProject,
+    }
+  },
+  [PROJECT_NEW_COMMENT]: (state, { payload }) => {
+    const currentProject = state.currentProject
+    return {
+      ...state,
+      currentProject:
+        currentProject && currentProject.comments
+          ? {
+              ...currentProject,
+              comments: [...currentProject.comments, payload.comment],
+            }
+          : currentProject,
+    }
   },
 }
 

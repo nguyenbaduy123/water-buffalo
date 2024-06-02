@@ -1,6 +1,8 @@
-import { Button, Divider, Flex, Input, Modal, Typography } from 'antd'
+import { Eye, Handshake } from '@phosphor-icons/react'
+import { Button, Divider, Flex, Input, Modal, Switch, Typography } from 'antd'
 import LifeApi from 'api/LifeApi'
 import ModalTransferProject from 'feature/project/ModalTransfer'
+import SettingItem from 'feature/project/SettingItem'
 import withAuth from 'hocs/withAuth'
 import SettingLayout from 'layouts/SettingLayout'
 import { NextPage } from 'next'
@@ -53,37 +55,38 @@ const SettingGeneral: NextPage<Props> = ({ currentProject, auth }: Props) => {
         </Flex>
 
         <Divider />
-        <div className="group-actions">
-          <Flex className="group-actions-list" vertical>
-            <Flex className="group-actions-item" justify="space-between">
-              <div className="action-info">
-                <h4 className="mb4">Transfer Ownership</h4>
-                <div className="action-descriptions">
-                  <p>Transfer project ownership to another user.</p>
-                </div>
-              </div>
-              {currentProject?.owner_id == auth.userId && (
-                <div className="action-button">
-                  <Button
-                    type="primary"
-                    danger
-                    onClick={() => setOpenTransferModal(true)}
-                  >
-                    Transfer
-                  </Button>
-
-                  {currentProject && (
-                    <ModalTransferProject
-                      open={openTransferModal}
-                      onCancel={() => setOpenTransferModal(false)}
-                      projectId={currentProject?.id}
-                    />
-                  )}
-                </div>
-              )}
-            </Flex>
-          </Flex>
+        <div className="project-settings-general">
+          <SettingItem
+            icon={<Eye size={24} />}
+            title="Issue visibility"
+            description="Members can only see issues assigned to them or issues that have not been assigned to anyone."
+          >
+            <Switch />
+          </SettingItem>
+          <Divider />
+          {currentProject?.owner_id == auth.userId && (
+            <SettingItem
+              title="Transfer Ownership"
+              description="Transfer project ownership to another user."
+              icon={<Handshake size={24} />}
+            >
+              <Button
+                type="primary"
+                danger
+                onClick={() => setOpenTransferModal(true)}
+              >
+                Transfer
+              </Button>
+            </SettingItem>
+          )}
         </div>
+        {currentProject && (
+          <ModalTransferProject
+            open={openTransferModal}
+            onCancel={() => setOpenTransferModal(false)}
+            projectId={currentProject?.id}
+          />
+        )}
       </div>
     </SettingLayout>
   )

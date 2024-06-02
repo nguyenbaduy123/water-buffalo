@@ -1,5 +1,6 @@
 import React from 'react'
 import { ProjectSettings } from './project'
+import { Message } from './message'
 
 export interface User {
   id: string
@@ -38,6 +39,7 @@ export interface Project {
   issue_closed_count: number
   issue_completed_count: number
   settings: ProjectSettings
+  comments?: Message[]
 }
 
 export interface NotificationMap {

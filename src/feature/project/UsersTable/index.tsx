@@ -33,11 +33,11 @@ const PERMISSIONS = [
     label: 'Admin',
     icon: <Key size={16} />,
   },
-  {
-    value: 'MODERATOR',
-    label: 'Moderator',
-    icon: <ShieldPlus size={16} />,
-  },
+  // {
+  //   value: 'MODERATOR',
+  //   label: 'Moderator',
+  //   icon: <ShieldPlus size={16} />,
+  // },
   {
     value: 'MEMBER',
     label: 'Member',
@@ -112,6 +112,7 @@ const ProjectUsersTable = ({ currentProject }: Props) => {
       title: 'User',
       dataIndex: 'name',
       key: 'name',
+      with: 300,
       render: (name: string, record: UserProject) => (
         <Flex>
           <Flex align="center" gap={8}>
@@ -125,7 +126,12 @@ const ProjectUsersTable = ({ currentProject }: Props) => {
               onClick: ({ key }) => handleClickChangePermission(record, key),
             }}
           >
-            <Button icon={<Pencil size={16} />} />
+            <div style={{ width: 32, marginLeft: 8 }}>
+              <Button
+                className="edit-user-project-btn"
+                icon={<Pencil size={16} />}
+              />
+            </div>
           </Dropdown>
         </Flex>
       ),
@@ -144,7 +150,12 @@ const ProjectUsersTable = ({ currentProject }: Props) => {
   ]
 
   return (
-    <Table columns={columns} dataSource={currentProject.users} rowKey="id" />
+    <Table
+      columns={columns}
+      dataSource={currentProject.users}
+      rowKey="id"
+      className="users-project-table"
+    />
   )
 }
 

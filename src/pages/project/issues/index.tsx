@@ -14,19 +14,29 @@ import { connect } from 'react-redux'
 import { AppDispatch, RootState } from 'store'
 import { IssueStatus } from 'types/project'
 import { getProjectUniqueName } from 'utils'
+import { hasAdminPermission } from 'utils/permission'
 
 interface Props {
   auth: RootState['auth']
   issues: RootState['issue']
   currentProject: RootState['project']['currentProject']
   dispatch: AppDispatch
+  currentUserProject: RootState['project']['currentUserProject']
 }
 
-const Issues = ({ auth, issues, dispatch, currentProject }: Props) => {
+const Issues = ({
+  auth,
+  issues,
+  dispatch,
+  currentProject,
+  currentUserProject,
+}: Props) => {
   const [status, setStatus] = useState<IssueStatus>('open')
   const [searchIssue, setSearchIssue] = useState('')
   const [searchByAssignee, setSearchByAssignee] = useState('')
   const [searchByTags, setSearchByTags] = useState<number[]>([])
+
+  const isAdmin = hasAdminPermission(currentUserProject?.permission)
 
   const onChangeStatus = (status: IssueStatus) => {
     setStatus(status)
@@ -127,9 +137,11 @@ const Issues = ({ auth, issues, dispatch, currentProject }: Props) => {
             />
           </Flex>
           <Flex className="issue-page-header-tail">
-            <Button type="primary" onClick={redirectToNewIssuePage}>
-              New Issue
-            </Button>
+            {isAdmin && (
+              <Button type="primary" onClick={redirectToNewIssuePage}>
+                New Issue
+              </Button>
+            )}
           </Flex>
         </Flex>
 
@@ -145,6 +157,7 @@ const mapStateToProps = (state: RootState) => ({
   auth: state.auth,
   issues: state.issue,
   currentProject: state.project.currentProject,
+  currentUserProject: state.project.currentUserProject,
 })
 
 export default connect(mapStateToProps)(withAuth(Issues))

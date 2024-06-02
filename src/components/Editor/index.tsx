@@ -19,6 +19,8 @@ const Editor = ({ height, ...props }: Props) => {
         plugins: ['image', 'preview', 'media', 'table', 'code', 'help'],
         toolbar:
           'preview | ' + 'undo redo ' + 'bold italic | ' + 'removeformat help',
+        content_style:
+          'body { font-size: 14px; font-family: "Inter", sans-serif;} img {max-height: 120px;}',
       }}
       {...props}
     />

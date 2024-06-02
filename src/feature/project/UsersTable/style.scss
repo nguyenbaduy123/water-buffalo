@@ -1,3 +1,15 @@
 .permission-remove {
   color: var(--red-6) !important;
 }
+
+.users-project-table {
+  .edit-user-project-btn {
+    display: none;
+  }
+
+  .ant-table-row:hover {
+    .edit-user-project-btn {
+      display: block;
+    }
+  }
+}

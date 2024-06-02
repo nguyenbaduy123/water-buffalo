@@ -3,7 +3,10 @@ import { ActionFunc } from './types'
 import {
   LOAD_PROJECTS_REQUEST,
   LOAD_PROJECTS_SUCCESS,
+  LOAD_PROJECT_COMMENTS_SUCCESS,
+  PROJECT_NEW_COMMENT,
   SELECT_PROJECT,
+  UPDATE_PROJECT_SUCCESS,
 } from 'constants/action'
 import { createPlainAction } from 'utils/redux'
 import { Project, SocketPayload } from 'types/global'
@@ -12,13 +15,35 @@ import { AppDispatch, GetStateFunc } from 'store'
 import { updateIssueSuccess } from './issue'
 import { Issue, Task } from 'types/project'
 import { updateTaskSuccess } from './task'
+import { Message } from 'types/message'
 
 export const loadProjectsRequest = createPlainAction(LOAD_PROJECTS_REQUEST)
 export const loadProjectsSuccess = createPlainAction(LOAD_PROJECTS_SUCCESS)
 
 export const selectedProject = createPlainAction(SELECT_PROJECT)
 
-export const updateProjectSuccess = createPlainAction('UPDATE_PROJECT_SUCCESS')
+export const updateProjectSuccess = createPlainAction(UPDATE_PROJECT_SUCCESS)
+
+export const loadProjectCommentsSuccess = createPlainAction(
+  LOAD_PROJECT_COMMENTS_SUCCESS
+)
+
+export const projectNewComment = createPlainAction(PROJECT_NEW_COMMENT)
+
+export const loadProjectComments = (projectId: number) => {
+  return async (dispatch: AppDispatch, getState: GetStateFunc) => {
+    const {
+      project: { currentProject },
+    } = getState()
+
+    if (!currentProject) return
+
+    const resp = await LifeApi.getProjectComments(projectId, {})
+    if (resp.success) {
+      dispatch(loadProjectCommentsSuccess({ comments: resp.messages }))
+    }
+  }
+}
 
 export const selectProject = (projectId: number) => {
   return async (dispatch: AppDispatch, getState: GetStateFunc) => {
@@ -96,6 +121,17 @@ const connectToProjectChannel: ActionFunc = () => {
 
     channel.on('tasks:updated', (payload: SocketPayload<Task>) => {
       dispatch(updateTaskSuccess({ task: payload.info }))
+    })
+
+    channel.on('projects:commented', (payload: SocketPayload<Message>) => {
+      const {
+        project: { currentProject },
+        auth,
+      } = getState()
+
+      if (currentProject) {
+        dispatch(projectNewComment({ comment: payload.info }))
+      }
     })
 
     return {
