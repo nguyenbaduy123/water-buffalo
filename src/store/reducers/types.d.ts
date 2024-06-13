@@ -72,6 +72,7 @@ export interface PayloadTypes {
   LOAD_MORE_ISSUES_SUCCESS: { issues: Issue[] }
   SELECT_ISSUE: { currentIssue: Issue }
   UPDATE_ISSUE_SUCCESS: { issue: Partial<Issue> }
+  LOAD_ISSUES_FAILED: undefined
 
   LOAD_TASK_REQUEST: undefined
   LOAD_TASK_SUCCESS: { tasks: Task[] }

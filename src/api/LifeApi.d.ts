@@ -7,7 +7,14 @@ import {
 } from 'types/global.d'
 import { Message } from 'types/message'
 import { Channel, Organization } from 'types/organization'
-import { Attachment, Issue, ProjectSettings, Tag, Task } from 'types/project'
+import {
+  Attachment,
+  Issue,
+  ProjectSettings,
+  ProjectStatistics,
+  Tag,
+  Task,
+} from 'types/project'
 
 export interface LoginParams {
   username: string
@@ -212,4 +219,8 @@ export interface UpdateIssueParams extends Partial<Issue> {}
 
 export interface GetProjectCommentsParams {
   current_count?: number
+}
+
+export interface GetProjectStatisticsResponse {
+  statistic: ProjectStatistics
 }

@@ -38,7 +38,7 @@ const NAVBAR_ITEMS = [
   {
     id: 'statistics',
     title: 'Statistics',
-    href: '/settings/statistics',
+    href: '/statistics',
     icon: <ChartBar size={16} />,
     permission: ADMIN,
   },

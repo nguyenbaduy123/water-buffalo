@@ -36,8 +36,7 @@ export interface Project {
   owner: User
   users: UserProject[]
   issue_open_count: number
-  issue_closed_count: number
-  issue_completed_count: number
+  issue_count: number
   settings: ProjectSettings
   comments?: Message[]
 }

@@ -47,6 +47,7 @@ import {
   UpdateIssueParams,
   SearchIssueParams,
   GetProjectCommentsParams,
+  GetProjectStatisticsResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -319,6 +320,14 @@ class LifeApi extends Api {
 
   public commentOnProject = (projectId: number, params: SendMessageParams) =>
     this.post<MessageResponse>(`/project/${projectId}/comment`, params)
+
+  public getProjectStatistics = (projectId: number) =>
+    this.get<GetProjectStatisticsResponse>(
+      `/project/${projectId}/statistics/project`
+    )
+
+  public getProjectMembersStatistics = (projectId: number) =>
+    this.get(`/project/${projectId}/statistics/members`)
 }
 
 export default new LifeApi()

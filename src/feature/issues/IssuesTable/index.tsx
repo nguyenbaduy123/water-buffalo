@@ -63,10 +63,7 @@ const IssueTable = ({
       case 'open':
         return currentProject.issue_open_count
       case 'closed':
-        return (
-          currentProject.issue_closed_count +
-          currentProject.issue_completed_count
-        )
+        return currentProject.issue_count - currentProject.issue_open_count
     }
   }
 

@@ -43,6 +43,10 @@ const reducerMap: ReducerMap<IssueState> = {
       }),
     }
   },
+
+  LOAD_ISSUES_FAILED: (state) => {
+    return { ...state, fetching: false }
+  },
 }
 
 const issueReducer = createReducer(initialState, reducerMap)

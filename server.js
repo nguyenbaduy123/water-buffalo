@@ -126,6 +126,18 @@ app.prepare().then(() => {
     handleProjectRoute('/settings/tags')
   )
 
+  server.get(
+    '/:owner_name/:project_name/statistics/project',
+    authenticate,
+    handleProjectRoute('/statistics/project')
+  )
+
+  server.get(
+    '/:owner_name/:project_name/statistics/members',
+    authenticate,
+    handleProjectRoute('/statistics/members')
+  )
+
   server.get('*', (req, res) => {
     return handle(req, res)
   })

@@ -132,34 +132,28 @@ const Issue: NextPage<Props> = ({
 
   const handleCloseIssue = async () => {
     if (!currentProject || !currentIssue) return
-    if (closeAsCompleted) {
-      if (task.data.some((task) => task.status != 'completed')) {
-        notification.error({
-          message: 'Cannot close issue',
-          description: 'All tasks must be completed',
-          placement: 'top',
+    if (task.data.some((task) => task.status != 'completed')) {
+      notification.error({
+        message: 'Cannot close issue',
+        description: 'All tasks must be completed',
+        placement: 'top',
+      })
+      return
+    }
+
+    const resp = await LifeApi.closeIssue(currentProject.id, currentIssue.id, {
+      is_completed: closeAsCompleted,
+    })
+
+    if (resp.success) {
+      dispatch(
+        updateIssueSuccess({
+          issue: {
+            ...currentIssue,
+            status: closeAsCompleted ? 'completed' : 'closed',
+          },
         })
-        return
-      }
-
-      const resp = await LifeApi.closeIssue(
-        currentProject.id,
-        currentIssue.id,
-        {
-          is_completed: closeAsCompleted,
-        }
       )
-
-      if (resp.success) {
-        dispatch(
-          updateIssueSuccess({
-            issue: {
-              ...currentIssue,
-              status: closeAsCompleted ? 'completed' : 'closed',
-            },
-          })
-        )
-      }
     }
   }
 
@@ -228,7 +222,7 @@ const Issue: NextPage<Props> = ({
                     id={comment.id}
                     rightSide={comment.from_id == auth.userId}
                     user={getUserInProject(currentProject, comment.from_id)}
-                    content={comment.content}
+                    content={comment.message}
                     time={fromNow(comment.inserted_at)}
                   />
                 ))}

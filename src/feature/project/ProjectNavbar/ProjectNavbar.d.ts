@@ -1,1 +1,1 @@
-export type ProjectTabs = 'project' | 'issues' | 'settings'
+export type ProjectTabs = 'project' | 'issues' | 'settings' | 'statistics'

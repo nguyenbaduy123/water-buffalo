@@ -56,3 +56,16 @@ export type Attachment = FileUploaded
 export interface UpdateTaskResponse {
   task: Task
 }
+
+export interface ProjectStatistics {
+  issue_count: number
+  issue_open_count: number
+  issue_completed_count: number
+  issue_not_planned_count: number
+  task_count: number
+  task_completed_count: number
+  task_total_score: number
+  issue_total_score: number
+  project_progress: number
+  project_evaluation: number
+}

@@ -3,6 +3,7 @@ import { ActionFunc } from './types'
 import {
   LOAD_ISSUES_REQUEST,
   LOAD_ISSUES_SUCCESS,
+  LOAD_ISSUES_FAILED,
   SELECT_ISSUE,
   UPDATE_ISSUE_SUCCESS,
 } from 'constants/action'
@@ -21,6 +22,8 @@ export const selectIssue = createPlainAction(SELECT_ISSUE)
 
 export const updateIssueSuccess = createPlainAction(UPDATE_ISSUE_SUCCESS)
 
+export const loadIssuesFailed = createPlainAction(LOAD_ISSUES_FAILED)
+
 export const searchIssues = (params: SearchIssueParams) => {
   return async (dispatch: AppDispatch, getState: GetStateFunc) => {
     const {
@@ -34,6 +37,8 @@ export const searchIssues = (params: SearchIssueParams) => {
 
     if (resp.success) {
       dispatch(loadIssuesSuccess({ issues: resp.issues }))
+    } else {
+      loadIssuesFailed()
     }
   }
 }

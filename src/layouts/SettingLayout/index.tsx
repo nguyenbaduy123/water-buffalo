@@ -1,4 +1,3 @@
-import { current } from '@reduxjs/toolkit'
 import SettingTabs from 'feature/project/SettingTabs'
 import ProjectLayout from 'layouts/ProjectLayout'
 import React from 'react'

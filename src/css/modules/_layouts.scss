@@ -90,16 +90,17 @@
 
     .project-settings-tab {
       padding: 6px;
+      margin-bottom: 4px;
       display: flex;
       align-items: center;
       cursor: pointer;
       border-radius: 6px;
       line-height: 22px;
       &:hover {
-        background-color: var(--dark-6);
+        background-color: var(--dark-8);
       }
       &.current-tab {
-        background-color: var(--dark-8);
+        background-color: var(--dark-6);
       }
     }
   }
@@ -182,5 +183,32 @@
     color: var(--red-8);
     font-size: 14px;
     margin-top: 4px;
+  }
+}
+
+.statistics-layout {
+  display: flex;
+  .project-settings-tabs {
+    padding: 4px 8px;
+    min-width: 240px;
+
+    .project-settings-tab {
+      padding: 6px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      border-radius: 6px;
+      line-height: 22px;
+      &:hover {
+        background-color: var(--dark-8);
+      }
+      &.current-tab {
+        background-color: var(--dark-6);
+      }
+    }
+  }
+  .project-statistics-container {
+    width: 100%;
   }
 }

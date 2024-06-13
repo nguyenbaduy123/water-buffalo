@@ -65,12 +65,12 @@ const Issues = ({
   }
 
   const handleChangeInput = (value: string) => {
-    setSearchByAssignee(value)
+    setSearchIssue(value)
     debouncedSearchIssue({
       status,
       keyword: value,
       tag_ids: searchByTags,
-      assignee_id: value,
+      assignee_id: searchByAssignee,
     })
   }
 
