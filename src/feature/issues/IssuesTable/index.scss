@@ -15,11 +15,13 @@
   }
 
   .issue-title {
-    max-width: 300px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    cursor: pointer;
+    .issue-title-text {
+      max-width: 500px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: pointer;
+    }
     &:hover {
       .issue-title-text {
         color: var(--blue-6);

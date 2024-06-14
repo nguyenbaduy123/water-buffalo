@@ -263,9 +263,9 @@ const TaskItem = ({ task, dispatch, isAssignee, isReference }: Props) => {
           </div>
         }
       </Flex>
-      {(isAssignee || isReference) && (
+      {(isAssignee || isReference) && !!task.attachments.length && (
         <div className="mb2 mt12 task-result-list">
-          <div>Result</div>
+          <div>Attachments</div>
           <Flex gap={4} className="mb8" wrap="wrap">
             {attachmentsGrouped.file?.map(renderAttachment)}
           </Flex>

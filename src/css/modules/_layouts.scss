@@ -82,10 +82,13 @@
   }
 }
 
-.settings-layout {
+.settings-layout,
+.statistics-layout {
   display: flex;
   .project-settings-tabs {
     padding: 4px 8px;
+    margin-right: 12px;
+    border-right: 1px solid var(--gray-7);
     min-width: 240px;
 
     .project-settings-tab {
@@ -187,28 +190,12 @@
 }
 
 .statistics-layout {
-  display: flex;
-  .project-settings-tabs {
-    padding: 4px 8px;
-    min-width: 240px;
-
-    .project-settings-tab {
-      padding: 6px;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      border-radius: 6px;
-      line-height: 22px;
-      &:hover {
-        background-color: var(--dark-8);
-      }
-      &.current-tab {
-        background-color: var(--dark-6);
-      }
-    }
-  }
   .project-statistics-container {
     width: 100%;
   }
+}
+
+.profile-page {
+  width: 100%;
+  margin: auto;
 }

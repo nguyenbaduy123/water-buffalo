@@ -94,6 +94,10 @@ export interface LoadIssuesResponse {
 export interface SubmitIssueParams {
   title: string
   description: string
+  assignee_ids: string[]
+  priority: number
+  tag_ids: number[]
+  tasks: CreateTaskParams[]
 }
 
 export interface SubmitIssueResponse {

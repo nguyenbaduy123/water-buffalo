@@ -200,21 +200,23 @@ const Issue: NextPage<Props> = ({
                   />
                 )}
               </div>
-              <Card className="tasks-card" loading={task.fetching}>
-                <div className="list-task">
-                  <Flex vertical gap={12}>
-                    {task.data.map((task) => (
-                      <TaskItem
-                        key={task.id}
-                        task={task}
-                        dispatch={dispatch}
-                        isAssignee={isAssignee}
-                        isReference={isReference}
-                      />
-                    ))}
-                  </Flex>
-                </div>
-              </Card>
+              {task.data.length && (
+                <Card className="tasks-card" loading={task.fetching}>
+                  <div className="list-task">
+                    <Flex vertical gap={12}>
+                      {task.data.map((task) => (
+                        <TaskItem
+                          key={task.id}
+                          task={task}
+                          dispatch={dispatch}
+                          isAssignee={isAssignee}
+                          isReference={isReference}
+                        />
+                      ))}
+                    </Flex>
+                  </div>
+                </Card>
+              )}
               <Flex gap={16} vertical style={{ margin: 24 }}>
                 {comments.map((comment) => (
                   <CommentIssueItem

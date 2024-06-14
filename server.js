@@ -56,6 +56,10 @@ app.prepare().then(() => {
     res.redirect('/login')
   })
 
+  server.get('/profile', authenticate, (req, res) =>
+    app.render(req, res, '/profile')
+  )
+
   server.get('/dashboard', authenticate, handle)
 
   server.get('/new', authenticate, (req, res) =>
