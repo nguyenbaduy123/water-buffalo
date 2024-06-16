@@ -9,6 +9,7 @@ import { RootState } from 'store'
 import { ProjectStatistics } from 'types/project'
 import { notificationError } from 'utils'
 import ReactHighcharts from 'react-highcharts'
+import { COLORS } from 'utils/css'
 
 interface Props {
   currentProject: RootState['project']['currentProject']
@@ -37,7 +38,93 @@ const ProjectStatistic: NextPage<Props> = ({ currentProject }) => {
   const renderChartTask = () => {
     if (!statistics) return
 
-    // const dataTask =
+    const dataTask = [
+      ['A', statistics.task_a_count],
+      ['B', statistics.task_b_count],
+      ['C', statistics.task_c_count],
+      ['Rejected', statistics.task_d_count],
+      [
+        'Not Evaluated',
+        statistics.task_completed_count -
+          (statistics.task_a_count +
+            statistics.task_b_count +
+            statistics.task_c_count),
+      ],
+    ]
+
+    return (
+      <ReactHighcharts
+        config={{
+          title: {
+            text: '<div style="color: #fff">Task</div>',
+            align: 'left',
+            useHTML: true,
+          },
+          subtitle: {
+            useHTML: true,
+            text: `<div style="margin-top: -60px; color: #fff;">
+            <div style="font-size: 40px";>
+              Total: ${statistics.task_count}</div>
+            </div>
+            <div style="font-size: 24px">
+              Completed: ${statistics.task_completed_count}
+            </div>
+            `,
+            floating: true,
+            verticalAlign: 'middle',
+            y: 30,
+          },
+          credits: {
+            enabled: false,
+          },
+          legend: {
+            enabled: true,
+          },
+          chart: {
+            backgroundColor: 'transparent',
+          },
+          plotOptions: {
+            series: {
+              borderWidth: 0,
+              // @ts-ignore
+              innerSize: '80%',
+              legend: {
+                enabled: true,
+              },
+              dataLabels: {
+                enabled: false,
+                crop: false,
+                style: {
+                  fontSize: '16x',
+                },
+              },
+            },
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                enabled: false,
+              },
+              showInLegend: true,
+            },
+          },
+          colors: [
+            COLORS.green[6],
+            COLORS.green[4],
+            COLORS.yellow[6],
+            COLORS.red[4],
+            COLORS.purple[4],
+          ],
+          series: [
+            {
+              type: 'pie',
+              name: 'Count',
+              data: dataTask,
+            },
+          ],
+        }}
+      />
+    )
   }
 
   // issue_count: number
@@ -70,7 +157,7 @@ const ProjectStatistic: NextPage<Props> = ({ currentProject }) => {
           },
           subtitle: {
             useHTML: true,
-            text: `<div style="font-size: 80px; margin-top: -60px;">${statistics.issue_count}</div>`,
+            text: `<div style="font-size: 80px;  color: #fff; margin-top: -60px;">${statistics.issue_count}</div>`,
             floating: true,
             verticalAlign: 'middle',
             y: 30,
@@ -129,7 +216,7 @@ const ProjectStatistic: NextPage<Props> = ({ currentProject }) => {
           <Card>{renderChartIssue()}</Card>
         </Col>
         <Col span={12}>
-          <Card>{renderChartIssue()}</Card>
+          <Card>{renderChartTask()}</Card>
         </Col>
       </Row>
       <Row>

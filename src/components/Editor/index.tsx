@@ -10,15 +10,19 @@ const Editor = ({ height, ...props }: Props) => {
     <TinyMCE
       apiKey="ivqi9hokaumhx5i0ny058cmxbp7fj6ufrtu66af80osqznkj"
       init={{
+        statusbar: false,
         skin: 'oxide-dark',
         content_css: 'dark',
         branding: false,
         menubar: false,
         height: height,
         theme_advanced_toolbar_align: 'left',
-        plugins: ['image', 'preview', 'media', 'table', 'code', 'help'],
+        plugins: ['image', 'preview', 'media', 'table', 'link', 'code', 'help'],
         toolbar:
-          'preview | ' + 'undo redo ' + 'bold italic | ' + 'removeformat help',
+          'preview link | ' +
+          'undo redo' +
+          'bold italic | ' +
+          'removeformat help',
         content_style:
           'body { font-size: 14px; font-family: "Inter", sans-serif;} img {max-height: 120px;}',
       }}

@@ -15,11 +15,11 @@ import RenderTag from 'components/RenderTag'
 
 const statusToIcon = {
   open: <DotsThreeCircle size={24} color={COLORS.green[6]} />,
-  closed: <XCircle size={24} color={COLORS.purple[6]} />,
+  not_planned: <XCircle size={24} color={COLORS.gray[6]} />,
   completed: <CheckCircle size={24} color={COLORS.green[6]} />,
 }
 
-const STATUSES_FILTER: { label: string; value: Issue['status'] }[] = [
+const STATUSES_FILTER: { label: string; value: string }[] = [
   {
     label: 'Open',
     value: 'open',
@@ -34,8 +34,8 @@ interface Props {
   issue: RootState['issue']
   currentProject: RootState['project']['currentProject']
   dispatch: AppDispatch
-  status: Issue['status']
-  onChangeStatus: (status: Issue['status']) => void
+  status: string
+  onChangeStatus: (status: string) => void
 }
 
 const IssueTable = ({
@@ -70,7 +70,7 @@ const IssueTable = ({
   const columns = [
     {
       title: (
-        <Flex gap={12}>
+        <Flex gap={24}>
           {STATUSES_FILTER.map((filter) => (
             <Flex
               key={filter.value}

@@ -1,4 +1,13 @@
-import { Button, Col, Dropdown, Flex, Input, Row, Select } from 'antd'
+import {
+  Button,
+  Col,
+  DatePicker,
+  Dropdown,
+  Flex,
+  Input,
+  Row,
+  Select,
+} from 'antd'
 import CurrentUserAvatar from 'common/CurrentUserAvatar'
 import Editor from 'components/Editor'
 import withAuth from 'hocs/withAuth'
@@ -27,15 +36,13 @@ interface NewTask {
 }
 
 const NewIssue = ({ auth, currentProject }: Props) => {
-  if (!currentProject) {
-    return null
-  }
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [assignees, setAssignees] = useState<string[]>([])
   const [priority, setPriority] = useState<number>(0)
   const [tags, setTags] = useState<number[]>([])
   const [tasks, setTasks] = useState<NewTask[]>([])
+  const [milestone, setMilestone] = useState<Date | null>(null)
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
@@ -46,6 +53,7 @@ const NewIssue = ({ auth, currentProject }: Props) => {
   }
 
   const submitIssue = async () => {
+    if (!currentProject) return
     const resp = await LifeApi.submitIssue(currentProject.id, {
       title,
       description,
@@ -100,117 +108,127 @@ const NewIssue = ({ auth, currentProject }: Props) => {
 
   return (
     <ProjectLayout currentTabId="issues">
-      <Row gutter={24}>
-        <Col span={16}>
-          <Flex gap={16}>
-            <CurrentUserAvatar />
-            <Row className="issue-information" gutter={24}>
-              <Col span={24}>
-                <div className="issue-title">
-                  <h3 className="label-text">Add a title</h3>
-                  <Input
-                    placeholder="Title"
-                    value={title}
-                    onChange={handleChangeTitle}
-                  />
-                </div>
+      {currentProject && (
+        <Row gutter={24}>
+          <Col span={16}>
+            <Flex gap={16}>
+              <CurrentUserAvatar />
+              <Row className="issue-information" gutter={24}>
+                <Col span={24}>
+                  <div className="issue-title">
+                    <h3 className="label-text">Add a title</h3>
+                    <Input
+                      placeholder="Title"
+                      value={title}
+                      onChange={handleChangeTitle}
+                    />
+                  </div>
 
-                <div className="issue-description mb24">
-                  <h3 className="label-text">Add a description</h3>
-                  <Editor
-                    height={200}
-                    onEditorChange={handleChangeDescription}
-                  />
-                </div>
-                <div className="issue-tasks mt24">
-                  <Flex align="center" className="mb8" gap={16}>
-                    <h3>Tasks</h3>
-                    <Button
-                      type="primary"
-                      style={{
-                        width: 32,
-                        height: 32,
-                        padding: 6,
-                      }}
-                      onClick={() =>
-                        setTasks([...tasks, { title: '', description: '' }])
-                      }
-                    >
-                      <PlusCircle size={20} />
+                  <div className="issue-description mb24">
+                    <h3 className="label-text">Add a description</h3>
+                    <Editor
+                      height={200}
+                      onEditorChange={handleChangeDescription}
+                    />
+                  </div>
+                  <div className="issue-tasks mt24">
+                    <Flex align="center" className="mb8" gap={16}>
+                      <h3>Tasks</h3>
+                      <Button
+                        type="primary"
+                        style={{
+                          width: 32,
+                          height: 32,
+                          padding: 6,
+                        }}
+                        onClick={() =>
+                          setTasks([...tasks, { title: '', description: '' }])
+                        }
+                      >
+                        <PlusCircle size={20} />
+                      </Button>
+                    </Flex>
+                    <Flex vertical gap={16}>
+                      {renderTasks()}
+                    </Flex>
+                    <div className="issue-tasks-create"></div>
+                  </div>
+                  <Flex justify="flex-end" style={{ marginTop: 12 }}>
+                    <Button type="primary" onClick={submitIssue}>
+                      Submit
                     </Button>
                   </Flex>
-                  <Flex vertical gap={16}>
-                    {renderTasks()}
-                  </Flex>
-                  <div className="issue-tasks-create"></div>
+                </Col>
+              </Row>
+            </Flex>
+          </Col>
+          <Col
+            span={8}
+            style={{ maxWidth: '25%', borderLeft: '1px solid var(--gray-7)' }}
+          >
+            <Flex vertical gap={24} className="issue-more-infos">
+              <div className="issue-assignee">
+                <h3 className="label-text">Assignees</h3>
+                <div className="assignee-content">
+                  <Select
+                    mode="multiple"
+                    style={{ width: '100%' }}
+                    placeholder="Select assignees"
+                    options={currentProject.users.map((user) => ({
+                      label: (
+                        <Flex align="center" gap={8}>
+                          <UserAvatar user={user} size={16} />
+                          {user.name || user.username}
+                        </Flex>
+                      ),
+                      value: user.id,
+                    }))}
+                    onChange={(values) => setAssignees(values)}
+                  />
                 </div>
-                <Flex justify="flex-end" style={{ marginTop: 12 }}>
-                  <Button type="primary" onClick={submitIssue}>
-                    Submit
-                  </Button>
+              </div>
+              <div className="issue-priority">
+                <h3 className="label-text">Priority</h3>
+                <Flex align="center" gap={8}>
+                  {[0, 1, 2, 3].map((p) => (
+                    <div
+                      key={p}
+                      style={{
+                        opacity: priority == p ? 1 : 0.2,
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => setPriority(p)}
+                    >
+                      <PriorityTag priority={p} />
+                    </div>
+                  ))}
                 </Flex>
-              </Col>
-            </Row>
-          </Flex>
-        </Col>
-        <Col
-          span={8}
-          style={{ maxWidth: '25%', borderLeft: '1px solid var(--gray-7)' }}
-        >
-          <Flex vertical gap={24} className="issue-more-infos">
-            <div className="issue-assignee">
-              <h3 className="label-text">Assignees</h3>
-              <div className="assignee-content">
+              </div>
+              <div className="issue-tags">
+                <h3 className="label-text">Tags</h3>
                 <Select
-                  mode="multiple"
+                  mode="tags"
                   style={{ width: '100%' }}
-                  placeholder="Select assignees"
-                  options={currentProject.users.map((user) => ({
-                    label: (
-                      <Flex align="center" gap={8}>
-                        <UserAvatar user={user} size={16} />
-                        {user.name || user.username}
-                      </Flex>
-                    ),
-                    value: user.id,
+                  placeholder="Select tags"
+                  options={currentProject.settings.tags.map((tag) => ({
+                    label: <RenderTag tag={tag} />,
+                    value: tag.id,
                   }))}
-                  onChange={(values) => setAssignees(values)}
+                  onChange={(values) => setTags(values)}
                 />
               </div>
-            </div>
-            <div className="issue-priority">
-              <h3 className="label-text">Priority</h3>
-              <Flex align="center" gap={8}>
-                {[0, 1, 2, 3].map((p) => (
-                  <div
-                    key={p}
-                    style={{
-                      opacity: priority == p ? 1 : 0.2,
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => setPriority(p)}
-                  >
-                    <PriorityTag priority={p} />
-                  </div>
-                ))}
-              </Flex>
-            </div>
-            <div className="issue-tags">
-              <h3 className="label-text">Tags</h3>
-              <Select
-                mode="tags"
-                style={{ width: '100%' }}
-                placeholder="Select tags"
-                options={currentProject.settings.tags.map((tag) => ({
-                  label: <RenderTag tag={tag} />,
-                  value: tag.id,
-                }))}
-                onChange={(values) => setTags(values)}
-              />
-            </div>
-          </Flex>
-        </Col>
-      </Row>
+              <div className="issue-milestone">
+                <h3 className="label-text">Milestone</h3>
+                <DatePicker
+                  style={{ width: '100%' }}
+                  value={milestone}
+                  onChange={setMilestone}
+                />
+              </div>
+            </Flex>
+          </Col>
+        </Row>
+      )}
     </ProjectLayout>
   )
 }

@@ -31,17 +31,17 @@ import { groupBy } from 'lodash'
 const SCORES = [
   {
     value: 'A',
-    label: 'Very Good',
+    label: 'A',
     color: COLORS.green[6],
   },
   {
     value: 'B',
-    label: 'Good',
+    label: 'B',
     color: COLORS.green[4],
   },
   {
     value: 'C',
-    label: 'Average',
+    label: 'C',
     color: COLORS.yellow[6],
   },
   {
@@ -244,7 +244,7 @@ const TaskItem = ({ task, dispatch, isAssignee, isReference }: Props) => {
                     key: score.value,
                     label: (
                       <div
-                        className="p2 pl4 pr4"
+                        className="p4 pl6 pr6"
                         style={{
                           backgroundColor: score.color,
                           borderRadius: 10,

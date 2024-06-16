@@ -151,6 +151,7 @@ export const notificationSuccess = (
   notification.success({
     message: 'Success',
     description,
+    className: 'notification-success',
     ...options,
   })
 }
@@ -162,6 +163,7 @@ export const notificationError = (
   notification.error({
     message: 'Error',
     description,
+    className: 'notification-error',
     ...options,
   })
 }

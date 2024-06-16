@@ -10,7 +10,7 @@ import ProjectLayout from 'layouts/ProjectLayout'
 import React, { useEffect } from 'react'
 import { AuthState, ProjectState } from 'reducers/types'
 import { AppDispatch } from 'store'
-import { notificationError } from 'utils'
+import { notificationError, notificationSuccess } from 'utils'
 import { connectAndMapStateToProps } from 'utils/redux'
 
 interface Props {
@@ -57,7 +57,11 @@ const Project = ({ auth, project, dispatch }: Props) => {
                 onEditorChange={(value) => setComment(value)}
               />
               <Flex justify="flex-end" style={{ marginTop: 16 }} gap={8}>
-                <Button onClick={handleComment} type="primary">
+                <Button
+                  onClick={handleComment}
+                  type="primary"
+                  disabled={!comment}
+                >
                   Comment
                 </Button>
               </Flex>

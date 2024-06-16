@@ -84,7 +84,7 @@ export interface LoadNotificationsResponse {
 
 export interface LoadIssuesParams {
   current_count?: number
-  status?: Issue['status']
+  status?: string
 }
 
 export interface LoadIssuesResponse {

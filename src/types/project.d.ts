@@ -9,7 +9,7 @@ export interface UserProject {
   permission: string
 }
 
-export type IssueStatus = 'open' | 'closed' | 'completed'
+export type IssueStatus = 'open' | 'not_planned' | 'completed'
 
 export interface Issue {
   id: number
@@ -68,4 +68,8 @@ export interface ProjectStatistics {
   issue_total_score: number
   project_progress: number
   project_evaluation: number
+  task_a_count: number
+  task_b_count: number
+  task_c_count: number
+  task_d_count: number
 }

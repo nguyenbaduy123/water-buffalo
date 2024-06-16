@@ -155,6 +155,7 @@ const ProjectUsersTable = ({ currentProject }: Props) => {
       dataSource={currentProject.users}
       rowKey="id"
       className="users-project-table"
+      pagination={false}
     />
   )
 }

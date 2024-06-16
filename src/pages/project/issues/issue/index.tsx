@@ -150,7 +150,7 @@ const Issue: NextPage<Props> = ({
         updateIssueSuccess({
           issue: {
             ...currentIssue,
-            status: closeAsCompleted ? 'completed' : 'closed',
+            status: closeAsCompleted ? 'completed' : 'not_planned',
           },
         })
       )
@@ -200,7 +200,7 @@ const Issue: NextPage<Props> = ({
                   />
                 )}
               </div>
-              {task.data.length && (
+              {!!task.data.length && (
                 <Card className="tasks-card" loading={task.fetching}>
                   <div className="list-task">
                     <Flex vertical gap={12}>
@@ -279,7 +279,11 @@ const Issue: NextPage<Props> = ({
                         : 'Close Issue'}
                     </Flex>
                   </Dropdown.Button>
-                  <Button onClick={handleComment} type="primary">
+                  <Button
+                    onClick={handleComment}
+                    type="primary"
+                    disabled={!comment}
+                  >
                     Comment
                   </Button>
                 </Flex>

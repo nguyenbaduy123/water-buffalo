@@ -44,7 +44,7 @@ export const searchIssues = (params: SearchIssueParams) => {
 }
 
 interface LoadIssueArgs {
-  status: Issue['status']
+  status: string
 }
 export const loadIssues: ActionFunc<LoadIssueArgs> = (payload) => {
   return async (dispatch, getState) => {
