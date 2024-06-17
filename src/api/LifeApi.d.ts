@@ -11,6 +11,7 @@ import {
   Attachment,
   Issue,
   IssueStatistic,
+  MemberStatistics,
   ProjectSettings,
   ProjectStatistics,
   Tag,
@@ -230,4 +231,8 @@ export interface GetProjectCommentsParams {
 export interface GetProjectStatisticsResponse {
   statistic: ProjectStatistics
   issue_statistic: IssueStatistic[]
+}
+
+export interface GetProjectMembersStatisticsResponse {
+  statistics: MemberStatistics
 }
