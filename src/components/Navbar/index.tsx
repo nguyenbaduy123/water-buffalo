@@ -21,7 +21,10 @@ const Navbar = ({ auth }: Props) => {
     <div className="navbar-container">
       <Flex justify="space-between">
         <div className="navbar-head">
-          <Logo />
+          <Flex gap={16} align="center">
+            <Logo />
+            <div style={{ fontSize: 16 }}>Project</div>
+          </Flex>
         </div>
         <Flex className="navbar-tail" align="center" gap={16}>
           <Notifications />

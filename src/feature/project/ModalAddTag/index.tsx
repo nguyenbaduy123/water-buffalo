@@ -17,6 +17,8 @@ const ModalAddTag = ({ open, onClose, currentProject, dispatch }: Props) => {
   const [description, setDescription] = React.useState('')
   const [color, setColor] = React.useState('')
 
+  console.log(color)
+
   useEffect(() => {
     open && setColor(randomColor())
   }, [open])
@@ -63,7 +65,7 @@ const ModalAddTag = ({ open, onClose, currentProject, dispatch }: Props) => {
           <div>Color</div>
           <ColorPicker
             value={color}
-            onChange={(color) => setColor(color.toHex())}
+            onChange={(color) => setColor('#' + color.toHex())}
           />
         </Flex>
       </Flex>

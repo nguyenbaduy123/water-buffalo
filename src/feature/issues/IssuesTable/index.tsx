@@ -136,7 +136,7 @@ const IssueTable = ({
         total: getTotalCount(),
       }}
       onChange={loadMore}
-      scroll={{ y: 400 }}
+      scroll={{ y: 500 }}
     />
   )
 }

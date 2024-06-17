@@ -3,10 +3,10 @@ import LifeApi from 'api/LifeApi'
 import withAuth from 'hocs/withAuth'
 import StatisticsLayout from 'layouts/StatisticsLayout'
 import { NextPage } from 'next'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { RootState } from 'store'
-import { ProjectStatistics } from 'types/project'
+import { IssueStatistic, ProjectStatistics } from 'types/project'
 import { notificationError } from 'utils'
 import ReactHighcharts from 'react-highcharts'
 import { COLORS } from 'utils/css'
@@ -16,6 +16,9 @@ interface Props {
 }
 
 const ProjectStatistic: NextPage<Props> = ({ currentProject }) => {
+  const [issueStatistics, setIssueStatistics] = React.useState<
+    IssueStatistic[]
+  >([])
   const [statistics, setStatistics] = React.useState<ProjectStatistics | null>(
     null
   )
@@ -30,9 +33,69 @@ const ProjectStatistic: NextPage<Props> = ({ currentProject }) => {
 
     if (resp.success) {
       setStatistics(resp.statistic)
+      setIssueStatistics(resp.issue_statistic)
     } else {
       notificationError(resp.message || 'Failed to get project statistics')
     }
+  }
+
+  const renderChartIssueStatistic = () => {
+    if (!issueStatistics) return
+
+    return (
+      // @ts-ignore
+      <ReactHighcharts
+        config={{
+          chart: {
+            type: 'line',
+            backgroundColor: 'transparent',
+          },
+          title: {
+            text: '<div style="color: #fff">Statistics</div>',
+            align: 'left',
+            useHTML: true,
+          },
+          subtitle: {
+            enabled: false,
+          },
+          credits: {
+            enabled: false,
+          },
+          xAxis: {
+            categories: issueStatistics.map((i) => i.date),
+            crosshair: true,
+            accessibility: {
+              description: 'Countries',
+            },
+          },
+          yAxis: {
+            min: 0,
+            title: {
+              enabled: false,
+            },
+          },
+          tooltip: {},
+          plotOptions: {
+            column: {
+              pointPadding: 0.1,
+              borderWidth: 0,
+            },
+          },
+          series: [
+            {
+              name: 'Open',
+              data: issueStatistics.map((i) => i.issue_open_count),
+              color: COLORS.green[6],
+            },
+            {
+              name: 'Close',
+              data: issueStatistics.map((i) => i.issue_completed_count),
+              color: COLORS.purple[4],
+            },
+          ],
+        }}
+      />
+    )
   }
 
   const renderChartTask = () => {
@@ -127,17 +190,6 @@ const ProjectStatistic: NextPage<Props> = ({ currentProject }) => {
     )
   }
 
-  // issue_count: number
-  // issue_open_count: number
-  // issue_completed_count: number
-  // issue_not_planned_count: number
-  // issue_total_score: number
-  // task_count: number
-  // task_completed_count: number
-  // task_total_score: number
-  // project_progress: number
-  // project_evaluation: number
-
   const renderChartIssue = () => {
     if (!statistics) return
 
@@ -219,8 +271,10 @@ const ProjectStatistic: NextPage<Props> = ({ currentProject }) => {
           <Card>{renderChartTask()}</Card>
         </Col>
       </Row>
-      <Row>
-        <Col span={24}>{/* <Card>{renderChartIssue()}</Card> */}</Col>
+      <Row className="mt24">
+        <Col span={24}>
+          <Card>{renderChartIssueStatistic()}</Card>
+        </Col>
       </Row>
     </StatisticsLayout>
   )

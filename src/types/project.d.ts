@@ -73,3 +73,11 @@ export interface ProjectStatistics {
   task_c_count: number
   task_d_count: number
 }
+
+export interface IssueStatistic {
+  date: string
+  issue_count: number
+  issue_open_count: number
+  issue_completed_count: number
+  issue_not_planned_count: number
+}

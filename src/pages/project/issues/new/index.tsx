@@ -61,6 +61,7 @@ const NewIssue = ({ auth, currentProject }: Props) => {
       priority: priority,
       tag_ids: tags,
       tasks,
+      milestone,
     })
 
     if (resp.success) {

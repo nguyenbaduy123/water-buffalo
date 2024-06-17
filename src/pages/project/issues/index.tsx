@@ -38,7 +38,8 @@ const Issues = ({
 
   const isAdmin = hasAdminPermission(currentUserProject?.permission)
 
-  const onChangeStatus = (status: IssueStatus) => {
+  const onChangeStatus = (status: string) => {
+    // @ts-ignore
     setStatus(status)
   }
 

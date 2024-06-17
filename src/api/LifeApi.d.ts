@@ -10,6 +10,7 @@ import { Channel, Organization } from 'types/organization'
 import {
   Attachment,
   Issue,
+  IssueStatistic,
   ProjectSettings,
   ProjectStatistics,
   Tag,
@@ -98,6 +99,7 @@ export interface SubmitIssueParams {
   priority: number
   tag_ids: number[]
   tasks: CreateTaskParams[]
+  milestone: Date | null
 }
 
 export interface SubmitIssueResponse {
@@ -227,4 +229,5 @@ export interface GetProjectCommentsParams {
 
 export interface GetProjectStatisticsResponse {
   statistic: ProjectStatistics
+  issue_statistic: IssueStatistic[]
 }
