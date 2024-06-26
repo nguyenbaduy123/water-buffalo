@@ -2,6 +2,7 @@ import { Plus, PlusCircle } from '@phosphor-icons/react'
 import { Badge, Button, Flex, Input, Popover } from 'antd'
 import LifeApi from 'api/LifeApi'
 import UserAvatar from 'common/UserAvatar'
+import ModalInviteUsers from 'components/ModalInviteUsers'
 import { debounce } from 'lodash'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Project, User } from 'types/global'
@@ -14,6 +15,8 @@ interface Props {
 const AddUserButton = ({ currentProject }: Props) => {
   const [usersResult, setUsersResult] = useState<User[]>([])
   const [searchValue, setSearchValue] = useState('')
+
+  const [open, setOpen] = useState(false)
 
   const currentProjectUserIds = currentProject.users.map((user) => user.id)
 
@@ -47,6 +50,7 @@ const AddUserButton = ({ currentProject }: Props) => {
     return (
       <Popover
         trigger={['click']}
+        open={false}
         placement="bottomLeft"
         content={
           <div>
@@ -91,7 +95,15 @@ const AddUserButton = ({ currentProject }: Props) => {
         <Button
           type="primary"
           icon={<PlusCircle size={20} />}
+          onClick={() => setOpen(true)}
           className="add-user-icon"
+        />
+
+        <ModalInviteUsers
+          onCancel={() => setOpen(false)}
+          open={open}
+          title="Invite to organization"
+          onInvite={handleInviteUser}
         />
       </Popover>
     )
