@@ -1,0 +1,33 @@
+.chats-container {
+  .chats-header {
+    .title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+
+      .title-icons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .icon-item {
+        padding: 4px;
+        cursor: pointer;
+        display: flex;
+        &:hover {
+          background-color: var(--gray-8);
+          border-radius: 50%;
+        }
+      }
+    }
+    .title-txt {
+      font-size: 24px;
+    }
+    .inbox-search-messenger {
+      border-radius: 30px;
+      min-width: 300px;
+    }
+  }
+}

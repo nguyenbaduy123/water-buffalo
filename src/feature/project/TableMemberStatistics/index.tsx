@@ -89,6 +89,7 @@ const TableMemberStatistics: React.FC<Props> = ({
   ]
   return (
     <Table
+      bordered
       // @ts-ignore
       columns={columns}
       dataSource={statistics?.map((s) => ({

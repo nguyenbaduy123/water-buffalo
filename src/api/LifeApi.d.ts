@@ -5,7 +5,7 @@ import {
   FileUploaded,
   Permissions,
 } from 'types/global.d'
-import { Message } from 'types/message'
+import { Conversation, Message } from 'types/message'
 import { Channel, Organization } from 'types/organization'
 import {
   Attachment,
@@ -235,4 +235,24 @@ export interface GetProjectStatisticsResponse {
 
 export interface GetProjectMembersStatisticsResponse {
   statistics: MemberStatistics
+}
+
+export interface LoadConversationsResponse {
+  conversations: Conversation[]
+}
+
+export interface CreateConversationParams {
+  name?: string
+  user_ids: string[]
+  force?: boolean
+  type: 'INBOX' | 'GROUP_INBOX'
+}
+
+export interface ConversationResponse {
+  conversation: Conversation
+}
+
+export interface SendMessageParams {
+  message?: string
+  attachments?: Attachment[]
 }

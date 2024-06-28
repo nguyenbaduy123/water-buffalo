@@ -7,6 +7,7 @@ import { AuthState } from 'reducers/types'
 import { RootState } from 'store'
 import CurrentUserAvatar from 'common/CurrentUserAvatar'
 import Notifications from 'components/Notifications'
+import Messenger from 'components/Messenger'
 
 interface Props {
   auth: AuthState
@@ -27,6 +28,7 @@ const Navbar = ({ auth }: Props) => {
           </Flex>
         </div>
         <Flex className="navbar-tail" align="center" gap={16}>
+          <Messenger />
           <Notifications />
           <Popover
             trigger={['click']}

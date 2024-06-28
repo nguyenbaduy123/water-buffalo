@@ -22,7 +22,9 @@ const Dashboard: NextPage<Props> = (props: Props) => {
           <Sidebar />
         </Col>
         <Col>
-          <div className="dashboard-page">123ss123</div>
+          <div className="dashboard-page">
+            <h1>Welcome </h1>
+          </div>
         </Col>
       </Row>
     </div>

@@ -5,6 +5,7 @@ import issueReducer from './issue'
 import taskReducer from './task'
 import organizationReducer from './organization'
 import channelReducer from './channel'
+import conversationReducer from './conversation'
 
 export default {
   auth: authReducer,
@@ -14,4 +15,5 @@ export default {
   task: taskReducer,
   organization: organizationReducer,
   channel: channelReducer,
+  conversation: conversationReducer,
 }

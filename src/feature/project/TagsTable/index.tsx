@@ -109,6 +109,7 @@ const TagsTable = ({ currentProject, dispatch }: Props) => {
         </Flex>
       </Flex>
       <Table
+        bordered
         columns={columns}
         dataSource={tags
           .filter((tag) => fuzzySearch(searchValue, tag.name))

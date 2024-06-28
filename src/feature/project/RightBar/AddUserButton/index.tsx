@@ -102,7 +102,7 @@ const AddUserButton = ({ currentProject }: Props) => {
         <ModalInviteUsers
           onCancel={() => setOpen(false)}
           open={open}
-          title="Invite to organization"
+          title="Invite to project"
           onInvite={handleInviteUser}
         />
       </Popover>

@@ -91,7 +91,7 @@ const ModalInviteUsers = ({ onInvite, onCancel, users, ...props }: Props) => {
           >
             <Flex align="center" gap={8}>
               <UserAvatar user={user} size={24} />
-              <div>{user.username}</div>
+              <div>{user.name || user.name}</div>
             </Flex>
             <Button
               type="primary"

@@ -18,4 +18,7 @@ export interface Conversation {
   message_count: number
   seen: boolean
   inserted_at: string
+  updated_at: string
+  messages: Message[]
+  users: User[]
 }

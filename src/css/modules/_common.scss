@@ -88,3 +88,63 @@
   line-height: 16px;
   height: 20px;
 }
+
+.chat-boxes {
+  position: absolute;
+  display: flex;
+  bottom: 0px;
+  right: 8px;
+}
+
+.chatbox {
+  background-color: var(--dark-7);
+  border-radius: 8px;
+  padding: 8px;
+  .chatbox-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 100px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--dark-5);
+    .chatbox-close-btn {
+      display: flex;
+    }
+    .chatbox-header-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+  .reply-inbox {
+    .upload-attachment-btn {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 50%;
+
+      &:hover {
+        background-color: var(--dark-5);
+      }
+    }
+    .input-reply-box {
+      position: relative;
+      .reply-box-input {
+        border-radius: 16px;
+        padding-right: 32px;
+      }
+      .emoji-popover {
+        position: absolute;
+        bottom: 2px;
+        right: 8px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .message-list {
+    height: 230px;
+    overflow-y: auto;
+  }
+}

@@ -4,43 +4,7 @@ import { HYDRATE } from 'next-redux-wrapper'
 import { Issue, Task, UserProject } from 'types/project'
 import { Socket } from 'phoenix'
 import { Channel, Organization } from 'types/organization'
-import { Message } from 'types/message'
-
-export interface Actions<T extends keyof PayloadTypes> {
-  type: T
-  payload: PayloadTypes[T]
-}
-
-export type SingleAction = Actions<keyof PayloadTypes>
-
-export type ReducerMap<S> = Partial<{
-  [K in keyof PayloadTypes]: (state: S, action: Actions<K>) => S
-}>
-
-export interface AuthState {
-  fetching: boolean
-  userId: string
-  username: string | null
-  name: string | null
-  accessToken: string
-  locale: Locale
-  country: string | null
-  avatar: string | null
-  email: string
-  socket: Socket | null
-}
-
-interface ProjectDetail extends Project {
-  users: User[]
-  issues: Issue[]
-}
-
-export type Payload = PayloadTypes[keyof PayloadTypes]
-
-export interface ClaimsFromToken extends JwtPayload {
-  id: string
-  username: string
-}
+import { Conversation, Message } from 'types/message'
 
 export interface PayloadTypes {
   [HYDRATE]: { auth: AuthState }
@@ -85,6 +49,50 @@ export interface PayloadTypes {
   LOAD_CHANNEL_MESSAGES_REQUEST: undefined
   LOAD_CHANNEL_MESSAGES_SUCCESS: { messages: Message[] }
   CHANNEL_NEW_MESSAGE: { message: Message }
+
+  LOAD_CONVERSATIONS: undefined
+  LOAD_CONVERSATIONS_SUCCESS: { conversations: Conversation[] }
+  NEW_CONVERSATION: { conversation: Conversation }
+  UNSELECT_CONVERSATION: undefined
+  SELECT_CONVERSATION: { conversation: Conversation }
+
+  NEW_MESSAGE: { message: Message; conversation: Conversation }
+}
+
+export interface Actions<T extends keyof PayloadTypes> {
+  type: T
+  payload: PayloadTypes[T]
+}
+
+export type SingleAction = Actions<keyof PayloadTypes>
+
+export type ReducerMap<S> = Partial<{
+  [K in keyof PayloadTypes]: (state: S, action: Actions<K>) => S
+}>
+
+export interface AuthState {
+  fetching: boolean
+  userId: string
+  username: string | null
+  name: string | null
+  accessToken: string
+  locale: Locale
+  country: string | null
+  avatar: string | null
+  email: string
+  socket: Socket | null
+}
+
+interface ProjectDetail extends Project {
+  users: User[]
+  issues: Issue[]
+}
+
+export type Payload = PayloadTypes[keyof PayloadTypes]
+
+export interface ClaimsFromToken extends JwtPayload {
+  id: string
+  username: string
 }
 
 export interface ProjectState {
@@ -123,4 +131,10 @@ export interface ChannelState {
   currentChannelId: string
   messages: Message[]
   fetchingMessages: boolean
+}
+
+export interface ConversationState {
+  fetching: boolean
+  data: Conversation[]
+  selected: Conversation | null
 }

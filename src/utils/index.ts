@@ -3,11 +3,13 @@ import { Project, User } from 'types/global'
 import moment from 'moment'
 import { Socket } from 'phoenix'
 import { COLORS } from './css'
+import { Conversation } from 'types/message'
 
 export const successNotification = (message: string, description: string) => {
   notification.success({
     message,
     description,
+    className: 'notification-success',
   })
 }
 
@@ -15,6 +17,7 @@ export const errorNotification = (message: string, description: string) => {
   notification.error({
     message,
     description,
+    className: 'notification-error',
   })
 }
 
@@ -198,4 +201,13 @@ export const getPriorityData = (priority: number | null) => {
 
 export const toCapitalCase = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1).toLocaleLowerCase()
+}
+
+export const getConversationName = (
+  conversation: Conversation,
+  userId: string
+) => {
+  if (conversation.name) return conversation.name
+  const user = conversation.users.find((user) => user.id !== userId)
+  return user.name || user.username
 }

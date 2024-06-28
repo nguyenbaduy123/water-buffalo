@@ -151,6 +151,7 @@ const ProjectUsersTable = ({ currentProject }: Props) => {
 
   return (
     <Table
+      bordered
       columns={columns}
       dataSource={currentProject.users}
       rowKey="id"

@@ -1,4 +1,4 @@
-import { Eye, Handshake } from '@phosphor-icons/react'
+import { Eye, Handshake, Lock } from '@phosphor-icons/react'
 import { Button, Divider, Flex, Input, Modal, Switch, Typography } from 'antd'
 import LifeApi from 'api/LifeApi'
 import ModalTransferProject from 'feature/project/ModalTransfer'
@@ -48,9 +48,7 @@ const SettingGeneral: NextPage<Props> = ({ currentProject, auth }: Props) => {
             <Input.TextArea value={currentProject?.description} />
           </div>
           <Flex justify="end">
-            <Button type="primary" onClick={confirmClose}>
-              Close
-            </Button>
+            <Button type="primary">Update</Button>
           </Flex>
         </Flex>
 
@@ -79,6 +77,16 @@ const SettingGeneral: NextPage<Props> = ({ currentProject, auth }: Props) => {
               </Button>
             </SettingItem>
           )}
+          <Divider />
+          <SettingItem
+            title="Close Project"
+            description="Close this project. This action cannot be undone."
+            icon={<Lock size={24} />}
+          >
+            <Button type="primary" danger onClick={confirmClose}>
+              Close
+            </Button>
+          </SettingItem>
         </div>
         {currentProject && (
           <ModalTransferProject

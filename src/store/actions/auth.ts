@@ -17,6 +17,8 @@ import { channelConnect, getProjectRoute, infoNotification } from 'utils'
 import Router from 'next/router'
 import { notification } from 'antd'
 import { channelNewMessage, loadChannels } from './channel'
+import { newMessage, selectConversation } from './conversation'
+import { Conversation, Message } from 'types/message'
 
 export const loginRequest = () => {
   return {
@@ -187,6 +189,30 @@ export const connectToChannel = (channelName: string) => {
         message: payload.message,
       })
     })
+
+    channel.on(
+      'messages:new_message',
+      (payload: { conversation: Conversation; message: Message }) => {
+        const {
+          auth: { userId },
+          conversation: { selected, data },
+        } = getState()
+        const { message, conversation } = payload
+
+        if (message.from_id != userId && selected?.id != conversation.id) {
+          notification.info({
+            message: 'New message',
+            description: message.message || conversation.snippet,
+          })
+        }
+
+        if (!selected) {
+          dispatch(selectConversation(conversation))
+        } else if (selected.id == conversation.id) {
+          dispatch(newMessage(conversation, message))
+        }
+      }
+    )
 
     return {
       type: 'CHANNEL_CONNECTED',

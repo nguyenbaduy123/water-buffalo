@@ -1,3 +1,4 @@
+import { Input } from 'antd'
 import LifeApi from 'api/LifeApi'
 import TableMemberStatistics from 'feature/project/TableMemberStatistics'
 import withAuth from 'hocs/withAuth'
@@ -35,6 +36,13 @@ const ProjectMemberStatistic: NextPage<Props> = ({ currentProject }) => {
 
   return (
     <StatisticsLayout currentTabId="members">
+      <Input
+        placeholder="Search member"
+        className="mb24"
+        style={{
+          width: '300px',
+        }}
+      />
       <TableMemberStatistics
         currentProject={currentProject}
         statistics={memberStatistics}

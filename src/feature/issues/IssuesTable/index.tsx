@@ -125,6 +125,7 @@ const IssueTable = ({
   const rowSelection = {}
   return (
     <Table
+      bordered
       className="issue-table"
       dataSource={issue.data}
       rowKey={(record) => record.id}

@@ -111,7 +111,7 @@ const Issues = ({
             <Select
               className="mnw200px"
               placeholder="Filter by assignee"
-              value={searchByAssignee}
+              value={searchByAssignee || null}
               onChange={handleChangeAssignee}
               allowClear
               options={currentProject?.users.map((user) => ({
