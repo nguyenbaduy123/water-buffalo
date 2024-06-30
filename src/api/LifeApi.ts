@@ -51,6 +51,9 @@ import {
   GetProjectMembersStatisticsResponse,
   CreateConversationParams,
   ConversationResponse,
+  CreateTeamParams,
+  CreateTeamResponse,
+  AssignToProjectParams,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -345,6 +348,15 @@ class LifeApi extends Api {
 
   public loadMessages = (conversationId: string) =>
     this.get<MessagesResponse>(`/conversations/${conversationId}/message`)
+
+  public createNewTeam = (organizationId: string, params: CreateTeamParams) =>
+    this.post<CreateTeamResponse>(
+      `/organization/${organizationId}/teams`,
+      params
+    )
+
+  public assignToProject = (projectId: number, params: AssignToProjectParams) =>
+    this.post<GetProjectResponse>(`/project/${projectId}/assign`, params)
 }
 
 export default new LifeApi()

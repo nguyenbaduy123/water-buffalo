@@ -16,6 +16,7 @@ import { updateIssueSuccess } from './issue'
 import { Issue, Task } from 'types/project'
 import { updateTaskSuccess } from './task'
 import { Message } from 'types/message'
+import { selectOrganization } from './organization'
 
 export const loadProjectsRequest = createPlainAction(LOAD_PROJECTS_REQUEST)
 export const loadProjectsSuccess = createPlainAction(LOAD_PROJECTS_SUCCESS)
@@ -50,6 +51,7 @@ export const selectProject = (projectId: number) => {
     const {
       auth: { userId },
       project: { data: projects },
+      organization: { data: organizations },
     } = getState()
     const currentProject = projects.find((project) => project.id === projectId)
 
@@ -59,6 +61,10 @@ export const selectProject = (projectId: number) => {
 
     const resp = await LifeApi.loadProjectSettings(currentProject.id)
     if (resp.success) {
+      if (!currentProject.is_personal) {
+        dispatch(selectOrganization(currentProject.owner_id))
+      }
+
       dispatch(
         selectedProject({
           currentProject: { ...currentProject, settings: resp.settings },

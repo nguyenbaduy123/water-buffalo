@@ -31,7 +31,7 @@ const OrganizationLayout = ({ organization, dispatch, children }: Props) => {
     dispatch(loadChannels(organization.currentOrganization.id))
   }, [organization.currentOrganization])
 
-  return <div>{children}</div>
+  return <div className="organization-view">{children}</div>
 }
 
 const mapStateToProps = (state: RootState) => {

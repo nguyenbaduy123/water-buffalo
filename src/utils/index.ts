@@ -4,6 +4,7 @@ import moment from 'moment'
 import { Socket } from 'phoenix'
 import { COLORS } from './css'
 import { Conversation } from 'types/message'
+import { Organization } from 'types/organization'
 
 export const successNotification = (message: string, description: string) => {
   notification.success({
@@ -40,8 +41,11 @@ export const convertToValidName = (input: string) => {
     .replace(/^-+|-+$/g, '')
 }
 
-export const getProjectUniqueName = (project: Project | null) =>
-  project ? `${project.owner.username}/${project.name}` : ''
+export const getProjectUniqueName = (project: Project | null) => {
+  if (!project) return ''
+  const projectOwner = getProjectOwner(project)
+  return projectOwner ? `${projectOwner.username}/${project.name}` : ''
+}
 
 export const getProjectRoute = (project: Project | null, route: string) =>
   `/${getProjectUniqueName(project)}${route}`
@@ -210,4 +214,16 @@ export const getConversationName = (
   if (conversation.name) return conversation.name
   const user = conversation.users.find((user) => user.id !== userId)
   return user.name || user.username
+}
+
+export const getProjectOwner = (project: Project) => {
+  if (project.is_personal) {
+    return project.users.find((user) => user.id === project.owner_id)
+  } else {
+    const organizations: Organization[] =
+      // @ts-ignore
+      __lifeReduxStore__.getState().organization.data
+
+    return organizations.find((org) => org.id === project.owner_id)
+  }
 }

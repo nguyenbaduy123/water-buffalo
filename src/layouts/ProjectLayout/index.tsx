@@ -8,6 +8,7 @@ import { ProjectTabs } from 'feature/project/ProjectNavbar/ProjectNavbar'
 
 import 'css/modules/_project.scss'
 import { selectProject } from 'actions/project'
+import { getProjectOwner } from 'utils'
 interface Props {
   project: ProjectState
   children: React.ReactNode
@@ -25,11 +26,14 @@ const ProjectLayout = ({ children, project, currentTabId }: Props) => {
     const currentProject =
       owner_name &&
       project_name &&
-      project.data.find(
-        (project) =>
-          [project.owner.username, project.owner_id].includes(owner_name) &&
+      project.data.find((project) => {
+        const projectOwner = getProjectOwner(project)
+        return (
+          projectOwner &&
+          [projectOwner.username, project.owner_id].includes(owner_name) &&
           [project.name, project.id].includes(project_name)
-      )
+        )
+      })
 
     if (currentProject) {
       dispatch(selectProject(currentProject.id))

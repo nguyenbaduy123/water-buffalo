@@ -24,4 +24,13 @@ export interface Organization {
   username: string
   users: User[]
   channels: Channel[]
+  user_permission: string
+  teams: Team[]
+}
+
+export interface Team {
+  id: string
+  name: string
+  description: string
+  user_ids: string[]
 }

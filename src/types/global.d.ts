@@ -33,12 +33,12 @@ export interface Project {
   status: string
   priority: number | null
   owner_id: string
-  owner: User
   users: UserProject[]
   issue_open_count: number
   issue_count: number
   settings: ProjectSettings
   comments?: Message[]
+  is_personal: boolean
 }
 
 export interface NotificationMap {

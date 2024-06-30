@@ -3,14 +3,16 @@ import {
   LOAD_ORGANIZATIONS_REQUEST,
   LOAD_ORGANIZATIONS_SUCCESS,
   SELECT_ORGANIZATION,
+  UPDATE_ORGANIZATION,
 } from 'constants/action'
 import { OrganizationState, ReducerMap } from './types'
-import { createReducer } from '@reduxjs/toolkit'
+import { createReducer, current } from '@reduxjs/toolkit'
 
 const initialState: OrganizationState = {
   fetching: false,
   data: [],
   currentOrganization: null,
+  currentUserOrganization: null,
 }
 
 const reducerMap: ReducerMap<OrganizationState> = {
@@ -25,6 +27,18 @@ const reducerMap: ReducerMap<OrganizationState> = {
   },
   [CREATE_ORGANIZATION_SUCCESS]: (state, { payload }) => {
     return { ...state, data: [...state.data, payload.organization] }
+  },
+  [UPDATE_ORGANIZATION]: (state, { payload }) => {
+    return {
+      ...state,
+      currentOrganization:
+        state.currentOrganization?.id == payload.organization.id
+          ? payload.organization
+          : state.currentOrganization,
+      data: state.data.map((o) =>
+        o.id === payload.organization.id ? payload.organization : o
+      ),
+    }
   },
 }
 

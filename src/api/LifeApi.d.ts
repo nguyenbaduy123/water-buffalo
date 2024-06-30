@@ -58,6 +58,7 @@ export interface GetProjectsResponse {
 export interface CreateProjectParams {
   name: string
   description: string
+  organization_id?: string
 }
 
 export interface CreateProjectResponse {
@@ -255,4 +256,19 @@ export interface ConversationResponse {
 export interface SendMessageParams {
   message?: string
   attachments?: Attachment[]
+}
+
+export interface CreateTeamParams {
+  name: string
+  description: string
+  user_ids: string[]
+}
+
+export interface CreateTeamResponse {
+  team: Team
+}
+
+export interface AssignToProjectParams {
+  user_id?: string
+  team_id?: string
 }

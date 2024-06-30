@@ -25,6 +25,28 @@
   max-height: 100%;
 }
 
+.organization-view {
+  .organization-tab-item {
+    padding: 8px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    &:hover:not(.active) {
+      background-color: var(--dark-6);
+    }
+
+    &.selected {
+      cursor: default;
+      border-bottom: 1px solid var(--blue-6);
+      border-radius: 0;
+    }
+  }
+}
+
+.organization-teams {
+  max-width: 1000px;
+  margin: auto;
+}
+
 .auth-page {
   height: 100vh;
   background-color: var(--dark-7);

@@ -1,4 +1,13 @@
-import { Badge, Divider, Dropdown, Flex, Popover, Tooltip } from 'antd'
+import {
+  Badge,
+  Button,
+  Divider,
+  Dropdown,
+  Flex,
+  MenuProps,
+  Popover,
+  Tooltip,
+} from 'antd'
 import UserAvatar from 'common/UserAvatar'
 import { connect } from 'react-redux'
 import { AppDispatch, RootState } from 'store'
@@ -10,17 +19,21 @@ import { hasAdminPermission } from 'utils/permission'
 import PriorityTag from 'components/PriorityTag'
 import LifeApi from 'api/LifeApi'
 import { updateProjectSuccess } from 'actions/project'
+import { PlusCircle } from '@phosphor-icons/react'
+import RenderUser from 'common/RenderUser'
 
 interface Props {
   currentProject: Project | null
   currentUserProject: RootState['project']['currentUserProject']
   dispatch: AppDispatch
+  currentOrganization: RootState['organization']['currentOrganization']
 }
 
 const ProjectRightBar = ({
   currentProject,
   currentUserProject,
   dispatch,
+  currentOrganization,
 }: Props) => {
   if (!currentProject) return null
 
@@ -31,6 +44,71 @@ const ProjectRightBar = ({
     const resp = await LifeApi.updatePriorityProject(
       currentProject.id,
       priority
+    )
+  }
+
+  const handleAssignTeam = async (teamId: string) => {
+    const resp = await LifeApi.assignToProject(currentProject.id, {
+      team_id: teamId,
+    })
+    if (resp.success) {
+      // dispatch(
+      //   updateProjectSuccess({
+      //     project: resp.project,
+      //   })
+      // )
+    }
+  }
+
+  const handleAssignUser = async (userId: string) => {
+    const resp = await LifeApi.assignToProject(currentProject.id, {
+      user_id: userId,
+    })
+    if (resp.success) {
+      // dispatch(
+      //   updateProjectSuccess({
+      //     project: resp.project,
+      //   })
+      // )
+    }
+  }
+
+  const renderAddUserButton = () => {
+    if (currentProject.is_personal)
+      return <AddUserButton currentProject={currentProject} />
+
+    const teams = currentOrganization?.teams || []
+    const users = currentOrganization?.users || []
+
+    const items: MenuProps['items'] = teams
+      .map((team) => ({
+        key: team.id,
+        label: <div>{team.name}</div>,
+        onClick: () => handleAssignTeam(team.id),
+      }))
+      .concat(
+        // @ts-ignore
+        users.map((u) => {
+          return {
+            key: u.id,
+            label: <RenderUser user={u} />,
+            onClick: () => handleAssignUser(u.id),
+          }
+        })
+      )
+
+    return (
+      <Dropdown
+        menu={{
+          items: items,
+        }}
+      >
+        <Button
+          type="primary"
+          icon={<PlusCircle size={20} />}
+          className="add-user-icon"
+        />
+      </Dropdown>
     )
   }
 
@@ -47,9 +125,7 @@ const ProjectRightBar = ({
             <Badge color={COLORS.blue[6]} count={currentProject.users.length} />
           </Flex>
 
-          {canManageProject && (
-            <AddUserButton currentProject={currentProject} />
-          )}
+          {canManageProject && renderAddUserButton()}
         </Flex>
         <div className="list-project-users">
           <Flex wrap="wrap" gap={4}>
@@ -102,6 +178,7 @@ const ProjectRightBar = ({
 const mapStateToProps = (state: RootState) => ({
   currentProject: state.project.currentProject,
   currentUserProject: state.project.currentUserProject,
+  currentOrganization: state.organization.currentOrganization,
 })
 
 export default connect(mapStateToProps)(ProjectRightBar)

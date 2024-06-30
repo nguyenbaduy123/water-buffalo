@@ -4,7 +4,7 @@ import { Button, Col, Divider, Flex, Input, Row, Select, Spin } from 'antd'
 import { useCallback, useEffect, useState } from 'react'
 
 import withAuth from 'hocs/withAuth'
-import { AuthState } from 'reducers/types'
+import { AuthState, OrganizationState } from 'reducers/types'
 import { connectAndMapStateToProps } from 'utils/redux'
 import './index.scss'
 import {
@@ -15,17 +15,28 @@ import {
 import { COLORS } from 'utils/css'
 import LifeApi from 'api/LifeApi'
 import { debounce } from 'lodash'
+import { hasAdminPermission } from 'utils/permission'
+import { CreateProjectParams } from 'api/LifeApi.d'
 
 interface Props {
   auth: AuthState
+  organization: OrganizationState
 }
 
-const NewProject: NextPage<Props> = ({ auth }: Props) => {
+const NewProject: NextPage<Props> = ({ auth, organization }: Props) => {
   const [projectName, setProjectName] = useState('')
   const [projectDescription, setProjectDescription] = useState('')
   const [validatingName, setValidatingName] = useState(false)
   const [isValidName, setIsValidName] = useState(true)
   const [inValidMessage, setInValidMessage] = useState('')
+
+  const [organizationOwnerId, setOrganizationOwnerId] = useState<string | null>(
+    null
+  )
+
+  const organizationsCanCreate = organization.data.filter((o) =>
+    hasAdminPermission(o.user_permission)
+  )
 
   useEffect(() => {
     if (projectName) {
@@ -56,10 +67,15 @@ const NewProject: NextPage<Props> = ({ auth }: Props) => {
   )
 
   const handleCreateProject = async () => {
-    const resp = await LifeApi.createProject({
+    const body: CreateProjectParams = {
       name: convertToValidName(projectName),
       description: projectDescription,
-    })
+    }
+
+    if (organizationOwnerId) {
+      body['organization_id'] = organizationOwnerId
+    }
+    const resp = await LifeApi.createProject(body)
     if (resp.success) {
       successNotification('Success', 'Project created successfully')
     } else {
@@ -78,6 +94,18 @@ const NewProject: NextPage<Props> = ({ auth }: Props) => {
     setProjectDescription(e.target.value)
   }
 
+  const ownerOptions = [
+    {
+      value: auth.username || auth.email,
+      label: auth.username || auth.email,
+    },
+  ].concat(
+    organizationsCanCreate.map((o) => ({
+      value: o.id,
+      label: o.name,
+    }))
+  )
+
   return (
     <div>
       <div className="new-project-page">
@@ -93,8 +121,16 @@ const NewProject: NextPage<Props> = ({ auth }: Props) => {
                   <Select
                     style={{ width: '100%' }}
                     id="owner-name"
-                    value={auth.username || auth.email}
-                    disabled
+                    value={organizationOwnerId || auth.username || auth.email}
+                    disabled={!organizationsCanCreate.length}
+                    options={ownerOptions}
+                    onChange={(value) => {
+                      if (value == auth.username || value == auth.email) {
+                        setOrganizationOwnerId(null)
+                      } else {
+                        setOrganizationOwnerId(value)
+                      }
+                    }}
                   />
                 </label>
               </Col>
@@ -179,4 +215,6 @@ const NewProject: NextPage<Props> = ({ auth }: Props) => {
   )
 }
 
-export default connectAndMapStateToProps(['auth'])(withAuth(NewProject))
+export default connectAndMapStateToProps(['auth', 'organization'])(
+  withAuth(NewProject)
+)

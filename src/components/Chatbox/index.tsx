@@ -23,12 +23,6 @@ const ChatBox: React.FC<Props> = ({ dispatch, conversation, auth }) => {
     dispatch(unselectConversation())
   }
 
-  const handleSendMessage = async () => {
-    const resp = await LifeApi.sendMessage(conversation.id, {
-      message: 'Hello',
-    })
-  }
-
   return (
     <div className="chatbox">
       <div className="chatbox-header">

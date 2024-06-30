@@ -62,26 +62,40 @@ const Sidebar = ({ auth, project, organization, dispatch }: Props) => {
           </Flex>
 
           <Flex className="list-projects" vertical>
-            {project.data.map((project) => (
-              <div
-                key={project.id}
-                className="project-item"
-                onClick={() => redirectToProject(project)}
-              >
-                <Flex className="project-name" gap={6}>
-                  <UserAvatar
-                    name={project.owner.username}
-                    src={project.owner.avatar_url}
-                    size={16}
-                    textSizeRatio={1.5}
-                    round
-                  />
-                  <div className="project-unique-name">
-                    {getProjectUniqueName(project)}
-                  </div>
-                </Flex>
-              </div>
-            ))}
+            {project.data.map((project) => {
+              let projectOwner: any
+
+              if (project.is_personal) {
+                projectOwner = project.users.find(
+                  (user) => user.id === project.owner_id
+                )
+              } else {
+                projectOwner = organization.data.find(
+                  (o) => o.id === project.owner_id
+                )
+              }
+              if (!projectOwner) return null
+              return (
+                <div
+                  key={project.id}
+                  className="project-item"
+                  onClick={() => redirectToProject(project)}
+                >
+                  <Flex className="project-name" gap={6}>
+                    <UserAvatar
+                      name={projectOwner.username}
+                      src={projectOwner.avatar_url}
+                      size={16}
+                      textSizeRatio={1.5}
+                      round
+                    />
+                    <div className="project-unique-name">
+                      {getProjectUniqueName(project)}
+                    </div>
+                  </Flex>
+                </div>
+              )
+            })}
           </Flex>
 
           <Divider />

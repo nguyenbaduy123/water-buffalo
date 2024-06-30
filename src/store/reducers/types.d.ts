@@ -30,6 +30,7 @@ export interface PayloadTypes {
   SELECT_ORGANIZATION: { organization: Organization }
   UPDATE_ORGANIZATION_SUCCESS: { organization: Organization }
   CREATE_ORGANIZATION_SUCCESS: { organization: Organization }
+  UPDATE_ORGANIZATION: { organization: Organization }
 
   LOAD_ISSUES_REQUEST: undefined
   LOAD_ISSUES_SUCCESS: { issues: Issue[] }
