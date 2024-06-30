@@ -5,6 +5,7 @@ import {
   Smiley,
 } from '@phosphor-icons/react'
 import { Flex, Input, Upload } from 'antd'
+import { UploadChangeParam, UploadFile } from 'antd/es/upload'
 import LifeApi from 'api/LifeApi'
 import React from 'react'
 import { Attachment } from 'types/project'
@@ -33,10 +34,25 @@ const ReplyInbox: React.FC<Props> = ({ conversationId, userId }) => {
     }
   }
 
+  const handleUploadAttachments = (
+    info: UploadChangeParam<UploadFile<any>>
+  ) => {
+    if (info.file.status === 'done') {
+      setAttachments((prev) => [...prev, info.file.response.file])
+    }
+  }
+
   return (
     <div className="reply-inbox">
       <Flex align="center" gap={8}>
-        <Upload>
+        <Upload
+          onChange={handleUploadAttachments}
+          // fileList={[]}
+          showUploadList={false}
+          multiple
+          action={`${process.env.NEXT_PUBLIC_API_URL}/content/upload`}
+          withCredentials
+        >
           <div className="upload-attachment-btn">
             <Images size={20} weight="fill" color={COLORS.gray[6]} />
           </div>

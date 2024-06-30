@@ -39,6 +39,70 @@ const ProjectStatistic: NextPage<Props> = ({ currentProject }) => {
     }
   }
 
+  const renderChartProgress = () => {
+    return (
+      // @ts-ignore
+      <ReactHighcharts
+        config={{
+          chart: {
+            type: 'column',
+            backgroundColor: 'transparent',
+          },
+          title: {
+            text: '<div style="color: #fff">Progress</div>',
+            align: 'left',
+            useHTML: true,
+          },
+          legend: {
+            enabled: false,
+          },
+          subtitle: {
+            enabled: false,
+          },
+          credits: {
+            enabled: false,
+          },
+          xAxis: {
+            categories: issueStatistics.map((i) => i.date),
+            crosshair: true,
+            accessibility: {
+              description: 'Countries',
+            },
+          },
+          yAxis: {
+            min: 0,
+            max: 100,
+            title: {
+              enabled: false,
+            },
+          },
+          tooltip: {},
+          plotOptions: {
+            column: {
+              pointPadding: 0.1,
+              borderWidth: 0,
+            },
+          },
+          series: [
+            {
+              name: 'Progress',
+              type: 'column',
+              zIndex: 0,
+              data: issueStatistics.map(
+                (i) =>
+                  Math.round(
+                    (i.issue_completed_count /
+                      (i.issue_count - i.issue_not_planned_count)) *
+                      10000
+                  ) / 100
+              ),
+            },
+          ],
+        }}
+      />
+    )
+  }
+
   const renderChartIssueStatistic = () => {
     if (!issueStatistics) return
 
@@ -274,6 +338,11 @@ const ProjectStatistic: NextPage<Props> = ({ currentProject }) => {
       <Row className="mt24">
         <Col span={24}>
           <Card>{renderChartIssueStatistic()}</Card>
+        </Col>
+      </Row>
+      <Row className="mt24">
+        <Col span={24}>
+          <Card>{renderChartProgress()}</Card>
         </Col>
       </Row>
     </StatisticsLayout>

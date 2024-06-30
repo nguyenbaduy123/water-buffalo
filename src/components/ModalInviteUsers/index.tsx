@@ -11,9 +11,16 @@ interface Props extends ModalProps {
   onInvite: (userId: User['id']) => void
   onCancel: () => void
   users?: User[]
+  btnText?: string
 }
 
-const ModalInviteUsers = ({ onInvite, onCancel, users, ...props }: Props) => {
+const ModalInviteUsers = ({
+  onInvite,
+  onCancel,
+  btnText,
+  users,
+  ...props
+}: Props) => {
   const [searchValue, setSearchValue] = React.useState('')
   const [usersResult, setUsersResult] = React.useState<User[]>([])
 
@@ -98,7 +105,7 @@ const ModalInviteUsers = ({ onInvite, onCancel, users, ...props }: Props) => {
               onClick={() => handleInvite(user.id)}
               disabled={invitedIds.includes(user.id)}
             >
-              Invite
+              {btnText || 'Invite'}
             </Button>
           </Flex>
         ))}

@@ -26,6 +26,7 @@ const Messenger: FC<Props> = ({ auth, dispatch }) => {
 
     if (resp.success) {
       dispatch(newConversation(resp.conversation))
+      setOpenSearchUser(false)
     }
   }
 
@@ -80,6 +81,7 @@ const Messenger: FC<Props> = ({ auth, dispatch }) => {
         title="New chat"
         onCancel={() => setOpenSearchUser(false)}
         onInvite={handleNewInbox}
+        btnText="Chat"
       />
     </div>
   )
