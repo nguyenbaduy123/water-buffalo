@@ -13,7 +13,7 @@ import Router from 'next/router'
 import PriorityTag from 'components/PriorityTag'
 import RenderTag from 'components/RenderTag'
 
-const statusToIcon = {
+export const statusToIcon = {
   open: <DotsThreeCircle size={24} color={COLORS.green[6]} />,
   not_planned: <XCircle size={24} color={COLORS.gray[6]} />,
   completed: <CheckCircle size={24} color={COLORS.green[6]} />,

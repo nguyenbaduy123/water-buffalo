@@ -1,5 +1,5 @@
 import React from 'react'
-import { ProjectSettings } from './project'
+import { IssueStatus, ProjectSettings } from './project'
 import { Message } from './message'
 
 export interface User {
@@ -81,4 +81,14 @@ export interface SocketPayload<T = Record<string, any>> {
   type: string
   message: string
   info: T
+}
+
+export interface UserStatistics {
+  projects: number
+  issues: {
+    status: IssueStatus
+    count: number
+  }[]
+  tasks: number
+  owner_projects: number
 }

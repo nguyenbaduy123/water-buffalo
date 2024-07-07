@@ -4,6 +4,7 @@ import {
   Notification,
   FileUploaded,
   Permissions,
+  UserStatistics,
 } from 'types/global.d'
 import { Conversation, Message } from 'types/message'
 import { Channel, Organization } from 'types/organization'
@@ -271,4 +272,12 @@ export interface CreateTeamResponse {
 export interface AssignToProjectParams {
   user_id?: string
   team_id?: string
+}
+
+export interface GetUserStatisticsResponse {
+  statistics: UserStatistics
+}
+
+export interface GetProjectStatisticResponse {
+  statistic: ProjectStatistics
 }

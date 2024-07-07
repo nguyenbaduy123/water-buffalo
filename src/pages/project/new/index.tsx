@@ -1,5 +1,10 @@
 import { NextPage } from 'next'
-import { CheckCircle, WarningCircle } from '@phosphor-icons/react'
+import {
+  BuildingOffice,
+  CheckCircle,
+  User,
+  WarningCircle,
+} from '@phosphor-icons/react'
 import { Button, Col, Divider, Flex, Input, Row, Select, Spin } from 'antd'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -97,12 +102,22 @@ const NewProject: NextPage<Props> = ({ auth, organization }: Props) => {
   const ownerOptions = [
     {
       value: auth.username || auth.email,
-      label: auth.username || auth.email,
+      label: (
+        <Flex align="center" gap={6}>
+          <User size={16} />
+          {auth.username || auth.email}
+        </Flex>
+      ),
     },
   ].concat(
     organizationsCanCreate.map((o) => ({
       value: o.id,
-      label: o.name,
+      label: (
+        <Flex align="center" gap={6}>
+          <BuildingOffice size={16} />
+          {o.name}
+        </Flex>
+      ),
     }))
   )
 

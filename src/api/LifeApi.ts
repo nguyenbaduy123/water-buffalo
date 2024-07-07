@@ -54,6 +54,8 @@ import {
   CreateTeamParams,
   CreateTeamResponse,
   AssignToProjectParams,
+  GetUserStatisticsResponse,
+  GetProjectStatisticResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -331,6 +333,10 @@ class LifeApi extends Api {
     this.get<GetProjectStatisticsResponse>(
       `/project/${projectId}/statistics/project`
     )
+  public getProjectCurrentStatistics = (projectId: number) =>
+    this.get<GetProjectStatisticResponse>(
+      `/project/${projectId}/statistics/project/current`
+    )
 
   public getProjectMembersStatistics = (projectId: number) =>
     this.get<GetProjectMembersStatisticsResponse>(
@@ -357,6 +363,9 @@ class LifeApi extends Api {
 
   public assignToProject = (projectId: number, params: AssignToProjectParams) =>
     this.post<GetProjectResponse>(`/project/${projectId}/assign`, params)
+
+  public getUserStatistics = () =>
+    this.get<GetUserStatisticsResponse>('/user/statistics')
 }
 
 export default new LifeApi()
