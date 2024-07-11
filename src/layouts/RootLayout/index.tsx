@@ -28,14 +28,12 @@ const RootLayout = ({ children, auth, conversation }: LayoutProps) => {
   }, [auth.userId])
   return (
     <main>
-      <MainLayout>
-        {children}
-        {conversation.selected && (
-          <div className="chat-boxes">
-            <ChatBox />
-          </div>
-        )}
-      </MainLayout>
+      <MainLayout>{children}</MainLayout>
+      {conversation.selected && (
+        <div className="chat-boxes">
+          <ChatBox />
+        </div>
+      )}
     </main>
   )
 }

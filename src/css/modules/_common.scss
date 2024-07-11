@@ -90,10 +90,10 @@
 }
 
 .chat-boxes {
-  position: sticky;
+  position: absolute;
   display: flex;
   bottom: 0px;
-  right: 0px;
+  right: 16px;
   z-index: 100;
   justify-content: flex-end;
 }
