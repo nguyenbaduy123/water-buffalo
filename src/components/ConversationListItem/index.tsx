@@ -36,7 +36,7 @@ const ConversationListItem: React.FC<Props> = ({
       onClick={onSelectConversation}
     >
       <div className="conversation-avatar">{conversationAvatar}</div>
-      <Flex vertical style={{ width: '100%' }}>
+      <Flex vertical gap={4} style={{ width: '100%' }}>
         <div className="conversation-title">{conversationName}</div>
         <Flex justify="space-between" className="conversation-snippet">
           <div className="conversation-snippet-text">

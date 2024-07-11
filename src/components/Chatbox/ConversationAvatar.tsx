@@ -18,8 +18,13 @@ const ConversationAvatar: React.FC<Props> = ({ conversation, userId }) => {
 
       case 'GROUP_INBOX':
         const usersRender = cloneDeep(conversation.users).slice(0, 4)
-        const avatars = usersRender.map((user) => (
-          <UserAvatar user={user} size={28} round className="user-avatar" />
+        const avatars = usersRender.map((user, idx) => (
+          <UserAvatar
+            user={user}
+            size={28}
+            round
+            className={`user-avatar avatar-index-${idx}`}
+          />
         ))
 
         return <div className="group-avatar">{avatars}</div>

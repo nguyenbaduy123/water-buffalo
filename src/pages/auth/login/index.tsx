@@ -32,8 +32,8 @@ const Login: NextPage = () => {
   return (
     <AuthLayout>
       <div className="login-web">
-        <img src="/elixir.svg" width={180} height={180} />
-        <h2>Sign in to WB</h2>
+        <img src="/elixir.svg" width={180} height={180} className="mb24" />
+        <h2 className="mb12">Sign in to WB</h2>
       </div>
       <Form name="basic" onFinish={onFinish} autoComplete="off">
         <Form.Item<FieldType>

@@ -57,7 +57,7 @@ const Dashboard: NextPage<Props> = ({ auth }) => {
                 <Card style={{ fontSize: 16 }}>
                   <Flex align="center" gap={16}>
                     <CurrentUserAvatar size={62} />
-                    <h1>{auth.name}</h1>
+                    <h1>{auth.name || auth.username}</h1>
                   </Flex>
                   <Flex>Username: {auth.username}</Flex>
                   <Flex>Email: {auth.email}</Flex>

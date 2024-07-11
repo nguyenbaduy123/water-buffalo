@@ -55,8 +55,10 @@ import {
   CreateTeamResponse,
   AssignToProjectParams,
   GetUserStatisticsResponse,
+  UpdateUserParams,
   GetProjectStatisticResponse,
   LoadConversationsResponse,
+  UpdateProjectParams,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -88,6 +90,8 @@ class LifeApi extends Api {
 
   public getAuth = (params: GetAuthParams) =>
     this.get<GetAuthResponse>('/user/auth', params)
+
+  public updateProfile = (params: UpdateUserParams) => this.put('/user', params)
 
   public validateField = (params: ValidateFieldParams) =>
     this.get('/validate_field', params)
@@ -370,6 +374,9 @@ class LifeApi extends Api {
 
   public loadConversations = () =>
     this.get<LoadConversationsResponse>('/conversations')
+
+  public updateProject = (projectId: number, params: UpdateProjectParams) =>
+    this.put(`/project/${projectId}`, params)
 }
 
 export default new LifeApi()

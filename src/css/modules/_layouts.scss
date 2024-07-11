@@ -48,7 +48,7 @@
 }
 
 .auth-page {
-  height: 100vh;
+  height: calc(100vh - 64px);
   background-color: var(--dark-7);
 
   .auth-page-container {

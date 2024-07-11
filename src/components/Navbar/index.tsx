@@ -8,6 +8,7 @@ import { RootState } from 'store'
 import CurrentUserAvatar from 'common/CurrentUserAvatar'
 import Notifications from 'components/Notifications'
 import Messenger from 'components/Messenger'
+import Router from 'next/router'
 
 interface Props {
   auth: AuthState
@@ -24,7 +25,7 @@ const Navbar = ({ auth }: Props) => {
         <div className="navbar-head">
           <Flex gap={16} align="center">
             <Logo />
-            <div style={{ fontSize: 16 }}>Project</div>
+            <div style={{ fontSize: 16 }}>WB</div>
           </Flex>
         </div>
         <Flex className="navbar-tail" align="center" gap={16}>
@@ -35,6 +36,9 @@ const Navbar = ({ auth }: Props) => {
             placement="bottomRight"
             content={
               <Menu>
+                <Menu.Item key="2" onClick={() => Router.push('/profile')}>
+                  Profile
+                </Menu.Item>
                 <Menu.Item key="3" onClick={logout}>
                   Logout
                 </Menu.Item>

@@ -24,9 +24,12 @@ const reducerMap: ReducerMap<ConversationState> = {
     return { ...state, fetching: false, data: payload.conversations }
   },
   [NEW_CONVERSATION]: (state, { payload }) => {
+    const data = state.data.some((c) => c.id == payload.conversation.id)
+      ? state.data
+      : [payload.conversation, ...state.data]
     return {
       ...state,
-      data: [payload.conversation, ...state.data],
+      data: data,
       selected: payload.conversation,
     }
   },

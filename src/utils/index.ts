@@ -213,6 +213,7 @@ export const getConversationName = (
 ) => {
   if (conversation.name) return conversation.name
   const user = conversation.users.find((user) => user.id !== userId)
+  if (!user) return 'Unknown'
   return user.name || user.username
 }
 

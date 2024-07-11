@@ -24,6 +24,12 @@ export interface LoginParams {
   password: string
 }
 
+export interface UpdateUserParams {
+  username?: string
+  email?: string
+  avatar_url?: string
+}
+
 export interface SignupParams {
   email: string
   password: string
@@ -193,6 +199,11 @@ export interface CloseIssueParams {
 export interface UpdateProjectPermissionParams {
   user_id: string
   permission: Permissions | 'remove'
+}
+
+export interface UpdateProjectParams {
+  description?: string
+  settings?: Object
 }
 
 export interface LoadChannelsResponse {

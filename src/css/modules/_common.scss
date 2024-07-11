@@ -143,6 +143,7 @@
     .reply-box-input {
       border-radius: 16px;
       padding-right: 32px;
+      width: 240px;
     }
     .emoji-popover {
       position: absolute;
@@ -167,6 +168,10 @@
   .conversation-title {
     font-size: 16px;
     font-weight: 500;
+    max-width: 240px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .conversation-snippet {
     font-size: 12px;
@@ -190,6 +195,10 @@
 
 .channel-reply-box-wrapper {
   .reply-box-input {
-    width: 760px;
+    width: 760px !important;
   }
+}
+
+.group-avatar {
+  max-width: 74px;
 }

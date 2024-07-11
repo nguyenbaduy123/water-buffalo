@@ -35,6 +35,7 @@ export interface Tag {
 }
 export interface ProjectSettings {
   tags: Tag[]
+  [key: string]: any
 }
 
 export interface Task {
