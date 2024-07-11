@@ -1,5 +1,6 @@
 import { FileArrowDown } from '@phosphor-icons/react'
 import { Flex } from 'antd'
+import UserAvatar from 'common/UserAvatar'
 import React, { memo } from 'react'
 import { AuthState } from 'reducers/types'
 import { User } from 'types/global'
@@ -89,12 +90,21 @@ const MessageListItem = ({
   }
 
   return (
-    <div className={getClassName()} id={`message_${message.id}`}>
-      {message.message && (
-        <div className="message-content">{message.message}</div>
+    <Flex align="center">
+      {auth.userId !== message.from_id && (
+        <div style={{ width: 30, marginBottom: 2 }}>
+          {nextMsgFromId != message.from_id && (
+            <UserAvatar user={fromUser} size={22} round />
+          )}
+        </div>
       )}
-      {renderMessageAttachments()}
-    </div>
+      <div className={getClassName()} id={`message_${message.id}`}>
+        {message.message && (
+          <div className="message-content">{message.message}</div>
+        )}
+        {renderMessageAttachments()}
+      </div>
+    </Flex>
   )
 }
 

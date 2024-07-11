@@ -8,10 +8,11 @@ import { fuzzySearch } from 'utils'
 import { COLORS } from 'utils/css'
 
 interface Props extends ModalProps {
-  onInvite: (userId: User['id']) => void
+  onInvite: (userId: User['id'], user: User) => void
   onCancel: () => void
   users?: User[]
   btnText?: string
+  header?: React.ReactNode
 }
 
 const ModalInviteUsers = ({
@@ -19,6 +20,7 @@ const ModalInviteUsers = ({
   onCancel,
   btnText,
   users,
+  header,
   ...props
 }: Props) => {
   const [searchValue, setSearchValue] = React.useState('')
@@ -54,8 +56,8 @@ const ModalInviteUsers = ({
 
   const debouncedSearchUser = useCallback(debounce(handleSearchUser, 400), [])
 
-  const handleInvite = (userId: User['id']) => {
-    onInvite(userId)
+  const handleInvite = (userId: User['id'], user: User) => {
+    onInvite(userId, user)
     setInvitedIds([...invitedIds, userId])
   }
 
@@ -98,11 +100,11 @@ const ModalInviteUsers = ({
           >
             <Flex align="center" gap={8}>
               <UserAvatar user={user} size={24} />
-              <div>{user.name || user.name}</div>
+              <div>{user.name || user.username}</div>
             </Flex>
             <Button
               type="primary"
-              onClick={() => handleInvite(user.id)}
+              onClick={() => handleInvite(user.id, user)}
               disabled={invitedIds.includes(user.id)}
             >
               {btnText || 'Invite'}
@@ -117,6 +119,7 @@ const ModalInviteUsers = ({
     <div>
       <Modal footer={null} {...props} onCancel={handleCancel}>
         <div>
+          {header}
           <Input
             placeholder="Enter username or email"
             value={searchValue}

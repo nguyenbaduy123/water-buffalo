@@ -102,6 +102,7 @@
   background-color: var(--dark-7);
   border-radius: 8px;
   padding: 8px;
+  width: 300px;
   .chatbox-header {
     display: flex;
     justify-content: space-between;
@@ -120,7 +121,7 @@
   }
 
   .message-list {
-    height: 280px;
+    height: 320px;
     overflow-y: auto;
   }
 }

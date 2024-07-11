@@ -1,4 +1,5 @@
 import UserAvatar from 'common/UserAvatar'
+import { cloneDeep } from 'lodash'
 import React from 'react'
 import { Conversation } from 'types/message'
 
@@ -16,7 +17,8 @@ const ConversationAvatar: React.FC<Props> = ({ conversation, userId }) => {
         return <UserAvatar user={userAvatar} size={28} round />
 
       case 'GROUP_INBOX':
-        const avatars = conversation.users.map((user) => (
+        const usersRender = cloneDeep(conversation.users).slice(0, 4)
+        const avatars = usersRender.map((user) => (
           <UserAvatar user={user} size={28} round className="user-avatar" />
         ))
 

@@ -1,6 +1,7 @@
 import { selectConversation } from 'actions/conversation'
 import { Flex } from 'antd'
 import UserAvatar from 'common/UserAvatar'
+import ConversationAvatar from 'components/Chatbox/ConversationAvatar'
 import React from 'react'
 import { AppDispatch, RootState } from 'store'
 import { Conversation } from 'types/message'
@@ -22,9 +23,9 @@ const ConversationListItem: React.FC<Props> = ({
     dispatch(selectConversation(conversation))
   }
 
-  const conversationAvatar = otherUsers.map((u) => (
-    <UserAvatar user={u} key={u.id} size={42} />
-  ))
+  const conversationAvatar = (
+    <ConversationAvatar conversation={conversation} userId={auth.userId} />
+  )
 
   const conversationName =
     conversation.name || otherUsers.map((u) => u.name || u.username).join(', ')
