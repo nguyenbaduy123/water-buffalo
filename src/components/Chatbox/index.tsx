@@ -6,8 +6,6 @@ import { getConversationName } from 'utils'
 import { X } from '@phosphor-icons/react'
 import { unselectConversation } from 'actions/conversation'
 import MessageList from 'components/MessageList'
-import ReplyBox from 'components/ReplyBox'
-import LifeApi from 'api/LifeApi'
 import ReplyInbox from 'components/ReplyInbox'
 
 interface Props {

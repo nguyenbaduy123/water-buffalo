@@ -1,6 +1,6 @@
 import { Empty } from 'antd'
 import MessageListItem from 'components/MessageListItem'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { AppDispatch, RootState } from 'store'
 
@@ -12,6 +12,11 @@ interface Props {
 
 const MessageList: React.FC<Props> = ({ conversation, auth }) => {
   if (!conversation) return null
+  const messageListRef = React.useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    messageListRef.current?.scrollTo(0, messageListRef.current?.scrollHeight)
+  }, [])
 
   const renderBody = () => {
     if (!conversation.messages.length)
@@ -37,7 +42,11 @@ const MessageList: React.FC<Props> = ({ conversation, auth }) => {
     })
   }
 
-  return <div className="message-list">{renderBody()}</div>
+  return (
+    <div className="message-list" ref={messageListRef}>
+      {renderBody()}
+    </div>
+  )
 }
 
 const mapStateToProps = (state: RootState) => {

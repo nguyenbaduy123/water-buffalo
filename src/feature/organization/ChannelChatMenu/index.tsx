@@ -32,7 +32,7 @@ const ChannelChatMenu = ({ currentChannel, currentOrganization }: Props) => {
   }
 
   return (
-    <div>
+    <div className="w100p">
       <Flex
         justify="space-between"
         style={{

@@ -1,5 +1,6 @@
 import LifeApi from 'api/LifeApi'
 import {
+  LOAD_CONVERSATIONS_SUCCESS,
   NEW_CONVERSATION,
   NEW_MESSAGE,
   SELECT_CONVERSATION,
@@ -7,12 +8,26 @@ import {
 } from 'constants/action'
 import { AppDispatch, GetStateFunc } from 'store'
 import { Conversation, Message } from 'types/message'
+import { createPlainAction } from 'utils/redux'
+
+export const loadConversationsSuccess = createPlainAction(
+  LOAD_CONVERSATIONS_SUCCESS
+)
 
 export const loadConversations = () => {
   return async (dispatch: AppDispatch, getState: GetStateFunc) => {
     const {
       auth: { userId },
     } = getState()
+
+    const resp = await LifeApi.loadConversations()
+
+    if (resp.success) {
+      dispatch({
+        type: LOAD_CONVERSATIONS_SUCCESS,
+        payload: { conversations: resp.conversations },
+      })
+    }
   }
 }
 

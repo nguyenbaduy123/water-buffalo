@@ -1,19 +1,26 @@
 import { MessengerLogo, UserPlus, UsersThree } from '@phosphor-icons/react'
 import { Input, Popover } from 'antd'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import './style.scss'
 import { AppDispatch, RootState } from 'store'
 import { connect } from 'react-redux'
 import ModalInviteUsers from 'components/ModalInviteUsers'
 import LifeApi from 'api/LifeApi'
-import { newConversation } from 'actions/conversation'
+import {
+  loadConversations,
+  newConversation,
+  selectConversation,
+} from 'actions/conversation'
+import ConversationListItem from 'components/ConversationListItem'
+import { Conversation } from 'types/message'
 
 interface Props {
   auth: RootState['auth']
+  conversation: RootState['conversation']
   dispatch: AppDispatch
 }
 
-const Messenger: FC<Props> = ({ auth, dispatch }) => {
+const Messenger: FC<Props> = ({ auth, dispatch, conversation }) => {
   if (!auth.userId) return
 
   const [openSearchUser, setOpenSearchUser] = useState(false)
@@ -30,9 +37,9 @@ const Messenger: FC<Props> = ({ auth, dispatch }) => {
     }
   }
 
-  const renderListConversations = () => {
-    return <div></div>
-  }
+  useEffect(() => {
+    dispatch(loadConversations())
+  }, [])
 
   const renderContent = () => {
     return (
@@ -59,7 +66,16 @@ const Messenger: FC<Props> = ({ auth, dispatch }) => {
             />
           </div>
         </div>
-        <div className="chats-list"></div>
+        <div className="chats-list">
+          {conversation.data.map((c) => (
+            <ConversationListItem
+              conversation={c}
+              key={c.id}
+              auth={auth}
+              dispatch={dispatch}
+            />
+          ))}
+        </div>
       </div>
     )
   }
@@ -90,6 +106,7 @@ const Messenger: FC<Props> = ({ auth, dispatch }) => {
 const mapStateToProps = (state: RootState) => {
   return {
     auth: state.auth,
+    conversation: state.conversation,
   }
 }
 

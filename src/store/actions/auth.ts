@@ -13,7 +13,12 @@ import LifeApi from 'api/LifeApi'
 import { GetAuthResponse } from 'api/LifeApi.d'
 import { Socket } from 'phoenix'
 import { SocketPayload, User } from 'types/global'
-import { channelConnect, getProjectRoute, infoNotification } from 'utils'
+import {
+  channelConnect,
+  getProjectOwner,
+  getProjectRoute,
+  infoNotification,
+} from 'utils'
 import Router from 'next/router'
 import { notification } from 'antd'
 import { channelNewMessage, loadChannels } from './channel'
@@ -138,7 +143,9 @@ export const connectToChannel = (channelName: string) => {
         onClick: () => {
           if (!project) return
           Router.push(
-            `/project/issues/issue?owner_name=${project?.owner.id}&project_name=${project?.name}&issue_id=${detail.issue_id}`,
+            `/project/issues/issue?owner_name=${getProjectOwner(
+              project
+            )}&project_name=${project?.name}&issue_id=${detail.issue_id}`,
             `${getProjectRoute(project, `/issues/${detail.issue_id}`)}`
           )
           notification.destroy()

@@ -75,9 +75,11 @@ const Dashboard: NextPage<Props> = ({ auth }) => {
                 </Card>
               </Col>
               <Col span={12}>
-                <Card style={{ fontSize: 16 }}>
-                  <Flex>Projects: {userStatistics?.projects || 0}</Flex>
-                  <Flex gap={8}>
+                <Card style={{ fontSize: 16, height: '100%' }}>
+                  <Flex className="mb4">
+                    Projects: {userStatistics?.projects || 0}
+                  </Flex>
+                  <Flex className="mb4" gap={8}>
                     Issue:{' '}
                     {userStatistics?.issues.map((issue) => (
                       <Flex

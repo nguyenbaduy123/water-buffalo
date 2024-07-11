@@ -56,6 +56,7 @@ import {
   AssignToProjectParams,
   GetUserStatisticsResponse,
   GetProjectStatisticResponse,
+  LoadConversationsResponse,
 } from './LifeApi.d'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -366,6 +367,9 @@ class LifeApi extends Api {
 
   public getUserStatistics = () =>
     this.get<GetUserStatisticsResponse>('/user/statistics')
+
+  public loadConversations = () =>
+    this.get<LoadConversationsResponse>('/conversations')
 }
 
 export default new LifeApi()

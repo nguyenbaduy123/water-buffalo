@@ -2,6 +2,7 @@ import { Flex } from 'antd'
 import LifeApi from 'api/LifeApi'
 import { FileUpload } from 'common/UploadButton/UploadButton'
 import ReplyBox from 'components/ReplyBox'
+import ReplyInbox from 'components/ReplyInbox'
 import ChannelChatMenu from 'feature/organization/ChannelChatMenu'
 import ChannelMessageList from 'feature/organization/ChannelMessageList'
 import OrganizationTeams from 'feature/organization/OrganizationTeams'
@@ -11,6 +12,7 @@ import OrganizationLayout from 'layouts/OrganizationLayout'
 import React from 'react'
 import { connect } from 'react-redux'
 import { AppDispatch, RootState } from 'store'
+import { Attachment } from 'types/project'
 
 interface Props {
   currentOrganization: RootState['organization']['currentOrganization']
@@ -30,15 +32,16 @@ const TABS = [
 ]
 
 const Organization = ({ currentOrganization, channel, dispatch }: Props) => {
-  const [message, setMessage] = React.useState('')
-  const [files, setFiles] = React.useState<FileUpload[]>([])
   const currentChannel = channel.data.find(
     (c) => c.id == channel.currentChannelId
   )
 
   const [currentTab, setCurrentTab] = React.useState('channel')
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = async (
+    message: string,
+    attachments: Attachment[]
+  ) => {
     if (!currentChannel || !currentOrganization) return
 
     const resp = await LifeApi.sendMessageToChannel(
@@ -46,13 +49,11 @@ const Organization = ({ currentOrganization, channel, dispatch }: Props) => {
       currentChannel.id,
       {
         message: message,
-        attachments: files.map((file) => file.response) as any[],
+        attachments: attachments,
       }
     )
 
     if (resp.success) {
-      setMessage('')
-      setFiles([])
       console.log(resp)
     }
   }
@@ -70,17 +71,34 @@ const Organization = ({ currentOrganization, channel, dispatch }: Props) => {
     return (
       <Flex gap={12}>
         <OrganizationSidebar />
-        <Flex vertical className="w100p ph16" gap={16}>
+        <Flex
+          vertical
+          className="w100p ph16"
+          gap={16}
+          style={{
+            alignItems: 'center',
+          }}
+        >
           <ChannelChatMenu currentChannel={currentChannel} />
           <ChannelMessageList />
-          <div className="reply-box-wrapper">
-            <ReplyBox
+          <div className="channel-reply-box-wrapper">
+            {/* <ReplyBox
               message={message}
               files={files}
               onMessageChange={setMessage}
               onFileChange={setFiles}
               onSend={handleSendMessage}
-            />
+            /> */}
+
+            {currentOrganization?.id && currentChannel?.id && (
+              <div>
+                <ReplyInbox
+                  conversationId={`channel_${currentOrganization.id}_${currentChannel?.id}`}
+                  userId="1"
+                  onSend={handleSendMessage}
+                />
+              </div>
+            )}
           </div>
         </Flex>
       </Flex>

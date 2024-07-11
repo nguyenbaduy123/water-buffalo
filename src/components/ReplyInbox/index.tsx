@@ -4,25 +4,34 @@ import {
   Paperclip,
   Smiley,
 } from '@phosphor-icons/react'
-import { Flex, Input, Upload } from 'antd'
+import { Badge, Flex, Input, Upload } from 'antd'
 import { UploadChangeParam, UploadFile } from 'antd/es/upload'
 import LifeApi from 'api/LifeApi'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Attachment } from 'types/project'
 import { COLORS } from 'utils/css'
+import EmojiPicker, { SuggestionMode, Theme } from 'emoji-picker-react'
 
 interface Props {
   conversationId: string
   userId: string
+  onSend?: (message: string, attachments: Attachment[]) => void
 }
 
-const ReplyInbox: React.FC<Props> = ({ conversationId, userId }) => {
+const ReplyInbox: React.FC<Props> = ({ conversationId, userId, onSend }) => {
   const [message, setMessage] = React.useState('')
   const [attachments, setAttachments] = React.useState<Attachment[]>([])
+  const [emojiOpen, setEmojiOpen] = React.useState(false)
 
   const handleSend = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     e.stopPropagation()
     e.preventDefault()
+    if (onSend) {
+      onSend(message, attachments)
+      setMessage('')
+      setAttachments([])
+      return
+    }
     const resp = await LifeApi.sendMessage(conversationId, {
       message,
       attachments,
@@ -33,6 +42,18 @@ const ReplyInbox: React.FC<Props> = ({ conversationId, userId }) => {
       setAttachments([])
     }
   }
+
+  useEffect(() => {
+    document.body.addEventListener('click', () => {
+      setEmojiOpen(false)
+    })
+
+    return () => {
+      document.removeEventListener('click', () => {
+        setEmojiOpen(false)
+      })
+    }
+  }, [])
 
   const handleUploadAttachments = (
     info: UploadChangeParam<UploadFile<any>>
@@ -54,7 +75,9 @@ const ReplyInbox: React.FC<Props> = ({ conversationId, userId }) => {
           withCredentials
         >
           <div className="upload-attachment-btn">
-            <Images size={20} weight="fill" color={COLORS.gray[6]} />
+            <Badge count={attachments.length} size="small">
+              <Images size={20} weight="fill" color={COLORS.gray[6]} />
+            </Badge>
           </div>
         </Upload>
         <div className="input-reply-box">
@@ -68,16 +91,35 @@ const ReplyInbox: React.FC<Props> = ({ conversationId, userId }) => {
             onPressEnter={handleSend}
             className="reply-box-input"
           />
+          <div
+            className="emoji-picker-wrapper"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <EmojiPicker
+              width={300}
+              height={400}
+              open={emojiOpen}
+              theme={Theme.DARK}
+              suggestedEmojisMode={SuggestionMode.FREQUENT}
+              className="emoji-picker"
+              onEmojiClick={(emojiData) => {
+                setMessage((prevMessage) => prevMessage + emojiData.emoji)
+              }}
+            />
+          </div>
           <div className="emoji-popover">
-            <Smiley size={24} weight="fill" color={COLORS.gray[6]} />
+            <Smiley
+              size={24}
+              weight="fill"
+              color={COLORS.gray[6]}
+              onClick={(e) => {
+                e.stopPropagation()
+                setEmojiOpen(!emojiOpen)
+              }}
+            />
           </div>
         </div>
       </Flex>
-      {/* <Flex gap={4} className="reply-box-footer">
-        <Upload fileList={attachments} onChange={handleChangeAttachments}>
-      <ImageSquare size={20} />
-    </Upload>
-      </Flex> */}
     </div>
   )
 }

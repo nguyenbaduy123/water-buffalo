@@ -1,8 +1,11 @@
+import { FileArrowDown } from '@phosphor-icons/react'
+import { Flex } from 'antd'
 import React, { memo } from 'react'
 import { AuthState } from 'reducers/types'
 import { User } from 'types/global'
 import { Message } from 'types/message'
 import { Attachment } from 'types/project'
+import { COLORS } from 'utils/css'
 
 interface Props {
   message: Message
@@ -47,8 +50,31 @@ const MessageListItem = ({
             />
           </div>
         )
+      case 'video':
+        return (
+          <div>
+            <video controls width={128} height={128}>
+              <source src={attachment.url} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        )
       default:
-        return null
+        return (
+          <div>
+            <a
+              style={{
+                border: '1px solid #e8e8e8',
+                borderRadius: '50%',
+                display: 'inline-block',
+                padding: 4,
+              }}
+              href={attachment.url}
+            >
+              <FileArrowDown size={20} color={COLORS.blue[4]} weight="fill" />
+            </a>
+          </div>
+        )
     }
   }
 
@@ -64,7 +90,9 @@ const MessageListItem = ({
 
   return (
     <div className={getClassName()} id={`message_${message.id}`}>
-      <div className="message-content">{message.message}</div>
+      {message.message && (
+        <div className="message-content">{message.message}</div>
+      )}
       {renderMessageAttachments()}
     </div>
   )
